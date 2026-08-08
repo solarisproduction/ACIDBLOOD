@@ -195,6 +195,21 @@ func test_campaign_data() -> void:
 	var first := p.cores
 	var repeat_award := p.apply_victory(ids[0], 5)
 	check("repeat clear pays reduced reward", repeat_award < 5 and repeat_award > 0 and p.cores == first + repeat_award)
+	# Developer traversal: sequentially auto-win every stage; the whole
+	# campaign must unlock in order and survive a save/load round trip.
+	var t := Progression.new()
+	var traversal_ok := true
+	for i in stages.size():
+		if not t.is_stage_unlocked(i, ids):
+			traversal_ok = false
+			break
+		t.apply_victory(ids[i], stages[i].reward_cores)
+	var path := "user://test_campaign_tmp.json"
+	t.save(path)
+	var t2 := Progression.load_or_new(path)
+	check("auto-win traversal unlocks all 30 stages in order", traversal_ok and t.completed_stages.size() == 30)
+	check("full campaign completion survives save/load", t2.completed_stages.size() == 30 and t2.cores == t.cores)
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
 
 func test_data_references() -> void:
 	print("[data references]")
