@@ -1,0 +1,9 @@
+# Godot generated
+.godot/
+*.import
+export.cfg
+export_presets.cfg
+# macOS
+.DS_Store
+# Local session config
+.claude/settings.local.json

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://data/types/card_data.gd" id="1"]
+[ext_resource type="Script" path="res://data/types/card_effect.gd" id="2"]
+
+[sub_resource type="Resource" id="eff1"]
+script = ExtResource("2")
+op = 1
+stat = &"turret.bolt.damage"
+value = 1.6
+target = &""
+
+[resource]
+script = ExtResource("1")
+id = &"bolt_overcharge"
+title = "Bolt Overcharge"
+description = "Bolt Turrets deal 60% more damage."
+weight = 8.0
+max_stacks = 2
+prerequisites = Array[StringName]([&"build_bolt"])
+effects = Array[ExtResource("2")]([SubResource("eff1")])

@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="StageData" format=3]
+
+[ext_resource type="Script" path="res://data/types/stage_data.gd" id="1_stlfv"]
+[ext_resource type="Script" path="res://data/types/wave_data.gd" id="2_klbld"]
+[ext_resource type="Script" path="res://data/types/spawn_group.gd" id="3_kdlem"]
+
+[sub_resource type="Resource" id="Resource_8bmce"]
+script = ExtResource("3_kdlem")
+enemy_id = &"grunt"
+count = 8
+
+[sub_resource type="Resource" id="Resource_binjc"]
+script = ExtResource("3_kdlem")
+enemy_id = &"runner"
+count = 4
+interval = 0.8
+start_delay = 3.0
+
+[sub_resource type="Resource" id="Resource_imbw5"]
+script = ExtResource("2_klbld")
+groups = Array[ExtResource("3_kdlem")]([SubResource("Resource_8bmce"), SubResource("Resource_binjc")])
+
+[sub_resource type="Resource" id="Resource_tq3ms"]
+script = ExtResource("3_kdlem")
+enemy_id = &"grunt"
+count = 6
+interval = 1.1
+
+[sub_resource type="Resource" id="Resource_x06nh"]
+script = ExtResource("3_kdlem")
+enemy_id = &"spitter"
+count = 2
+interval = 2.6
+start_delay = 2.0
+
+[sub_resource type="Resource" id="Resource_873pn"]
+script = ExtResource("3_kdlem")
+enemy_id = &"runner"
+count = 4
+interval = 0.7
+start_delay = 5.0
+
+[sub_resource type="Resource" id="Resource_0eocj"]
+script = ExtResource("2_klbld")
+groups = Array[ExtResource("3_kdlem")]([SubResource("Resource_tq3ms"), SubResource("Resource_x06nh"), SubResource("Resource_873pn")])
+
+[sub_resource type="Resource" id="Resource_v58e4"]
+script = ExtResource("3_kdlem")
+enemy_id = &"brute"
+interval = 3.5
+
+[sub_resource type="Resource" id="Resource_7fxvi"]
+script = ExtResource("3_kdlem")
+enemy_id = &"grunt"
+count = 7
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_x720p"]
+script = ExtResource("2_klbld")
+groups = Array[ExtResource("3_kdlem")]([SubResource("Resource_v58e4"), SubResource("Resource_7fxvi")])
+
+[resource]
+script = ExtResource("1_stlfv")
+id = &"stage_009"
+display_name = "Ramparts 9"
+index = 9
+reward_cores = 15
+hp_scale = 1.8399999999999999
+speed_scale = 1.1400000000000001
+waves = Array[ExtResource("2_klbld")]([SubResource("Resource_imbw5"), SubResource("Resource_0eocj"), SubResource("Resource_x720p")])

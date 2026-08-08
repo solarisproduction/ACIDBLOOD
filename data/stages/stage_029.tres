@@ -1,0 +1,103 @@
+[gd_resource type="Resource" script_class="StageData" format=3]
+
+[ext_resource type="Script" path="res://data/types/stage_data.gd" id="1_0b351"]
+[ext_resource type="Script" path="res://data/types/wave_data.gd" id="2_rwqjd"]
+[ext_resource type="Script" path="res://data/types/spawn_group.gd" id="3_7isvp"]
+
+[sub_resource type="Resource" id="Resource_rpss0"]
+script = ExtResource("3_7isvp")
+enemy_id = &"brute"
+count = 3
+interval = 3.5
+
+[sub_resource type="Resource" id="Resource_n7g10"]
+script = ExtResource("3_7isvp")
+enemy_id = &"grunt"
+count = 10
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_u52i4"]
+script = ExtResource("2_rwqjd")
+groups = Array[ExtResource("3_7isvp")]([SubResource("Resource_rpss0"), SubResource("Resource_n7g10")])
+
+[sub_resource type="Resource" id="Resource_or0f0"]
+script = ExtResource("3_7isvp")
+enemy_id = &"grunt"
+count = 11
+
+[sub_resource type="Resource" id="Resource_6r4dx"]
+script = ExtResource("3_7isvp")
+enemy_id = &"runner"
+count = 7
+interval = 0.8
+start_delay = 3.0
+
+[sub_resource type="Resource" id="Resource_tnolj"]
+script = ExtResource("2_rwqjd")
+groups = Array[ExtResource("3_7isvp")]([SubResource("Resource_or0f0"), SubResource("Resource_6r4dx")])
+
+[sub_resource type="Resource" id="Resource_8yfst"]
+script = ExtResource("3_7isvp")
+enemy_id = &"grunt"
+count = 9
+interval = 1.1
+
+[sub_resource type="Resource" id="Resource_nchn6"]
+script = ExtResource("3_7isvp")
+enemy_id = &"spitter"
+count = 4
+interval = 2.6
+start_delay = 2.0
+
+[sub_resource type="Resource" id="Resource_5p3l5"]
+script = ExtResource("3_7isvp")
+enemy_id = &"runner"
+count = 4
+interval = 0.7
+start_delay = 5.0
+
+[sub_resource type="Resource" id="Resource_s360q"]
+script = ExtResource("2_rwqjd")
+groups = Array[ExtResource("3_7isvp")]([SubResource("Resource_8yfst"), SubResource("Resource_nchn6"), SubResource("Resource_5p3l5")])
+
+[sub_resource type="Resource" id="Resource_u8uuu"]
+script = ExtResource("3_7isvp")
+enemy_id = &"brute"
+count = 3
+interval = 3.5
+
+[sub_resource type="Resource" id="Resource_a0las"]
+script = ExtResource("3_7isvp")
+enemy_id = &"grunt"
+count = 10
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_ayva4"]
+script = ExtResource("2_rwqjd")
+groups = Array[ExtResource("3_7isvp")]([SubResource("Resource_u8uuu"), SubResource("Resource_a0las")])
+
+[sub_resource type="Resource" id="Resource_bjon8"]
+script = ExtResource("3_7isvp")
+enemy_id = &"grunt"
+count = 11
+
+[sub_resource type="Resource" id="Resource_p2a7w"]
+script = ExtResource("3_7isvp")
+enemy_id = &"runner"
+count = 7
+interval = 0.8
+start_delay = 3.0
+
+[sub_resource type="Resource" id="Resource_4n3su"]
+script = ExtResource("2_rwqjd")
+groups = Array[ExtResource("3_7isvp")]([SubResource("Resource_bjon8"), SubResource("Resource_p2a7w")])
+
+[resource]
+script = ExtResource("1_0b351")
+id = &"stage_029"
+display_name = "Ash Road 29"
+index = 29
+reward_cores = 35
+hp_scale = 4.24
+speed_scale = 1.5
+waves = Array[ExtResource("2_rwqjd")]([SubResource("Resource_u52i4"), SubResource("Resource_tnolj"), SubResource("Resource_s360q"), SubResource("Resource_ayva4"), SubResource("Resource_4n3su")])

@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://data/types/card_data.gd" id="1"]
+[ext_resource type="Script" path="res://data/types/card_effect.gd" id="2"]
+
+[sub_resource type="Resource" id="eff1"]
+script = ExtResource("2")
+op = 0
+stat = &"turret.frost.slow_duration"
+value = 1.0
+target = &""
+
+[sub_resource type="Resource" id="eff2"]
+script = ExtResource("2")
+op = 1
+stat = &"turret.frost.slow_factor"
+value = 0.8
+target = &""
+
+[resource]
+script = ExtResource("1")
+id = &"frost_deep_chill"
+title = "Deep Chill"
+description = "Frost slow lasts +1s and slows harder."
+weight = 8.0
+max_stacks = 1
+prerequisites = Array[StringName]([&"build_frost"])
+effects = Array[ExtResource("2")]([SubResource("eff1"), SubResource("eff2")])

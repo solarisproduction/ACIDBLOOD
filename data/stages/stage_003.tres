@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="StageData" format=3]
+
+[ext_resource type="Script" path="res://data/types/stage_data.gd" id="1_4cmsw"]
+[ext_resource type="Script" path="res://data/types/wave_data.gd" id="2_dlh6y"]
+[ext_resource type="Script" path="res://data/types/spawn_group.gd" id="3_dgyg5"]
+
+[sub_resource type="Resource" id="Resource_3e3jo"]
+script = ExtResource("3_dgyg5")
+enemy_id = &"grunt"
+count = 7
+
+[sub_resource type="Resource" id="Resource_y66nk"]
+script = ExtResource("3_dgyg5")
+enemy_id = &"runner"
+count = 3
+interval = 0.8
+start_delay = 3.0
+
+[sub_resource type="Resource" id="Resource_k0gf5"]
+script = ExtResource("2_dlh6y")
+groups = Array[ExtResource("3_dgyg5")]([SubResource("Resource_3e3jo"), SubResource("Resource_y66nk")])
+
+[sub_resource type="Resource" id="Resource_x675x"]
+script = ExtResource("3_dgyg5")
+enemy_id = &"grunt"
+count = 5
+interval = 1.1
+
+[sub_resource type="Resource" id="Resource_3ue1d"]
+script = ExtResource("3_dgyg5")
+enemy_id = &"spitter"
+count = 2
+interval = 2.6
+start_delay = 2.0
+
+[sub_resource type="Resource" id="Resource_oxpqv"]
+script = ExtResource("3_dgyg5")
+enemy_id = &"runner"
+count = 4
+interval = 0.7
+start_delay = 5.0
+
+[sub_resource type="Resource" id="Resource_icw3e"]
+script = ExtResource("2_dlh6y")
+groups = Array[ExtResource("3_dgyg5")]([SubResource("Resource_x675x"), SubResource("Resource_3ue1d"), SubResource("Resource_oxpqv")])
+
+[sub_resource type="Resource" id="Resource_3cgpx"]
+script = ExtResource("3_dgyg5")
+enemy_id = &"brute"
+interval = 3.5
+
+[sub_resource type="Resource" id="Resource_gpgfs"]
+script = ExtResource("3_dgyg5")
+enemy_id = &"grunt"
+count = 6
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_v683n"]
+script = ExtResource("2_dlh6y")
+groups = Array[ExtResource("3_dgyg5")]([SubResource("Resource_3cgpx"), SubResource("Resource_gpgfs")])
+
+[resource]
+script = ExtResource("1_4cmsw")
+id = &"stage_003"
+display_name = "Ash Road 3"
+index = 3
+reward_cores = 9
+hp_scale = 1.12
+speed_scale = 1.02
+waves = Array[ExtResource("2_dlh6y")]([SubResource("Resource_k0gf5"), SubResource("Resource_icw3e"), SubResource("Resource_v683n")])

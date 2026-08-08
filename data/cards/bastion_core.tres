@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://data/types/card_data.gd" id="1"]
+[ext_resource type="Script" path="res://data/types/card_effect.gd" id="2"]
+
+[sub_resource type="Resource" id="eff1"]
+script = ExtResource("2")
+op = 0
+stat = &"fortress.max_hp"
+value = 30.0
+target = &""
+
+[sub_resource type="Resource" id="eff2"]
+script = ExtResource("2")
+op = 3
+stat = &""
+value = 30.0
+target = &""
+
+[resource]
+script = ExtResource("1")
+id = &"bastion_core"
+title = "Bastion Core"
+description = "Fortress max HP +30 and restores 30 HP. Incompatible with Overload Core."
+weight = 5.0
+max_stacks = 1
+excludes = Array[StringName]([&"overload_core"])
+effects = Array[ExtResource("2")]([SubResource("eff1"), SubResource("eff2")])

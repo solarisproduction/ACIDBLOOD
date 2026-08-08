@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/types/enemy_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"runner"
+display_name = "Runner"
+max_hp = 6.0
+speed = 3.0
+armor = 0.0
+xp = 2
+fortress_damage = 4.0
+attack_interval = 0.0
+stop_range = 0.0
+is_boss = false
+shape = 1
+color = Color(0.95, 0.6, 0.15, 1)
+body_scale = Vector3(0.5, 0.6, 0.5)

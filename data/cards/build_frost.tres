@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://data/types/card_data.gd" id="1"]
+[ext_resource type="Script" path="res://data/types/card_effect.gd" id="2"]
+
+[sub_resource type="Resource" id="eff1"]
+script = ExtResource("2")
+op = 2
+stat = &""
+value = 0.0
+target = &"frost"
+
+[resource]
+script = ExtResource("1")
+id = &"build_frost"
+title = "Build: Frost Turret"
+description = "Builds a turret that slows enemies. Requires Frost Protocol."
+weight = 10.0
+max_stacks = 1
+requires_unlock = &"frost_turret"
+effects = Array[ExtResource("2")]([SubResource("eff1")])

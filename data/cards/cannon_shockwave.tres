@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://data/types/card_data.gd" id="1"]
+[ext_resource type="Script" path="res://data/types/card_effect.gd" id="2"]
+
+[sub_resource type="Resource" id="eff1"]
+script = ExtResource("2")
+op = 0
+stat = &"turret.cannon.splash_radius"
+value = 0.8
+target = &""
+
+[sub_resource type="Resource" id="eff2"]
+script = ExtResource("2")
+op = 1
+stat = &"turret.cannon.damage"
+value = 1.25
+target = &""
+
+[resource]
+script = ExtResource("1")
+id = &"cannon_shockwave"
+title = "Shockwave Shells"
+description = "Cannon splash radius +0.8 and damage +25%."
+weight = 8.0
+max_stacks = 1
+prerequisites = Array[StringName]([&"build_cannon"])
+effects = Array[ExtResource("2")]([SubResource("eff1"), SubResource("eff2")])

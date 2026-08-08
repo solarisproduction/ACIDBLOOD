@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="PermUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/types/perm_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"guardian_core"
+display_name = "Guardian Core"
+description = "Permanently adds +1 Guardian damage per level."
+max_level = 5
+base_cost = 4
+cost_step = 2
+stat = &"guardian.damage"
+value_per_level = 1.0
+unlock_flag = &""

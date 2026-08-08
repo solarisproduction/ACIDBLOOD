@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="PermUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/types/perm_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"fortress_plating"
+display_name = "Fortress Plating"
+description = "Permanently adds +15 fortress HP per level."
+max_level = 5
+base_cost = 4
+cost_step = 2
+stat = &"fortress.max_hp"
+value_per_level = 15.0
+unlock_flag = &""

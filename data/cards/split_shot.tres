@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://data/types/card_data.gd" id="1"]
+[ext_resource type="Script" path="res://data/types/card_effect.gd" id="2"]
+
+[sub_resource type="Resource" id="eff1"]
+script = ExtResource("2")
+op = 0
+stat = &"guardian.projectiles"
+value = 1.0
+target = &""
+
+[resource]
+script = ExtResource("1")
+id = &"split_shot"
+title = "Split Shot"
+description = "Guardian fires +1 projectile per attack."
+weight = 6.0
+max_stacks = 2
+effects = Array[ExtResource("2")]([SubResource("eff1")])

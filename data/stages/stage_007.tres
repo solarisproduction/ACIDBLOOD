@@ -1,0 +1,94 @@
+[gd_resource type="Resource" script_class="StageData" format=3]
+
+[ext_resource type="Script" path="res://data/types/stage_data.gd" id="1_i1om4"]
+[ext_resource type="Script" path="res://data/types/wave_data.gd" id="2_42v34"]
+[ext_resource type="Script" path="res://data/types/spawn_group.gd" id="3_d5jds"]
+
+[sub_resource type="Resource" id="Resource_tocmb"]
+script = ExtResource("3_d5jds")
+enemy_id = &"grunt"
+count = 6
+interval = 1.1
+
+[sub_resource type="Resource" id="Resource_6qcg8"]
+script = ExtResource("3_d5jds")
+enemy_id = &"spitter"
+count = 2
+interval = 2.6
+start_delay = 2.0
+
+[sub_resource type="Resource" id="Resource_bkwnf"]
+script = ExtResource("3_d5jds")
+enemy_id = &"runner"
+count = 4
+interval = 0.7
+start_delay = 5.0
+
+[sub_resource type="Resource" id="Resource_261bw"]
+script = ExtResource("2_42v34")
+groups = Array[ExtResource("3_d5jds")]([SubResource("Resource_tocmb"), SubResource("Resource_6qcg8"), SubResource("Resource_bkwnf")])
+
+[sub_resource type="Resource" id="Resource_6qd38"]
+script = ExtResource("3_d5jds")
+enemy_id = &"brute"
+interval = 3.5
+
+[sub_resource type="Resource" id="Resource_8lfs0"]
+script = ExtResource("3_d5jds")
+enemy_id = &"grunt"
+count = 7
+start_delay = 1.5
+
+[sub_resource type="Resource" id="Resource_345pl"]
+script = ExtResource("2_42v34")
+groups = Array[ExtResource("3_d5jds")]([SubResource("Resource_6qd38"), SubResource("Resource_8lfs0")])
+
+[sub_resource type="Resource" id="Resource_ej2fc"]
+script = ExtResource("3_d5jds")
+enemy_id = &"grunt"
+count = 8
+
+[sub_resource type="Resource" id="Resource_tlobe"]
+script = ExtResource("3_d5jds")
+enemy_id = &"runner"
+count = 4
+interval = 0.8
+start_delay = 3.0
+
+[sub_resource type="Resource" id="Resource_5j3hu"]
+script = ExtResource("2_42v34")
+groups = Array[ExtResource("3_d5jds")]([SubResource("Resource_ej2fc"), SubResource("Resource_tlobe")])
+
+[sub_resource type="Resource" id="Resource_owr10"]
+script = ExtResource("3_d5jds")
+enemy_id = &"grunt"
+count = 6
+interval = 1.1
+
+[sub_resource type="Resource" id="Resource_a2he6"]
+script = ExtResource("3_d5jds")
+enemy_id = &"spitter"
+count = 2
+interval = 2.6
+start_delay = 2.0
+
+[sub_resource type="Resource" id="Resource_klj53"]
+script = ExtResource("3_d5jds")
+enemy_id = &"runner"
+count = 4
+interval = 0.7
+start_delay = 5.0
+
+[sub_resource type="Resource" id="Resource_7n3vd"]
+script = ExtResource("2_42v34")
+groups = Array[ExtResource("3_d5jds")]([SubResource("Resource_owr10"), SubResource("Resource_a2he6"), SubResource("Resource_klj53")])
+
+[resource]
+script = ExtResource("1_i1om4")
+id = &"stage_007"
+display_name = "Ridge 7"
+index = 7
+reward_cores = 13
+hp_scale = 1.6
+speed_scale = 1.1
+waves = Array[ExtResource("2_42v34")]([SubResource("Resource_261bw"), SubResource("Resource_345pl"), SubResource("Resource_5j3hu"), SubResource("Resource_7n3vd")])

@@ -1,0 +1,62 @@
+[gd_resource type="Resource" script_class="StageData" format=3]
+
+[ext_resource type="Script" path="res://data/types/stage_data.gd" id="1_d5bj0"]
+[ext_resource type="Script" path="res://data/types/wave_data.gd" id="2_oahpk"]
+[ext_resource type="Script" path="res://data/types/spawn_group.gd" id="3_frdef"]
+
+[sub_resource type="Resource" id="Resource_m5ody"]
+script = ExtResource("3_frdef")
+enemy_id = &"grunt"
+count = 6
+interval = 1.2
+
+[sub_resource type="Resource" id="Resource_heo36"]
+script = ExtResource("2_oahpk")
+groups = Array[ExtResource("3_frdef")]([SubResource("Resource_m5ody")])
+
+[sub_resource type="Resource" id="Resource_e1vv5"]
+script = ExtResource("3_frdef")
+enemy_id = &"grunt"
+count = 6
+
+[sub_resource type="Resource" id="Resource_627eg"]
+script = ExtResource("3_frdef")
+enemy_id = &"runner"
+count = 3
+interval = 0.8
+start_delay = 3.0
+
+[sub_resource type="Resource" id="Resource_k6c87"]
+script = ExtResource("2_oahpk")
+groups = Array[ExtResource("3_frdef")]([SubResource("Resource_e1vv5"), SubResource("Resource_627eg")])
+
+[sub_resource type="Resource" id="Resource_3jqdb"]
+script = ExtResource("3_frdef")
+enemy_id = &"grunt"
+count = 8
+interval = 0.9
+
+[sub_resource type="Resource" id="Resource_a015l"]
+script = ExtResource("3_frdef")
+enemy_id = &"runner"
+count = 4
+interval = 0.7
+start_delay = 4.0
+
+[sub_resource type="Resource" id="Resource_jdduq"]
+script = ExtResource("3_frdef")
+enemy_id = &"spitter"
+count = 2
+interval = 3.0
+start_delay = 2.0
+
+[sub_resource type="Resource" id="Resource_fcyer"]
+script = ExtResource("2_oahpk")
+groups = Array[ExtResource("3_frdef")]([SubResource("Resource_3jqdb"), SubResource("Resource_a015l"), SubResource("Resource_jdduq")])
+
+[resource]
+script = ExtResource("1_d5bj0")
+id = &"stage_001"
+display_name = "Outer Fields"
+reward_cores = 6
+waves = Array[ExtResource("2_oahpk")]([SubResource("Resource_heo36"), SubResource("Resource_k6c87"), SubResource("Resource_fcyer")])

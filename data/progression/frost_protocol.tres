@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="PermUpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/types/perm_upgrade_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"frost_protocol"
+display_name = "Frost Protocol"
+description = "Unlocks the Frost Turret card for all future runs."
+max_level = 1
+base_cost = 6
+cost_step = 0
+stat = &""
+value_per_level = 0.0
+unlock_flag = &"frost_turret"
