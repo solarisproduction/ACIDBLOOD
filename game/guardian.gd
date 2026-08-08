@@ -15,8 +15,13 @@ func setup(b: Battle, d: GuardianData) -> void:
 	battle = b
 	data = d
 	position = Vector3(0, 0, ArenaLayout.GUARDIAN_Z)
-	for mi in model.find_children("*", "MeshInstance3D"):
-		(mi as MeshInstance3D).material_override = Visuals.mat(d.color)
+	if d.model_scene != null:
+		for child in model.get_children():
+			child.queue_free()
+		model.add_child(d.model_scene.instantiate())
+	else:
+		for mi in model.find_children("*", "MeshInstance3D"):
+			(mi as MeshInstance3D).material_override = Visuals.mat(d.color)
 
 func move_speed() -> float:
 	return battle.stat(&"guardian.move_speed", data.move_speed)

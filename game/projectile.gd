@@ -65,7 +65,8 @@ func _physics_process(delta: float) -> void:
 	if is_instance_valid(target) and target.is_alive() and not _hit_ids.has(target.get_instance_id()):
 		_dir = (target.gameplay_pos() + Vector3(0, 0.5, 0) - position).normalized()
 	position += _dir * speed * delta
-	for e in battle.enemies:
+	# Duplicate: apply_hit can synchronously erase killed enemies mid-loop.
+	for e in battle.enemies.duplicate():
 		if not is_instance_valid(e) or not e.is_alive():
 			continue
 		if _hit_ids.has(e.get_instance_id()):

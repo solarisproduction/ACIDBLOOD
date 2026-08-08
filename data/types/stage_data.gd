@@ -8,6 +8,8 @@ extends Resource
 ## 1-based campaign order.
 @export var index: int = 1
 @export var reward_cores: int = 5
+## Base fortress HP for this stage (before permanent upgrades and cards).
+@export var fortress_hp: float = 100.0
 @export var hp_scale: float = 1.0
 @export var speed_scale: float = 1.0
 @export var waves: Array[WaveData] = []

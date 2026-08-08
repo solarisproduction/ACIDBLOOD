@@ -19,7 +19,7 @@ const TURRET_SCENE := preload("res://game/turret.tscn")
 
 var stage: StageData
 var run_state: RunState
-var enemies: Array = []              # alive Enemy nodes, spawn order preserved
+var enemies: Array[Enemy] = []       # alive Enemy nodes, spawn order preserved
 var _slots: Array[Dictionary] = []   # {marker: Marker3D, turret: Turret or null}
 var _spawn_counter := 0
 var _wave_rng: DetRNG
@@ -42,6 +42,7 @@ func _ready() -> void:
 	run_state = RunState.new()
 	run_state.stage_id = stage.id
 	run_state.run_seed = Game.pending_seed
+	run_state.fortress_base_max_hp = stage.fortress_hp
 	_apply_permanent_bonuses()
 	run_state.fortress_hp = run_state.fortress_max_hp()
 	_wave_rng = DetRNG.new(DetRNG.derive(run_state.run_seed, "waves"))
@@ -56,10 +57,14 @@ func _ready() -> void:
 
 func _apply_permanent_bonuses() -> void:
 	var upgrades := Catalog.perm_upgrades()
-	for stat_path in [&"guardian.damage", &"fortress.max_hp"]:
-		var bonus := Game.progression.upgrade_stat_bonus(upgrades, stat_path)
+	var seen: Dictionary = {}
+	for up in upgrades:
+		if up.stat == &"" or seen.has(up.stat):
+			continue
+		seen[up.stat] = true
+		var bonus := Game.progression.upgrade_stat_bonus(upgrades, up.stat)
 		if bonus != 0.0:
-			run_state.mods.add_flat(stat_path, bonus)
+			run_state.mods.add_flat(up.stat, bonus)
 
 ## Effective stat lookup — every combat number goes through here.
 func stat(path: StringName, base: float) -> float:
@@ -171,7 +176,7 @@ func _open_next_draft() -> void:
 
 func draft_context() -> Dictionary:
 	var blocked: Array[StringName] = []
-	if _free_slot() == null:
+	if _free_slot().is_empty():
 		for card in Catalog.cards():
 			for eff in card.effects:
 				if eff.op == CardEffect.Op.UNLOCK_TURRET:

@@ -9,7 +9,7 @@ func _initialize() -> void:
 	print("  move_speed=%.1f  damage=%.1f  interval=%.2f  range=%.1f  proj_speed=%.1f" %
 		[g.move_speed, w.damage, w.attack_interval, w.attack_range, w.projectile_speed])
 	print("=== FORTRESS ===")
-	print("  base_max_hp=%.0f" % RunState.new().fortress_base_max_hp)
+	print("  base_max_hp=%.0f (StageData.fortress_hp, stage 1 shown)" % Catalog.stage_by_index(1).fortress_hp)
 	print("=== XP CURVE (level: xp to next) ===")
 	var curve := ""
 	for lvl in range(1, 11):
