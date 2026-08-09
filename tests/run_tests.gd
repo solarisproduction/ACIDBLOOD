@@ -13,6 +13,7 @@ func _initialize() -> void:
 	test_draft_rules()
 	test_leveling_and_run_state()
 	test_combat()
+	test_stat_registry()
 	test_progression_save_load()
 	test_campaign_data()
 	test_data_references()
@@ -156,6 +157,15 @@ func test_combat() -> void:
 	check("armor reduces damage", Combat.damage_after_armor(10.0, 3.0) == 7.0)
 	check("damage floor holds", Combat.damage_after_armor(2.0, 50.0) == Combat.MIN_DAMAGE)
 
+func test_stat_registry() -> void:
+	print("[stat registry]")
+	check("known guardian stat valid", StatRegistry.is_valid(&"guardian.damage"))
+	check("known fortress stat valid", StatRegistry.is_valid(&"fortress.max_hp"))
+	check("known turret stat valid", StatRegistry.is_valid(&"turret.cannon.splash_radius"))
+	check("guardian typo rejected", not StatRegistry.is_valid(&"guardian.damge"))
+	check("unknown turret rejected", not StatRegistry.is_valid(&"turret.fake.damage"))
+	check("unknown turret stat rejected", not StatRegistry.is_valid(&"turret.bolt.fake_stat"))
+
 func test_progression_save_load() -> void:
 	print("[progression save/load]")
 	var path := "user://test_save_tmp.json"
@@ -242,10 +252,15 @@ func test_data_references() -> void:
 				CardEffect.Op.ADD_STAT, CardEffect.Op.MULTIPLY_STAT:
 					if eff.stat == &"":
 						bad.append("%s stat effect without stat" % card.id)
+					elif not StatRegistry.is_valid(eff.stat):
+						bad.append("%s invalid stat %s" % [card.id, eff.stat])
 				CardEffect.Op.UNLOCK_TURRET:
 					if Catalog.turret(eff.target) == null:
 						bad.append("%s unlocks unknown turret %s" % [card.id, eff.target])
-	check("card graph valid (%s)" % [",".join(bad) if bad else "ok"], bad.is_empty())
+	for up in Catalog.perm_upgrades():
+		if up.stat != &"" and not StatRegistry.is_valid(up.stat):
+			bad.append("%s invalid permanent stat %s" % [up.id, up.stat])
+	check("card + permanent stat graph valid (%s)" % [",".join(bad) if bad else "ok"], bad.is_empty())
 	check("at least 4 enemy archetypes", Catalog.enemies().size() >= 4)
 	check("at least 3 turret archetypes", Catalog.turrets().size() >= 3)
 	check("guardian data + weapon present", Catalog.guardian() != null and Catalog.guardian().weapon != null)
