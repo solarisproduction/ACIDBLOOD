@@ -1,0 +1,6 @@
+{
+  "enabledMcpjsonServers": [
+    "keynote-director"
+  ],
+  "enableAllProjectMcpServers": true
+}

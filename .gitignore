@@ -1,9 +1,20 @@
-# Godot generated
+# Godot 4+ specific ignores
 .godot/
+
+# Imported resources
 *.import
-export.cfg
-export_presets.cfg
-# macOS
+*.translation
+*.remap
+*.uid
+
+# Build outputs
+exports/
+builds/
+*.exe
+*.dmg
+*.deb
+*.apk
+
+# OS junk
 .DS_Store
-# Local session config
-.claude/settings.local.json
+Thumbs.db
