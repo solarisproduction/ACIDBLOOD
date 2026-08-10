@@ -1,20 +1,4 @@
-# Godot 4+ specific ignores
-.godot/
-
-# Imported resources
-*.import
-*.translation
-*.remap
-*.uid
-
-# Build outputs
-exports/
-builds/
-*.exe
-*.dmg
-*.deb
-*.apk
-
-# OS junk
-.DS_Store
-Thumbs.db
+```gitignore
+# No build artifacts, dependencies, or temporary files detected in changes
+# Only README.md was added, which should not be ignored
+```
