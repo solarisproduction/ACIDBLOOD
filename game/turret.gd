@@ -8,6 +8,7 @@ var battle: Battle
 var data: TurretData
 var _cooldown := 0.0
 var _head: Node3D
+@onready var _audio: AudioStreamPlayer3D = $AudioStreamPlayer3D
 
 func setup(b: Battle, d: TurretData) -> void:
 	battle = b
@@ -31,6 +32,7 @@ func _physics_process(delta: float) -> void:
 	if _cooldown > 0.0:
 		return
 	_cooldown = maxf(0.05, _stat("attack_interval", data.attack_interval))
+	_play_fire_sound()
 	Projectile.spawn_shot(battle, global_position + Vector3(0, 1.1, 0), target, {
 		"damage": _stat("damage", data.damage),
 		"speed": data.projectile_speed,
@@ -60,3 +62,15 @@ func _build_model() -> void:
 	var head_mi := Visuals.mesh_instance(head_mesh, data.color)
 	head_mi.position.z = -0.1
 	_head.add_child(head_mi)
+
+func _play_fire_sound() -> void:
+	if not is_instance_valid(_audio):
+		return
+	# TODO: Load actual fire sound asset (e.g., "res://assets/sfx/turret_fire.wav")
+	# For now, no audio file exists; this structure will play it when added.
+	# var stream := load("res://assets/sfx/turret_fire.wav") as AudioStream
+	# if stream != null:
+	# 	_audio.stream = stream
+	# 	_audio.pitch_scale = randf_range(0.9, 1.1)
+	# 	_audio.play()
+	pass

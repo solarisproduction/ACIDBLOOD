@@ -4,3 +4,7 @@
 
 [node name="Turret" type="Node3D"]
 script = ExtResource("1")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+attenuation_model = 0
+max_distance = 15.0

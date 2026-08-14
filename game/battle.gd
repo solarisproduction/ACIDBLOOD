@@ -26,12 +26,14 @@ var _wave_rng: DetRNG
 var _pending_drafts := 0
 var _draft_open := false
 var _ended := false
+var _camera_original_position: Vector3
 
 func _ready() -> void:
 	# Camera/light orientation is authored here (single place, avoids
 	# hand-maintained transforms in the scene file).
 	main_light.rotation_degrees = Vector3(-50.0, -35.0, 0.0)
 	camera_rig.rotation_degrees = Vector3(-65.0, 0.0, 0.0)
+	_camera_original_position = camera_rig.position
 
 	if Game.current_stage == null:
 		# Direct scene launch from the editor: default to stage 1.
@@ -112,6 +114,7 @@ func damage_fortress(amount: float) -> void:
 		return
 	run_state.fortress_hp = maxf(0.0, run_state.fortress_hp - amount)
 	hud.update_fortress()
+	_shake_camera(amount)
 	if run_state.fortress_hp <= 0.0:
 		_end(false)
 
@@ -225,3 +228,22 @@ func _build_turret(turret_id: StringName) -> void:
 	turret.setup(self, data)
 	slot.turret = turret
 	run_state.active_turrets.append(turret_id)
+
+# --- Game Feel -----------------------------------------------------------
+
+func _shake_camera(damage: float) -> void:
+	var magnitude := damage * 0.05  # 0.5 units per 10 damage
+	if magnitude < 0.01:
+		magnitude = 0.01
+	var tween := create_tween()
+	var shake_duration := 0.3
+	var original_pos := _camera_original_position
+	# Start shake offset
+	camera_rig.position = original_pos + Vector3(magnitude, 0, 0)
+	# Decay shake over duration using tween
+	tween.tween_method(
+		func(pos: Vector3): camera_rig.position = pos,
+		camera_rig.position,
+		original_pos,
+		shake_duration
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)

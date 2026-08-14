@@ -18,6 +18,7 @@ var _slow_time := 0.0
 var _attack_timer := 0.0
 var _dead := false
 var _hp_fill: MeshInstance3D
+var _mesh_instance: MeshInstance3D
 
 @onready var model_root: Node3D = $ModelRoot
 
@@ -49,6 +50,7 @@ func take_damage(amount: float) -> void:
 		return
 	hp -= amount
 	_update_hp_bar()
+	_flash_hit()
 	if hp <= 0.0:
 		_die(true)
 
@@ -117,6 +119,7 @@ func _build_model() -> void:
 	var mi := Visuals.mesh_instance(mesh, data.color)
 	mi.position.y = 0.5
 	model_root.add_child(mi)
+	_mesh_instance = mi
 	model_root.scale = data.body_scale
 
 func _build_hp_bar() -> void:
@@ -152,6 +155,15 @@ static func _bar_material(color: Color, priority: int) -> StandardMaterial3D:
 		m.render_priority = priority
 		_bar_mats[key] = m
 	return _bar_mats[key]
+
+func _flash_hit() -> void:
+	if _mesh_instance == null:
+		return
+	var original_color := data.color
+	_mesh_instance.material_override.albedo_color = Color(1.0, 1.0, 1.0)
+	await get_tree().create_timer(0.1).timeout
+	if is_instance_valid(_mesh_instance):
+		_mesh_instance.material_override.albedo_color = original_color
 
 func _update_hp_bar() -> void:
 	if _hp_fill == null:
