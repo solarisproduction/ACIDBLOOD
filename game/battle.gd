@@ -10,6 +10,7 @@ const TURRET_SCENE := preload("res://game/turret.tscn")
 @onready var main_light: DirectionalLight3D = $MainLight
 @onready var camera_rig: Node3D = $CameraRig
 @onready var slots_root: Node3D = $Arena/TowerSlots
+@onready var tween: Tween = $Tween
 @onready var enemies_root: Node3D = $Actors/Enemies
 @onready var turrets_root: Node3D = $Actors/Turrets
 @onready var projectiles_root: Node3D = $Actors/Projectiles
@@ -31,6 +32,7 @@ func _ready() -> void:
 	# Camera/light orientation is authored here (single place, avoids
 	# hand-maintained transforms in the scene file).
 	main_light.rotation_degrees = Vector3(-50.0, -35.0, 0.0)
+	camera_rig.add_child(tween)
 	camera_rig.rotation_degrees = Vector3(-65.0, 0.0, 0.0)
 
 	if Game.current_stage == null:
@@ -113,6 +115,7 @@ func damage_fortress(amount: float) -> void:
 	run_state.fortress_hp = maxf(0.0, run_state.fortress_hp - amount)
 	hud.update_fortress()
 	if run_state.fortress_hp <= 0.0:
+		_shake_camera(amount)
 		_end(false)
 
 func heal_fortress(amount: float) -> void:
@@ -225,3 +228,10 @@ func _build_turret(turret_id: StringName) -> void:
 	turret.setup(self, data)
 	slot.turret = turret
 	run_state.active_turrets.append(turret_id)
+
+func _shake_camera(amount: float) -> void:
+	var magnitude = minf(0.5, amount / 10.0)
+	tween.interpolate_property(camera_rig, "translation", camera_rig.translation, Vector3(magnitude, 0, 0), 0.15, Tween.TRANS_QUINT, Tween.EASE_IN_OUT)
+	tween.interpolate_property(camera_rig, "translation", Vector3(magnitude, 0, 0), Vector3(-magnitude, 0, 0), 0.15, Tween.TRANS_QUINT, Tween.EASE_IN_OUT)
+	tween.interpolate_property(camera_rig, "translation", Vector3(-magnitude, 0, 0), camera_rig.translation, 0.15, Tween.TRANS_QUINT, Tween.EASE_IN_OUT)
+	tween.start()
