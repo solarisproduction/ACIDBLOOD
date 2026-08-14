@@ -85,3 +85,10 @@ static func guardian() -> GuardianData:
 	if _guardian == null:
 		_guardian = load("res://data/guardian.tres")
 	return _guardian
+
+# Novo método para listar os nomes dos inimigos
+static func enemy_names() -> Array[String]:
+	var names: Array[String] = []
+	for e in enemies().values():
+		names.append(e.name)
+	return names
