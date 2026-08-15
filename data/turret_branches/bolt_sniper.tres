@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="TurretBranchData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://data/types/turret_branch_data.gd" id="1"]
+[ext_resource type="Script" path="res://data/types/card_effect.gd" id="2"]
+
+[sub_resource type="Resource" id="eff1"]
+script = ExtResource("2")
+op = 1
+stat = &"turret.bolt.damage"
+value = 1.8
+
+[sub_resource type="Resource" id="eff2"]
+script = ExtResource("2")
+op = 0
+stat = &"turret.bolt.range"
+value = 2.0
+
+[sub_resource type="Resource" id="eff3"]
+script = ExtResource("2")
+op = 1
+stat = &"turret.bolt.attack_interval"
+value = 1.35
+
+[resource]
+script = ExtResource("1")
+id = &"bolt_sniper"
+turret_id = &"bolt"
+display_name = "Long Bolt"
+description = "Bolt turrets become longer-range anti-elite guns with slower cadence."
+excludes_branches = Array[StringName]([&"bolt_chain"])
+effects = Array[ExtResource("2")]([SubResource("eff1"), SubResource("eff2"), SubResource("eff3")])

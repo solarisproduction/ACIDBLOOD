@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="TurretBranchData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://data/types/turret_branch_data.gd" id="1"]
+[ext_resource type="Script" path="res://data/types/card_effect.gd" id="2"]
+
+[sub_resource type="Resource" id="eff1"]
+script = ExtResource("2")
+op = 1
+stat = &"turret.bolt.attack_interval"
+value = 0.72
+
+[sub_resource type="Resource" id="eff2"]
+script = ExtResource("2")
+op = 0
+stat = &"turret.bolt.range"
+value = -0.4
+
+[resource]
+script = ExtResource("1")
+id = &"bolt_chain"
+turret_id = &"bolt"
+display_name = "Fast Bolt"
+description = "Bolt turrets fire much faster, trading a little reach for a denser defense line."
+excludes_branches = Array[StringName]([&"bolt_sniper"])
+effects = Array[ExtResource("2")]([SubResource("eff1"), SubResource("eff2")])
