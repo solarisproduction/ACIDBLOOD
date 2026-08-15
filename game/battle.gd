@@ -311,14 +311,10 @@ func _build_turret(turret_id: StringName) -> void:
 
 func _shake_camera(amount: float) -> void:
 	var magnitude = minf(0.5, amount / 10.0)
-	var base_position := camera_rig.position
-	var shake_tween := create_tween()
-	shake_tween.tween_property(camera_rig, "position", base_position + Vector3(magnitude, 0, 0), 0.15)\
-		.set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN_OUT)
-	shake_tween.tween_property(camera_rig, "position", base_position + Vector3(-magnitude, 0, 0), 0.15)\
-		.set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN_OUT)
-	shake_tween.tween_property(camera_rig, "position", base_position, 0.15)\
-		.set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN_OUT)
+	var tween = create_tween()
+	tween.tween_property(camera_rig, "translation", camera_rig.translation + Vector3(magnitude, 0, 0), 0.15).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(camera_rig, "translation", camera_rig.translation + Vector3(-magnitude, 0, 0), 0.15).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(camera_rig, "translation", camera_rig.translation, 0.15).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN_OUT)
 
 func _telemetry(event_name: String, payload: Dictionary = {}) -> void:
 	var out := payload.duplicate(true)

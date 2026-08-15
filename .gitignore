@@ -3,3 +3,5 @@
 # Only README.md was added, which should not be ignored
 ```
 .aider*
+.godot/
+.agents/
