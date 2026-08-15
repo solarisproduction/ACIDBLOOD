@@ -5,8 +5,9 @@
 [resource]
 script = ExtResource("1")
 id = &"frost_protocol"
-display_name = "Frost Protocol"
-description = "Unlocks the Frost Turret card for all future runs."
+display_name = "Unlock Frost Turret"
+description = "Permanent: unlock Build: Frost Turret."
+track = &"engineering"
 max_level = 1
 base_cost = 6
 cost_step = 0

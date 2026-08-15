@@ -16,6 +16,7 @@ var fortress_hp: float = 0.0
 var fortress_base_max_hp: float = 100.0
 var acquired: Dictionary = {}      # card id (StringName) -> count
 var active_turrets: Array[StringName] = []  # turret id per occupied slot, in slot order
+var chosen_branches: Dictionary = {}  # turret id (StringName) -> branch id (StringName)
 var mods := ModifierSet.new()
 var draft_count: int = 0           # increments per draft, salts the draft RNG stream
 
@@ -24,6 +25,12 @@ func fortress_max_hp() -> float:
 
 func acquire_card(id: StringName) -> void:
 	acquired[id] = int(acquired.get(id, 0)) + 1
+
+func set_branch(turret_id: StringName, branch_id: StringName) -> void:
+	chosen_branches[turret_id] = branch_id
+
+func branch_for(turret_id: StringName) -> StringName:
+	return chosen_branches.get(turret_id, &"")
 
 func grant_xp(amount: int) -> int:
 	## Returns the number of level-ups triggered.

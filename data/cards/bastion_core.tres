@@ -16,8 +16,9 @@ value = 30.0
 [resource]
 script = ExtResource("1")
 id = &"bastion_core"
-title = "Bastion Core"
-description = "Fortress max HP +30 and restores 30 HP. Incompatible with Overload Core."
+title = "Fortress Boost"
+description = "Fortress max HP +30. Restore 30 HP. Choose 1 with Damage Boost."
 weight = 5.0
+tags = Array[StringName]([&"fortress", &"support"])
 excludes = Array[StringName]([&"overload_core"])
 effects = Array[ExtResource("2")]([SubResource("eff1"), SubResource("eff2")])

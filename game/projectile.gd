@@ -56,14 +56,16 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 		return
 	if hits_fortress:
+		var prev := position
 		position += _dir * speed * delta
-		if position.z >= ArenaLayout.FORTRESS_CENTER.z - 0.4:
+		if _segment_reaches_fortress(prev, position):
 			battle.damage_fortress(damage)
 			queue_free()
 		return
 	# Home while the locked target lives; fly straight afterwards.
 	if is_instance_valid(target) and target.is_alive() and not _hit_ids.has(target.get_instance_id()):
 		_dir = (target.gameplay_pos() + Vector3(0, 0.5, 0) - position).normalized()
+	var prev := position
 	position += _dir * speed * delta
 	# Duplicate: apply_hit can synchronously erase killed enemies mid-loop.
 	for e in battle.enemies.duplicate():
@@ -71,10 +73,7 @@ func _physics_process(delta: float) -> void:
 			continue
 		if _hit_ids.has(e.get_instance_id()):
 			continue
-		var p: Vector3 = e.gameplay_pos()
-		var dx: float = p.x - position.x
-		var dz: float = p.z - position.z
-		if dx * dx + dz * dz <= HIT_RADIUS * HIT_RADIUS:
+		if _segment_hits_enemy(prev, position, e.gameplay_pos()):
 			_hit_ids[e.get_instance_id()] = true
 			battle.apply_hit(e, damage, opts)
 			if pierce <= 0:
@@ -84,3 +83,21 @@ func _physics_process(delta: float) -> void:
 	if absf(position.x) > ArenaLayout.HALF_WIDTH + 4.0 \
 			or position.z < ArenaLayout.SPAWN_Z - 3.0 or position.z > 12.0:
 		queue_free()
+
+static func _segment_hits_enemy(from: Vector3, to: Vector3, enemy_pos: Vector3) -> bool:
+	return _point_segment_distance_sq_xz(enemy_pos, from, to) <= HIT_RADIUS * HIT_RADIUS
+
+static func _segment_reaches_fortress(from: Vector3, to: Vector3) -> bool:
+	return _point_segment_distance_sq_xz(ArenaLayout.FORTRESS_CENTER, from, to) <= 0.16
+
+static func _point_segment_distance_sq_xz(point: Vector3, from: Vector3, to: Vector3) -> float:
+	var seg := Vector2(to.x - from.x, to.z - from.z)
+	var rel := Vector2(point.x - from.x, point.z - from.z)
+	var len_sq := seg.length_squared()
+	if len_sq <= 0.000001:
+		return rel.length_squared()
+	var t := clampf(rel.dot(seg) / len_sq, 0.0, 1.0)
+	var closest := Vector2(from.x, from.z) + seg * t
+	var dx := point.x - closest.x
+	var dz := point.z - closest.y
+	return dx * dx + dz * dz

@@ -13,8 +13,9 @@ target = &""
 [resource]
 script = ExtResource("1")
 id = &"split_shot"
-title = "Split Shot"
+title = "Multi Shot"
 description = "Guardian fires +1 projectile per attack."
 weight = 6.0
+tags = Array[StringName]([&"guardian"])
 max_stacks = 2
 effects = Array[ExtResource("2")]([SubResource("eff1")])

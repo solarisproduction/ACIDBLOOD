@@ -264,6 +264,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Panel" type="VBoxContainer" parent="UI/BattleHUD/DraftLayer/Center"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 18
 
@@ -273,7 +274,21 @@ theme_override_font_sizes/font_size = 34
 horizontal_alignment = 1
 text = "LEVEL UP — CHOOSE ONE"
 
-[node name="CardsBox" type="VBoxContainer" parent="UI/BattleHUD/DraftLayer/Center/Panel"]
+[node name="Subtitle" type="Label" parent="UI/BattleHUD/DraftLayer/Center/Panel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+modulate = Color(0.84, 0.81, 0.75, 0.9)
+horizontal_alignment = 1
+text = "Build cards start a turret line. Some cards are choose 1."
+
+[node name="CardsScroll" type="ScrollContainer" parent="UI/BattleHUD/DraftLayer/Center/Panel"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 620)
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="CardsBox" type="VBoxContainer" parent="UI/BattleHUD/DraftLayer/Center/Panel/CardsScroll"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 14
+size_flags_horizontal = 3
+theme_override_constants/separation = 18

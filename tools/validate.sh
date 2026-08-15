@@ -12,8 +12,10 @@ cd "$ROOT"
 
 FAIL=0
 RESULTS=()
+WARNINGS=()
 
 note() { RESULTS+=("$1  $2"); }
+warn() { WARNINGS+=("WARN  $1"); }
 
 # Wall-clock watchdog (macOS has no `timeout`); relies on perl's alarm.
 with_timeout() { perl -e 'alarm shift; exec @ARGV' "$@"; }
@@ -31,6 +33,16 @@ if [ -z "$GODOT" ] || ! "$GODOT" --version >/dev/null 2>&1; then
     exit 1
 fi
 note "PASS" "detect Godot executable ($("$GODOT" --version | head -1))"
+
+# --- 1b. Worktree hygiene ---------------------------------------------
+if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    DIRTY_COUNT="$(git status --short | wc -l | tr -d ' ')"
+    if [ "${DIRTY_COUNT:-0}" -gt 0 ]; then
+        warn "git worktree has $DIRTY_COUNT changed/untracked paths"
+    else
+        note "PASS" "git worktree clean"
+    fi
+fi
 
 # --- 2. Headless import / parse check ---------------------------------
 IMPORT_OUT="$(with_timeout 300 "$GODOT" --headless --path "$ROOT" --import 2>&1)"
@@ -76,6 +88,7 @@ done
 echo ""
 echo "================ VALIDATION REPORT ================"
 for r in "${RESULTS[@]}"; do echo "$r"; done
+for w in "${WARNINGS[@]}"; do echo "$w"; done
 echo "==================================================="
 if [ $FAIL -ne 0 ]; then
     echo "RESULT: FAIL"

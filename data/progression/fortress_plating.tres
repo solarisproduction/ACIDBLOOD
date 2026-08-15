@@ -5,8 +5,9 @@
 [resource]
 script = ExtResource("1")
 id = &"fortress_plating"
-display_name = "Fortress Plating"
-description = "Permanently adds +15 fortress HP per level."
+display_name = "Fortress HP"
+description = "Permanent: Fortress max HP +15 per level."
+track = &"fortress"
 max_level = 5
 base_cost = 4
 cost_step = 2

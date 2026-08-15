@@ -20,9 +20,10 @@ target = &""
 [resource]
 script = ExtResource("1")
 id = &"cannon_shockwave"
-title = "Shockwave Shells"
+title = "Bigger Blast"
 description = "Cannon splash radius +0.8 and damage +25%."
 weight = 8.0
+tags = Array[StringName]([&"siege"])
 max_stacks = 1
 prerequisites = Array[StringName]([&"build_cannon"])
 effects = Array[ExtResource("2")]([SubResource("eff1"), SubResource("eff2")])

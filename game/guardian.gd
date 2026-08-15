@@ -70,7 +70,7 @@ func _combat(delta: float) -> void:
 			model.look_at(look)
 	if target == null or _cooldown > 0.0:
 		return
-	_cooldown = maxf(0.05, battle.stat(&"guardian.attack_interval", w.attack_interval))
+	_cooldown = maxf(Combat.MIN_ATTACK_INTERVAL, battle.stat(&"guardian.attack_interval", w.attack_interval))
 	_fire(target, w)
 
 func _fire(target: Enemy, w: WeaponData) -> void:

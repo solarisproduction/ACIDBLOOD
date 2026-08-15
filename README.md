@@ -14,7 +14,7 @@ This repository (`TD-Game-System`) contains **Bastion Vale**, a vertical slice p
 - **Guardian**: Player-controlled character with auto-attack weapon
 - **4 Tower Slots**: Place and upgrade 3 archetypes (bolt, cannon, frost)
 - **Deterministic Waves**: Enemy spawns follow pre-authored `StageData` with reproducible timing
-- **Card Draft**: On level-up, pause game and choose 1 of 3 random cards (15-card pool)
+- **Card Draft**: On level-up, pause game and choose 1 of 3 random cards (16-card pool)
 - **Permanent Progression**: Earn "cores" (currency) to buy persistent upgrades between runs
 
 ---
@@ -76,7 +76,7 @@ godot --headless --path . --script res://tools/balance_report.gd
 | **Tools** | `tools/*.gd` | Data pipeline scripts |
 
 **Data-Driven Content:** 54 `.tres` files managed via [`core/catalog.gd`](core/catalog.gd):
-- 5 enemies, 3 turrets, 15 cards, 30 stages, 3 perm upgrades, 1 guardian
+- 5 enemies, 3 turrets, 16 cards, 30 stages, 3 perm upgrades, 1 guardian
 
 ---
 

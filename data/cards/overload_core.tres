@@ -13,9 +13,10 @@ target = &""
 [resource]
 script = ExtResource("1")
 id = &"overload_core"
-title = "Overload Core"
-description = "Guardian damage +50%. Incompatible with Bastion Core."
+title = "Damage Boost"
+description = "Guardian damage +50%. Choose 1 with Fortress Boost."
 weight = 5.0
+tags = Array[StringName]([&"guardian"])
 max_stacks = 1
 excludes = Array[StringName]([&"bastion_core"])
 effects = Array[ExtResource("2")]([SubResource("eff1")])

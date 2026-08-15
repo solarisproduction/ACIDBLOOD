@@ -10,6 +10,7 @@ static var _turrets: Dictionary = {}
 static var _cards: Array[CardData] = []
 static var _stages: Array[StageData] = []
 static var _upgrades: Array[PermUpgradeData] = []
+static var _branches: Dictionary = {}
 static var _guardian: GuardianData = null
 
 static func _list_resources(dir_path: String) -> Array[String]:
@@ -80,6 +81,16 @@ static func perm_upgrades() -> Array[PermUpgradeData]:
 		for path in _list_resources("res://data/progression"):
 			_upgrades.append(load(path) as PermUpgradeData)
 	return _upgrades
+
+static func turret_branches() -> Dictionary:
+	if _branches.is_empty():
+		for path in _list_resources("res://data/turret_branches"):
+			var branch = load(path)
+			_branches[branch.id] = branch
+	return _branches
+
+static func turret_branch(id: StringName):
+	return turret_branches().get(id)
 
 static func guardian() -> GuardianData:
 	if _guardian == null:

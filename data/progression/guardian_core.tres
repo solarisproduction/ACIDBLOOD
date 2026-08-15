@@ -5,8 +5,9 @@
 [resource]
 script = ExtResource("1")
 id = &"guardian_core"
-display_name = "Guardian Core"
-description = "Permanently adds +1 Guardian damage per level."
+display_name = "Guardian Damage"
+description = "Permanent: Guardian damage +1 per level."
+track = &"command"
 max_level = 5
 base_cost = 4
 cost_step = 2

@@ -13,7 +13,7 @@
   prerequisites, exclusions, stack limits, permanent-unlock gating, slots-full
   blocking). Cards change gameplay (stats, turret builds, heals).
 - Permanent progression: cores from victories (reduced on repeat clears),
-  3 upgrades (Fortress Plating, Guardian Core, Frost Protocol unlock),
+  3 upgrades (Fortress HP, Guardian Damage, Unlock Frost Turret),
   versioned JSON save/load.
 - Dev tools: campaign Auto-Win Next + Reset Save (debug builds), `--smoke`
   autoplay, `--screenshot=` capture mode.
@@ -22,11 +22,17 @@
 ```
 ./tools/validate.sh
 ```
-Runs: Godot detection → headless import/parse → 44-check core suite (RNG
-determinism, draft rules, save/load, campaign traversal, data references) →
-stage 1 + stage 2 headless battle smokes. Exits non-zero on failure.
+Runs: Godot detection → headless import/parse → 69-check core suite (RNG
+determinism, draft rules, save/load, campaign traversal, data references,
+content conventions, projectile collision coverage) → stage 1 + stage 2
+headless battle smokes. Exits non-zero on failure.
 Observed smoke baseline (seed 1337, stationary autoplay): stage 1 victory;
 stage 2 loss at boss wave 4 — human play with movement/upgrades is easier.
+
+For scene/UI changes, prefer the Godot/MCP workflow first: inspect/run/save
+through Godot-aware tools, use runtime output to catch scene errors, then back
+it up with `./tools/validate.sh`. Raw `.tscn` editing should be the fallback
+when the MCP surface does not expose the exact scene operation needed.
 
 ## Launch
 ```
@@ -36,13 +42,16 @@ stage 2 loss at boss wave 4 — human play with movement/upgrades is easier.
 Controls: A/D or ←/→ move; hold left mouse to steer toward pointer; click a
 card on level-up. Balance overview:
 `godot --headless --path . --script res://tools/balance_report.gd`.
+That report is now the single quick-read for tuning: shared arena/combat
+constants, unit bases, card inventory, permanent upgrades, and per-stage
+wave/XP pacing.
 
 ## Important files
 - `core/` rules · `data/` content · `game/` battle runtime · `shell/` screens
 - `autoload/game.gd` app flow · `tests/run_tests.gd` suite
 - `tools/gen_stages.gd` stage pipeline (edit + rerun; don't hand-edit
   `data/stages/*.tres`)
-- Docs: `CLAUDE.md`, `docs/SYSTEM_BLUEPRINT.md`, `docs/ASSET_CONTRACT.md`,
+- Docs: `PROJECT_RULES.md`, `docs/SYSTEM_BLUEPRINT.md`, `docs/ASSET_CONTRACT.md`,
   `docs/DECISIONS.md`
 
 ## Known limitations
@@ -51,8 +60,10 @@ card on level-up. Balance overview:
   builds will need a preload manifest.
 - No SFX/particles/juice; placeholder primitives; single weapon; no pause
   menu; no run-in-progress save (runs are short by design).
-- Guardian projectile spread uses straight (non-homing) shots when Split Shot
+- Guardian projectile spread uses straight (non-homing) shots when Multi Shot
   is taken; single shots home.
+- Smoke timeout debugging exists for battle runs: if a smoke hangs, `Game`
+  prints `SMOKE_DEBUG` with live enemy/projectile counts before quitting.
 
 ## Next highest-value step
 Wire a first-run experience pass on stages 1–5: hand-author them in

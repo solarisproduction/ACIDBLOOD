@@ -20,9 +20,10 @@ target = &""
 [resource]
 script = ExtResource("1")
 id = &"frost_deep_chill"
-title = "Deep Chill"
-description = "Frost slow lasts +1s and slows harder."
+title = "Stronger Slow"
+description = "Frost slow lasts +1s and slows more."
 weight = 8.0
+tags = Array[StringName]([&"frost", &"support"])
 max_stacks = 1
 prerequisites = Array[StringName]([&"build_frost"])
 effects = Array[ExtResource("2")]([SubResource("eff1"), SubResource("eff2")])

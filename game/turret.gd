@@ -30,10 +30,10 @@ func _physics_process(delta: float) -> void:
 			_head.look_at(look)
 	if _cooldown > 0.0:
 		return
-	_cooldown = maxf(0.05, _stat("attack_interval", data.attack_interval))
+	_cooldown = maxf(Combat.MIN_ATTACK_INTERVAL, _stat("attack_interval", data.attack_interval))
 	Projectile.spawn_shot(battle, global_position + Vector3(0, 1.1, 0), target, {
 		"damage": _stat("damage", data.damage),
-		"speed": data.projectile_speed,
+		"speed": _stat("projectile_speed", data.projectile_speed),
 		"splash_radius": _stat("splash_radius", data.splash_radius),
 		"slow_factor": _stat("slow_factor", data.slow_factor),
 		"slow_duration": _stat("slow_duration", data.slow_duration),

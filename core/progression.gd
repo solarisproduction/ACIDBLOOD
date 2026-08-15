@@ -40,8 +40,19 @@ func upgrade_level(id: StringName) -> int:
 func upgrade_cost(up: PermUpgradeData) -> int:
 	return up.base_cost + up.cost_step * upgrade_level(up.id)
 
+func owns_upgrade(id: StringName) -> bool:
+	return upgrade_level(id) > 0
+
+func meets_requirements(up: PermUpgradeData) -> bool:
+	for req in up.requires_nodes:
+		if not owns_upgrade(req):
+			return false
+	return true
+
 func can_buy_upgrade(up: PermUpgradeData) -> bool:
-	return upgrade_level(up.id) < up.max_level and cores >= upgrade_cost(up)
+	return upgrade_level(up.id) < up.max_level \
+		and cores >= upgrade_cost(up) \
+		and meets_requirements(up)
 
 func buy_upgrade(up: PermUpgradeData) -> bool:
 	if not can_buy_upgrade(up):

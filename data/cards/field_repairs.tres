@@ -13,8 +13,9 @@ target = &""
 [resource]
 script = ExtResource("1")
 id = &"field_repairs"
-title = "Field Repairs"
-description = "Restores 20 fortress HP."
+title = "Repair"
+description = "Restore 20 fortress HP."
 weight = 7.0
+tags = Array[StringName]([&"fortress", &"support"])
 max_stacks = 3
 effects = Array[ExtResource("2")]([SubResource("eff1")])

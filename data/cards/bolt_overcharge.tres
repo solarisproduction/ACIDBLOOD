@@ -13,9 +13,10 @@ target = &""
 [resource]
 script = ExtResource("1")
 id = &"bolt_overcharge"
-title = "Bolt Overcharge"
+title = "Bolt Damage"
 description = "Bolt Turrets deal 60% more damage."
 weight = 8.0
+tags = Array[StringName]([&"shock"])
 max_stacks = 2
 prerequisites = Array[StringName]([&"build_bolt"])
 effects = Array[ExtResource("2")]([SubResource("eff1")])

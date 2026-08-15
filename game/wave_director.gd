@@ -1,7 +1,5 @@
 class_name WaveDirector
 extends Node
-## Generic wave lifecycle driver. Reads waves purely from StageData; spawn
-## timing accumulates fixed physics delta so runs are deterministic.
 
 enum State { IDLE, DELAY, SPAWNING, CLEARING, DONE }
 
@@ -56,7 +54,7 @@ func _tick_spawns(delta: float) -> void:
 		all_done = false
 		gs.t -= delta
 		while gs.t <= 0.0 and gs.spawned < g.count:
-			battle.spawn_wave_enemy(g.enemy_id)
+			battle.spawn_wave_enemy(g.enemy_id, battle.roll_spawn_x())
 			gs.spawned += 1
 			gs.t += maxf(g.interval, 0.0)
 			if g.interval <= 0.0:

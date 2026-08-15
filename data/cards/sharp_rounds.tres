@@ -13,8 +13,9 @@ target = &""
 [resource]
 script = ExtResource("1")
 id = &"sharp_rounds"
-title = "Sharpened Rounds"
+title = "Damage Up"
 description = "Guardian damage +2."
 weight = 10.0
+tags = Array[StringName]([&"guardian"])
 max_stacks = 3
 effects = Array[ExtResource("2")]([SubResource("eff1")])

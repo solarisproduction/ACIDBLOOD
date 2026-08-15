@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Bastion Vale"
 run/main_scene="res://shell/home.tscn"
-config/features=PackedStringArray("4.6")
+config/features=PackedStringArray("4.7")
 
 [autoload]
 
@@ -26,6 +26,10 @@ window/size/window_width_override=540
 window/size/window_height_override=960
 window/stretch/mode="canvas_items"
 window/handheld/orientation=1
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")
 
 [rendering]
 
