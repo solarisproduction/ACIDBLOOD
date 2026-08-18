@@ -282,6 +282,10 @@ func _apply_branch(branch_id: StringName) -> void:
 				run_state.mods.multiply(eff.stat, eff.value)
 			_:
 				push_warning("Battle: unsupported branch effect op %s on %s" % [eff.op, branch.id])
+	
+	for slot in _slots:
+		if slot.turret != null:
+			slot.turret.refresh_branch_visual()
 
 func _free_slot() -> Dictionary:
 	for slot in _slots:

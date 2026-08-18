@@ -19,7 +19,7 @@ extends Logger
 ## is populated, and parsing this script fails with
 ## "Identifier 'McpLogBacktrace' not declared in the current scope". Using
 ## `const preload` resolves the path at parse time and is independent of the
-## class_name registry — matches the project convention in PROJECT_RULES.md
+## class_name registry — matches the project convention in CLAUDE.md
 ## ("Internals … skip class_name entirely and load via const preload").
 const _LogBacktrace := preload("res://addons/godot_ai/utils/log_backtrace.gd")
 

@@ -10,7 +10,7 @@ extends RefCounted
 ##
 ## Single-file constants, not an int enum, because the values land in
 ## startup-trace text and the strings are stable across releases (the
-## PROJECT_RULES.md "tool surface" entry references them by name).
+## CLAUDE.md "tool surface" entry references them by name).
 
 const UNSET := ""
 ## Re-entrancy guard fired; this enable cycle did not spawn or adopt.

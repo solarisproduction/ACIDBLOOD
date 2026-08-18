@@ -16,7 +16,7 @@ extends Node
 ## paths consult.
 ##
 ## `class_name McpUpdateManager` is retained because it shipped in a
-## published release. If this class is ever retired, follow PROJECT_RULES.md's
+## published release. If this class is ever retired, follow CLAUDE.md's
 ## never-delete-published-class_name shim policy instead of deleting the
 ## declaration.
 ##
