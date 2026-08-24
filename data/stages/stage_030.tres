@@ -19,6 +19,8 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_gdvu1"]
 script = ExtResource("2_7jag7")
 groups = Array[ExtResource("3_yc6aj")]([SubResource("Resource_p7ij7"), SubResource("Resource_x4er7")])
+intent = &"reinforce"
+label = "Opening Mix"
 
 [sub_resource type="Resource" id="Resource_rntfh"]
 script = ExtResource("3_yc6aj")
@@ -43,6 +45,8 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_a57hr"]
 script = ExtResource("2_7jag7")
 groups = Array[ExtResource("3_yc6aj")]([SubResource("Resource_rntfh"), SubResource("Resource_nxgsq"), SubResource("Resource_ryje7")])
+intent = &"pressure"
+label = "Frontline Pressure"
 
 [sub_resource type="Resource" id="Resource_yrbkh"]
 script = ExtResource("3_yc6aj")
@@ -59,6 +63,8 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_6krjq"]
 script = ExtResource("2_7jag7")
 groups = Array[ExtResource("3_yc6aj")]([SubResource("Resource_yrbkh"), SubResource("Resource_r0oop")])
+intent = &"test"
+label = "Target Priority"
 
 [sub_resource type="Resource" id="Resource_m3esa"]
 script = ExtResource("3_yc6aj")
@@ -74,12 +80,18 @@ start_delay = 4.0
 [sub_resource type="Resource" id="Resource_oftxa"]
 script = ExtResource("2_7jag7")
 groups = Array[ExtResource("3_yc6aj")]([SubResource("Resource_m3esa"), SubResource("Resource_2pmdw")])
+intent = &"boss"
+label = "Final Boss"
+pre_wave_delay = 5.0
 
 [resource]
 script = ExtResource("1_idetk")
 id = &"stage_030"
-display_name = "Mire 30"
+display_name = "Pump Station 30"
 index = 30
+act_number = 3
+intent = &"boss"
+briefing = "Final boss. Spend everything cleanly."
 reward_cores = 36
 hp_scale = 4.359999999999999
 speed_scale = 1.5

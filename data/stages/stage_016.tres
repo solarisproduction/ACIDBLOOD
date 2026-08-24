@@ -27,6 +27,8 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_qc7yg"]
 script = ExtResource("2_e60mo")
 groups = Array[ExtResource("3_enw1y")]([SubResource("Resource_gwsva"), SubResource("Resource_bsbkg"), SubResource("Resource_811fl")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_wk65f"]
 script = ExtResource("3_enw1y")
@@ -43,6 +45,8 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_e526m"]
 script = ExtResource("2_e60mo")
 groups = Array[ExtResource("3_enw1y")]([SubResource("Resource_wk65f"), SubResource("Resource_bhjk8")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_6wrje"]
 script = ExtResource("3_enw1y")
@@ -59,6 +63,8 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_bdgnp"]
 script = ExtResource("2_e60mo")
 groups = Array[ExtResource("3_enw1y")]([SubResource("Resource_6wrje"), SubResource("Resource_6lgp4")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_4kuld"]
 script = ExtResource("3_enw1y")
@@ -83,13 +89,17 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_ox55g"]
 script = ExtResource("2_e60mo")
 groups = Array[ExtResource("3_enw1y")]([SubResource("Resource_4kuld"), SubResource("Resource_b7s43"), SubResource("Resource_grf5h")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [resource]
 script = ExtResource("1_ywre7")
 id = &"stage_016"
-display_name = "Ash Road 16"
+display_name = "Drain Channel 16"
 index = 16
+act_number = 2
+intent = &"pressure"
 reward_cores = 22
-hp_scale = 2.6799999999999997
-speed_scale = 1.28
+hp_scale = 2.55
+speed_scale = 1.25
 waves = Array[ExtResource("2_e60mo")]([SubResource("Resource_qc7yg"), SubResource("Resource_e526m"), SubResource("Resource_bdgnp"), SubResource("Resource_ox55g")])

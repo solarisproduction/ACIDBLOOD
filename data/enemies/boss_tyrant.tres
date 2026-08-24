@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"boss_tyrant"
-display_name = "Vale Tyrant"
+display_name = "Containment Tyrant"
 max_hp = 400.0
 speed = 0.7
 armor = 3.0
@@ -16,4 +16,6 @@ stop_range = 1.0
 is_boss = true
 shape = 0
 color = Color(0.6, 0.1, 0.15, 1)
-body_scale = Vector3(1.8, 2.0, 1.8)
+body_scale = Vector3(1.26, 1.4, 1.26)
+fortress_projectile_radius = 0.08
+threat_profile = 3

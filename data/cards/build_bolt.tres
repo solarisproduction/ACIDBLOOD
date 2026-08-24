@@ -13,8 +13,8 @@ target = &"bolt"
 [resource]
 script = ExtResource("1")
 id = &"build_bolt"
-title = "Build: Bolt Turret"
-description = "Build a fast single-target turret in the next free slot."
+title = "Deploy: Bolt Turret"
+description = "Deploy a fast single-target coil turret."
 weight = 12.0
 tags = Array[StringName]([&"shock"])
 max_stacks = 2

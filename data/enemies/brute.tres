@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"brute"
-display_name = "Brute"
+display_name = "Hazmat Brute"
 max_hp = 45.0
 speed = 0.9
 armor = 2.0
@@ -16,4 +16,6 @@ stop_range = 0.0
 is_boss = false
 shape = 0
 color = Color(0.55, 0.3, 0.75, 1)
-body_scale = Vector3(1.1, 1.2, 1.1)
+body_scale = Vector3(0.77, 0.84, 0.77)
+fortress_projectile_radius = 0.08
+threat_profile = 2

@@ -8,6 +8,8 @@ const CATEGORY_FORTRESS := &"fortress"
 const CATEGORY_BOLT := &"bolt"
 const CATEGORY_CANNON := &"cannon"
 const CATEGORY_FROST := &"frost"
+const OVERLAY_DRAFT := &"draft"
+const OVERLAY_SLOT_PICK := &"slot_pick"
 
 const CATEGORY_META := {
 	CATEGORY_GUARDIAN: {
@@ -16,7 +18,7 @@ const CATEGORY_META := {
 		"surface": Color(0.18, 0.11, 0.10, 0.96),
 	},
 	CATEGORY_FORTRESS: {
-		"label": "FORTRESS",
+		"label": "BARRICADE",
 		"accent": Color("b08a45"),
 		"surface": Color(0.19, 0.15, 0.10, 0.96),
 	},
@@ -45,35 +47,150 @@ var battle: Battle
 @onready var fortress_bar: ProgressBar = %FortressBar
 @onready var level_label: Label = %LevelLabel
 @onready var xp_bar: ProgressBar = %XPBar
+@onready var ability_label: Label = %AbilityLabel
+@onready var ability_bar: ProgressBar = %AbilityBar
+@onready var ability_hint: Label = %AbilityHint
+@onready var draft_title: Label = $DraftLayer/Center/Panel/Title
+@onready var draft_subtitle: Label = $DraftLayer/Center/Panel/Subtitle
+@onready var threat_layer: Control = %ThreatLayer
+@onready var threat_label: Label = %ThreatLabel
 @onready var draft_layer: Control = %DraftLayer
 @onready var draft_panel: VBoxContainer = %Panel
-@onready var cards_box: VBoxContainer = %CardsBox
+@onready var cards_box: GridContainer = %CardsBox
+
+var _threat_hide_at := 0.0
+var _overlay_mode: StringName = &""
+var _overlay_buttons: Array[Button] = []
+var _overlay_selected_index: int = -1
+var _level_up_ready := false
+var _pending_level_ups := 0
 
 func setup(b: Battle) -> void:
 	battle = b
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	set_process_unhandled_input(true)
 	_layout_draft_overlay()
-	stage_label.text = "%d. %s" % [b.stage.index, b.stage.display_name]
+	stage_label.text = "Act %d • %d. %s" % [b.stage.resolved_act_number(), b.stage.index, b.stage.display_name]
 	wave_label.text = "Wave -/%d" % b.stage.waves.size()
 	draft_layer.visible = false
 	update_fortress()
 	update_xp()
+	update_ability()
+	threat_layer.visible = false
+
+func show_stage_intro(stage: StageData) -> void:
+	show_threat_banner(stage.banner_text(), 2.6)
+
+func _process(_delta: float) -> void:
+	update_ability()
+	if threat_layer.visible and Time.get_ticks_msec() >= _threat_hide_at:
+		threat_layer.visible = false
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not draft_layer.visible:
+		return
+	var handled := false
+	if event.is_action_pressed("ui_accept"):
+		_activate_overlay_selection()
+		handled = true
+	elif event.is_action_pressed("ui_left"):
+		_move_overlay_selection(-1)
+		handled = true
+	elif event.is_action_pressed("ui_right"):
+		_move_overlay_selection(1)
+		handled = true
+	elif event.is_action_pressed("ui_up"):
+		_move_overlay_selection(-1 if _overlay_mode == OVERLAY_DRAFT else -2)
+		handled = true
+	elif event.is_action_pressed("ui_down"):
+		_move_overlay_selection(1 if _overlay_mode == OVERLAY_DRAFT else 2)
+		handled = true
+	if handled:
+		get_viewport().set_input_as_handled()
 
 func update_fortress() -> void:
 	var rs := battle.run_state
 	fortress_bar.max_value = rs.fortress_max_hp()
 	fortress_bar.value = rs.fortress_hp
-	fortress_label.text = "Fortress %d/%d" % [ceili(rs.fortress_hp), ceili(rs.fortress_max_hp())]
+	fortress_bar.modulate = Color.WHITE
+	fortress_label.modulate = Color.WHITE
+	fortress_label.text = "Barricade %d/%d" % [ceili(rs.fortress_hp), ceili(rs.fortress_max_hp())]
 
 func update_xp() -> void:
 	var rs := battle.run_state
 	level_label.text = "Lv %d" % rs.level
+	if _level_up_ready:
+		level_label.text += " • READY"
 	xp_bar.max_value = Leveling.xp_required(rs.level)
 	xp_bar.value = rs.xp
+	xp_bar.modulate = Color.WHITE if not _level_up_ready else Color(0.98, 0.82, 0.36, 1.0)
+	level_label.modulate = Color.WHITE if not _level_up_ready else Color(1.0, 0.90, 0.48, 1.0)
 
-func update_wave(index: int, total: int) -> void:
-	wave_label.text = "Wave %d/%d" % [index, total]
+func update_wave(index: int, total: int, label: String = "") -> void:
+	var suffix := label
+	if suffix.is_empty():
+		wave_label.text = "Wave %d/%d" % [index, total]
+	else:
+		wave_label.text = "Wave %d/%d • %s" % [index, total, suffix]
+
+func update_ability() -> void:
+	if battle == null or battle.guardian == null:
+		return
+	var remaining := battle.guardian.ability_cooldown_remaining()
+	var total := battle.guardian.ability_cooldown_total()
+	ability_label.text = "Space"
+	ability_label.text = "Pulse"
+	ability_hint.text = "Space • Charging"
+	ability_bar.max_value = total
+	ability_bar.value = maxf(0.0, total - remaining)
+	if remaining <= 0.0:
+		ability_hint.text = "Space • Ready"
+
+func set_level_up_ready(ready: bool, pending_count: int = 0) -> void:
+	_level_up_ready = ready
+	_pending_level_ups = pending_count
+	update_xp()
+
+func show_threat_banner(text: String, duration: float = 2.0) -> void:
+	threat_label.text = text
+	threat_layer.visible = true
+	_threat_hide_at = Time.get_ticks_msec() + int(duration * 1000.0)
+
+func flash_fortress_hit(amount: float, max_hp: float) -> void:
+	if fortress_bar == null or fortress_label == null:
+		return
+	var ratio := clampf(amount / maxf(1.0, max_hp), 0.0, 0.35)
+	var flash_color := Color(1.0, 0.88, 0.52, 1.0)
+	if ratio >= 0.12:
+		flash_color = Color(1.0, 0.58, 0.32, 1.0)
+	if ratio >= 0.22:
+		flash_color = Color(1.0, 0.35, 0.24, 1.0)
+	var flash_scale := 1.0 + ratio * 0.18
+	var tween := create_tween()
+	fortress_label.modulate = flash_color
+	fortress_bar.modulate = flash_color
+	tween.tween_property(fortress_label, "scale", Vector2.ONE * flash_scale, 0.08).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(fortress_bar, "scale", Vector2.ONE * flash_scale, 0.08).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(fortress_label, "scale", Vector2.ONE, 0.15).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	tween.parallel().tween_property(fortress_bar, "scale", Vector2.ONE, 0.15).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	tween.parallel().tween_property(fortress_label, "modulate", Color.WHITE, 0.14)
+	tween.parallel().tween_property(fortress_bar, "modulate", Color.WHITE, 0.14)
 
 func show_draft(offer: Array[CardData]) -> void:
+	_overlay_mode = OVERLAY_DRAFT
+	draft_title.text = "Choose Upgrade"
+	var emergency_available := false
+	for card in offer:
+		for eff in card.effects:
+			if eff.op == CardEffect.Op.HEAL_FORTRESS:
+				emergency_available = true
+				break
+		if emergency_available:
+			break
+	draft_subtitle.text = "Emergency response available • Arrows move • Space confirms" if emergency_available else "Arrows move • Space confirms"
+	cards_box.columns = 1
+	_overlay_buttons.clear()
+	_overlay_selected_index = -1
 	var sorted_offer := offer.duplicate()
 	sorted_offer.sort_custom(_sort_offer_cards)
 	for child in cards_box.get_children():
@@ -81,21 +198,57 @@ func show_draft(offer: Array[CardData]) -> void:
 	for card in sorted_offer:
 		var btn := _build_card_button(card)
 		cards_box.add_child(btn)
+		_overlay_buttons.append(btn)
 	draft_layer.visible = true
 	update_xp()
+	call_deferred("_focus_overlay_selection")
 	if Game.autoplay:
 		get_tree().create_timer(0.05).timeout.connect(func() -> void:
 			if draft_layer.visible and not sorted_offer.is_empty():
 				_on_card_pressed(sorted_offer[0]))
 
+func show_slot_picker(turret: TurretData, slots: Array[Dictionary]) -> void:
+	_overlay_mode = OVERLAY_SLOT_PICK
+	draft_title.text = "Deploy %s" % turret.display_name
+	draft_subtitle.text = "Choose slot • Arrows move • Space confirms • %s" % battle.slot_spatial_legend()
+	cards_box.columns = 2
+	_overlay_buttons.clear()
+	_overlay_selected_index = -1
+	for child in cards_box.get_children():
+		child.queue_free()
+	for slot in slots:
+		var btn := _build_slot_button(slot, turret)
+		cards_box.add_child(btn)
+		_overlay_buttons.append(btn)
+	draft_layer.visible = true
+	call_deferred("_focus_overlay_selection")
+	if Game.autoplay:
+		get_tree().create_timer(0.05).timeout.connect(func() -> void:
+			if draft_layer.visible:
+				_auto_pick_first_slot())
+
 func hide_draft() -> void:
 	draft_layer.visible = false
+	_overlay_mode = &""
+	_overlay_buttons.clear()
+	_overlay_selected_index = -1
+	for child in cards_box.get_children():
+		child.queue_free()
+
+func hide_overlay() -> void:
+	hide_draft()
 
 func _on_card_pressed(card: CardData) -> void:
 	if not draft_layer.visible:
 		return
 	draft_layer.visible = false
 	battle.on_card_chosen(card)
+
+func _on_slot_pressed(slot_index: int) -> void:
+	if not draft_layer.visible:
+		return
+	draft_layer.visible = false
+	battle.on_slot_chosen(slot_index)
 
 func _build_card_button(card: CardData) -> Button:
 	var category := _card_category(card)
@@ -104,6 +257,7 @@ func _build_card_button(card: CardData) -> Button:
 	var surface: Color = meta["surface"]
 	var button := Button.new()
 	button.flat = true
+	button.focus_mode = Control.FOCUS_ALL
 	button.text = ""
 	button.clip_contents = true
 	button.custom_minimum_size = Vector2(0, 190)
@@ -162,6 +316,54 @@ func _build_card_button(card: CardData) -> Button:
 	root.add_child(footer)
 	for hint in _card_hints(card):
 		footer.add_child(_make_hint_row(hint, accent))
+	return button
+
+func _build_slot_button(slot: Dictionary, _turret: TurretData) -> Button:
+	var label := String(slot.get("label", "Slot"))
+	var occupied := bool(slot.get("occupied", false))
+	var button := Button.new()
+	button.flat = true
+	button.focus_mode = Control.FOCUS_ALL
+	button.disabled = occupied
+	button.clip_contents = true
+	button.custom_minimum_size = Vector2(0, 120)
+	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	var accent := Color(0.33, 0.74, 0.52, 1.0) if not occupied else Color(0.38, 0.38, 0.38, 1.0)
+	var surface := Color(0.08, 0.14, 0.11, 0.96) if not occupied else Color(0.13, 0.13, 0.13, 0.96)
+	button.add_theme_stylebox_override("normal", _card_style(surface, accent, 1.0, 2))
+	button.add_theme_stylebox_override("hover", _card_style(surface.lightened(0.08), accent.lightened(0.12), 1.0, 3))
+	button.add_theme_stylebox_override("pressed", _card_style(surface.darkened(0.08), accent, 1.0, 3))
+	button.add_theme_stylebox_override("focus", _card_style(surface.lightened(0.05), accent.lightened(0.18), 1.0, 4))
+	button.pressed.connect(_on_slot_pressed.bind(int(slot.get("index", -1))))
+
+	var margin := MarginContainer.new()
+	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	margin.add_theme_constant_override("margin_left", 14)
+	margin.add_theme_constant_override("margin_top", 12)
+	margin.add_theme_constant_override("margin_right", 14)
+	margin.add_theme_constant_override("margin_bottom", 12)
+	button.add_child(margin)
+
+	var root := VBoxContainer.new()
+	root.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	root.add_theme_constant_override("separation", 6)
+	margin.add_child(root)
+
+	var title := Label.new()
+	title.text = label
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	title.add_theme_font_size_override("font_size", 24)
+	title.add_theme_color_override("font_color", Color(0.97, 0.97, 0.95, 1) if not occupied else Color(0.72, 0.72, 0.72, 1))
+	root.add_child(title)
+
+	var body := Label.new()
+	body.text = "Open" if not occupied else "Occupied"
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	body.add_theme_font_size_override("font_size", 18)
+	body.add_theme_color_override("font_color", Color(0.82, 0.92, 0.85, 1) if not occupied else Color(0.62, 0.62, 0.62, 1))
+	root.add_child(body)
 	return button
 
 func _layout_draft_overlay() -> void:
@@ -240,8 +442,8 @@ func _card_role_label(card: CardData) -> String:
 			return "BUILD"
 		if eff.op == CardEffect.Op.APPLY_BRANCH:
 			return "CHOICE"
-		if eff.op == CardEffect.Op.HEAL_FORTRESS and card.effects.size() == 1:
-			return "RECOVERY"
+		if eff.op == CardEffect.Op.HEAL_FORTRESS:
+			return "EMERGENCY"
 	if not card.prerequisites.is_empty():
 		return "UPGRADE"
 	return "PASSIVE"
@@ -259,13 +461,13 @@ func _sort_offer_cards(a: CardData, b: CardData) -> bool:
 
 func _role_priority(card: CardData) -> int:
 	match _card_role_label(card):
-		"BUILD":
+		"EMERGENCY":
 			return 0
-		"UPGRADE":
+		"BUILD":
 			return 1
-		"CHOICE":
+		"UPGRADE":
 			return 2
-		"RECOVERY":
+		"CHOICE":
 			return 3
 		_:
 			return 4
@@ -311,3 +513,80 @@ func _is_category(card: CardData, category: StringName) -> bool:
 		if str(eff.target).contains(str(category)) or str(eff.stat).contains(".%s." % category):
 			return true
 	return false
+
+func _focus_overlay_selection() -> void:
+	if _overlay_buttons.is_empty():
+		return
+	if _overlay_selected_index < 0 or _overlay_selected_index >= _overlay_buttons.size():
+		_overlay_selected_index = _first_enabled_overlay_index()
+	_sync_overlay_focus()
+
+func _first_enabled_overlay_index() -> int:
+	for i in range(_overlay_buttons.size()):
+		var button := _overlay_buttons[i]
+		if is_instance_valid(button) and not button.disabled:
+			return i
+	return -1
+
+func _sync_overlay_focus() -> void:
+	if _overlay_selected_index < 0 or _overlay_selected_index >= _overlay_buttons.size():
+		return
+	var button := _overlay_buttons[_overlay_selected_index]
+	if is_instance_valid(button) and not button.disabled:
+		button.grab_focus()
+
+func _move_overlay_selection(step: int) -> void:
+	if _overlay_buttons.is_empty() or step == 0:
+		return
+	if _overlay_selected_index < 0 or _overlay_selected_index >= _overlay_buttons.size():
+		_overlay_selected_index = _first_enabled_overlay_index()
+		if _overlay_selected_index < 0:
+			return
+	var next := _overlay_selected_index
+	if _overlay_mode == OVERLAY_SLOT_PICK:
+		var row := _overlay_selected_index / 2
+		var col := _overlay_selected_index % 2
+		if step == -1:
+			col -= 1
+		elif step == 1:
+			col += 1
+		elif step == -2:
+			row -= 1
+		elif step == 2:
+			row += 1
+		else:
+			return
+		if row < 0 or row > 1 or col < 0 or col > 1:
+			return
+		next = row * 2 + col
+	else:
+		next = (_overlay_selected_index + step + _overlay_buttons.size()) % _overlay_buttons.size()
+	if next < 0 or next >= _overlay_buttons.size():
+		return
+	if _overlay_buttons[next].disabled:
+		var search := next
+		var attempts := 0
+		while attempts < _overlay_buttons.size():
+			search = (search + (1 if step >= 0 else -1) + _overlay_buttons.size()) % _overlay_buttons.size()
+			if not _overlay_buttons[search].disabled:
+				next = search
+				break
+			attempts += 1
+		if attempts >= _overlay_buttons.size():
+			return
+	_overlay_selected_index = next
+	_sync_overlay_focus()
+
+func _activate_overlay_selection() -> void:
+	if _overlay_selected_index < 0 or _overlay_selected_index >= _overlay_buttons.size():
+		return
+	var button := _overlay_buttons[_overlay_selected_index]
+	if not is_instance_valid(button) or button.disabled:
+		return
+	button.emit_signal("pressed")
+
+func _auto_pick_first_slot() -> void:
+	for button in _overlay_buttons:
+		if is_instance_valid(button) and not button.disabled:
+			button.emit_signal("pressed")
+			return

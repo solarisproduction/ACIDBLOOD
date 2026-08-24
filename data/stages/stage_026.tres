@@ -19,6 +19,8 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_qi7x2"]
 script = ExtResource("2_8tkgb")
 groups = Array[ExtResource("3_5eo5w")]([SubResource("Resource_dq0vu"), SubResource("Resource_h6p6d")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_tal8y"]
 script = ExtResource("3_5eo5w")
@@ -35,6 +37,8 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_goa4o"]
 script = ExtResource("2_8tkgb")
 groups = Array[ExtResource("3_5eo5w")]([SubResource("Resource_tal8y"), SubResource("Resource_p40u6")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_ygmmk"]
 script = ExtResource("3_5eo5w")
@@ -59,6 +63,8 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_hiewr"]
 script = ExtResource("2_8tkgb")
 groups = Array[ExtResource("3_5eo5w")]([SubResource("Resource_ygmmk"), SubResource("Resource_fprlv"), SubResource("Resource_mbieu")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_5d212"]
 script = ExtResource("3_5eo5w")
@@ -75,6 +81,8 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_xf6of"]
 script = ExtResource("2_8tkgb")
 groups = Array[ExtResource("3_5eo5w")]([SubResource("Resource_5d212"), SubResource("Resource_ixkl5")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_gc1vs"]
 script = ExtResource("3_5eo5w")
@@ -91,13 +99,17 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_2spgj"]
 script = ExtResource("2_8tkgb")
 groups = Array[ExtResource("3_5eo5w")]([SubResource("Resource_gc1vs"), SubResource("Resource_gmumr")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [resource]
 script = ExtResource("1_4ubwv")
 id = &"stage_026"
-display_name = "Crossing 26"
+display_name = "Service Crossing 26"
 index = 26
+act_number = 3
+intent = &"pressure"
 reward_cores = 32
-hp_scale = 3.88
-speed_scale = 1.48
+hp_scale = 3.61
+speed_scale = 1.45
 waves = Array[ExtResource("2_8tkgb")]([SubResource("Resource_qi7x2"), SubResource("Resource_goa4o"), SubResource("Resource_hiewr"), SubResource("Resource_xf6of"), SubResource("Resource_2spgj")])

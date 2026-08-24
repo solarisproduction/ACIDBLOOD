@@ -4,7 +4,7 @@ extends RefCounted
 ## levels, and campaign completion. JSON save with a version field.
 
 const SAVE_VERSION := 1
-const DEFAULT_PATH := "user://bastion_vale_save.json"
+const DEFAULT_PATH := "user://acidblood_save.json"
 const REPEAT_REWARD_FACTOR := 0.3
 
 var cores: int = 0

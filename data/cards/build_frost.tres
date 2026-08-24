@@ -13,8 +13,8 @@ target = &"frost"
 [resource]
 script = ExtResource("1")
 id = &"build_frost"
-title = "Build: Frost Turret"
-description = "Build a slowing turret in the next free slot. Requires Unlock Frost Turret."
+title = "Deploy: Frost Turret"
+description = "Deploy a coolant sprayer that slows targets."
 weight = 10.0
 tags = Array[StringName]([&"frost", &"support"])
 max_stacks = 1

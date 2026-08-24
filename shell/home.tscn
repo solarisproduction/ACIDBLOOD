@@ -31,20 +31,20 @@ theme_override_constants/separation = 30
 [node name="Title" type="Label" parent="Margin/VBox" unique_id=2104335815]
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
-text = "BASTION VALE"
+text = "ACIDBLOOD"
 horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="Margin/VBox" unique_id=647317461]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "prototype"
+text = "industrial containment command"
 horizontal_alignment = 1
 
 [node name="CoresLabel" type="Label" parent="Margin/VBox" unique_id=1168308482]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "Cores: 0"
+text = "Salvage: 0"
 horizontal_alignment = 1
 
 [node name="PlayButton" type="Button" parent="Margin/VBox" unique_id=547343029]
@@ -52,12 +52,12 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 34
-text = "CAMPAIGN"
+text = "OPERATIONS"
 
 [node name="UpgradesTitle" type="Label" parent="Margin/VBox" unique_id=667141049]
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
-text = "Permanent Upgrades"
+text = "Operations Upgrades"
 horizontal_alignment = 1
 
 [node name="UpgradesScroll" type="ScrollContainer" parent="Margin/VBox" unique_id=1864522261]

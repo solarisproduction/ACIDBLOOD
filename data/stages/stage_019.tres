@@ -27,6 +27,8 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_iflfp"]
 script = ExtResource("2_75nm7")
 groups = Array[ExtResource("3_xx4wj")]([SubResource("Resource_vtfux"), SubResource("Resource_rp5n1"), SubResource("Resource_q0icw")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_3o2b7"]
 script = ExtResource("3_xx4wj")
@@ -43,6 +45,8 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_s0vjl"]
 script = ExtResource("2_75nm7")
 groups = Array[ExtResource("3_xx4wj")]([SubResource("Resource_3o2b7"), SubResource("Resource_f6ica")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_8424e"]
 script = ExtResource("3_xx4wj")
@@ -59,6 +63,8 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_4ttdg"]
 script = ExtResource("2_75nm7")
 groups = Array[ExtResource("3_xx4wj")]([SubResource("Resource_8424e"), SubResource("Resource_5trfc")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_aran8"]
 script = ExtResource("3_xx4wj")
@@ -83,13 +89,17 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_nje2v"]
 script = ExtResource("2_75nm7")
 groups = Array[ExtResource("3_xx4wj")]([SubResource("Resource_aran8"), SubResource("Resource_idbem"), SubResource("Resource_l6h38")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [resource]
 script = ExtResource("1_kchdl")
 id = &"stage_019"
-display_name = "Deep Vale 19"
+display_name = "Runoff Line 19"
 index = 19
+act_number = 2
+intent = &"test"
 reward_cores = 25
-hp_scale = 3.04
-speed_scale = 1.34
+hp_scale = 2.89
+speed_scale = 1.31
 waves = Array[ExtResource("2_75nm7")]([SubResource("Resource_iflfp"), SubResource("Resource_s0vjl"), SubResource("Resource_4ttdg"), SubResource("Resource_nje2v")])

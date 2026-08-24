@@ -20,7 +20,7 @@ target = &""
 [resource]
 script = ExtResource("1")
 id = &"frost_deep_chill"
-title = "Stronger Slow"
+title = "Colder Coolant"
 description = "Frost slow lasts +1s and slows more."
 weight = 8.0
 tags = Array[StringName]([&"frost", &"support"])

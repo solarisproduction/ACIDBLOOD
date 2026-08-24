@@ -6,26 +6,27 @@
 [sub_resource type="Resource" id="eff1"]
 script = ExtResource("2")
 op = 1
-stat = &"turret.bolt.damage"
-value = 1.8
+stat = &"turret.frost.slow_factor"
+value = 0.7
 
 [sub_resource type="Resource" id="eff2"]
 script = ExtResource("2")
 op = 0
-stat = &"turret.bolt.range"
-value = 2.0
+stat = &"turret.frost.slow_duration"
+value = 1.2
 
 [sub_resource type="Resource" id="eff3"]
 script = ExtResource("2")
 op = 1
-stat = &"turret.bolt.attack_interval"
-value = 1.35
+stat = &"turret.frost.attack_interval"
+value = 0.9
 
 [resource]
 script = ExtResource("1")
-id = &"bolt_sniper"
-turret_id = &"bolt"
-display_name = "Long Bolt"
-description = "Bolt turrets become longer-range anti-elite guns with slower cadence."
-excludes_branches = Array[StringName]([&"bolt_chain"])
+id = &"frost_control"
+turret_id = &"frost"
+display_name = "Deep Chill"
+description = "Frost Turrets lock targets down for longer, reinforcing lane control and safer setup windows."
+excludes_branches = Array[StringName]([&"frost_expose"])
+projectile_visual = &"ice_shard_control"
 effects = Array[ExtResource("2")]([SubResource("eff1"), SubResource("eff2"), SubResource("eff3")])

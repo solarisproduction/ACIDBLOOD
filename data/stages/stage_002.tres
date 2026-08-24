@@ -20,6 +20,8 @@ start_delay = 4.0
 [sub_resource type="Resource" id="Resource_6ytd0"]
 script = ExtResource("2_050jw")
 groups = Array[ExtResource("3_vunbf")]([SubResource("Resource_238i5"), SubResource("Resource_i0myh")])
+intent = &"introduce"
+label = "Runners Arrive"
 
 [sub_resource type="Resource" id="Resource_xrs7h"]
 script = ExtResource("3_vunbf")
@@ -36,6 +38,8 @@ start_delay = 2.0
 [sub_resource type="Resource" id="Resource_gcjdh"]
 script = ExtResource("2_050jw")
 groups = Array[ExtResource("3_vunbf")]([SubResource("Resource_xrs7h"), SubResource("Resource_syrun")])
+intent = &"reinforce"
+label = "Pressure Mix"
 
 [sub_resource type="Resource" id="Resource_cttc0"]
 script = ExtResource("3_vunbf")
@@ -59,6 +63,8 @@ start_delay = 1.0
 [sub_resource type="Resource" id="Resource_05jpw"]
 script = ExtResource("2_050jw")
 groups = Array[ExtResource("3_vunbf")]([SubResource("Resource_cttc0"), SubResource("Resource_rwxib"), SubResource("Resource_t5f8q")])
+intent = &"test"
+label = "Target Priority"
 
 [sub_resource type="Resource" id="Resource_884p1"]
 script = ExtResource("3_vunbf")
@@ -74,12 +80,17 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_fptvw"]
 script = ExtResource("2_050jw")
 groups = Array[ExtResource("3_vunbf")]([SubResource("Resource_884p1"), SubResource("Resource_ohe7c")])
+intent = &"elite"
+label = "Elite Escort"
+pre_wave_delay = 2.2
 
 [resource]
 script = ExtResource("1_kx5lu")
 id = &"stage_002"
-display_name = "Broken Gate"
+display_name = "Service Gate"
 index = 2
+act_number = 1
+intent = &"reinforce"
 reward_cores = 8
 hp_scale = 1.1
 waves = Array[ExtResource("2_050jw")]([SubResource("Resource_6ytd0"), SubResource("Resource_gcjdh"), SubResource("Resource_05jpw"), SubResource("Resource_fptvw")])

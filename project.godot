@@ -10,13 +10,14 @@ config_version=5
 
 [application]
 
-config/name="Bastion Vale"
+config/name="ACIDBLOOD"
 run/main_scene="res://shell/home.tscn"
 config/features=PackedStringArray("4.7")
 
 [autoload]
 
 Game="*res://autoload/game.gd"
+_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 [display]
 

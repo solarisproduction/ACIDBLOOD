@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tests/acidblood_suite_runner.gd" id="1_1n1i6"]
+
+[node name="AcidbloodSuiteRunner" type="Node"]
+script = ExtResource("1_1n1i6")

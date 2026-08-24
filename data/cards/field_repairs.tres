@@ -13,8 +13,8 @@ target = &""
 [resource]
 script = ExtResource("1")
 id = &"field_repairs"
-title = "Repair"
-description = "Restore 20 fortress HP."
+title = "Field Repairs"
+description = "Restore 20 Barricade HP."
 weight = 7.0
 tags = Array[StringName]([&"fortress", &"support"])
 max_stacks = 3

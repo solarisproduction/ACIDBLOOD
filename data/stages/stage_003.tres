@@ -19,6 +19,8 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_k0gf5"]
 script = ExtResource("2_dlh6y")
 groups = Array[ExtResource("3_dgyg5")]([SubResource("Resource_3e3jo"), SubResource("Resource_y66nk")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_x675x"]
 script = ExtResource("3_dgyg5")
@@ -43,6 +45,8 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_icw3e"]
 script = ExtResource("2_dlh6y")
 groups = Array[ExtResource("3_dgyg5")]([SubResource("Resource_x675x"), SubResource("Resource_3ue1d"), SubResource("Resource_oxpqv")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_3cgpx"]
 script = ExtResource("3_dgyg5")
@@ -58,12 +62,16 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_v683n"]
 script = ExtResource("2_dlh6y")
 groups = Array[ExtResource("3_dgyg5")]([SubResource("Resource_3cgpx"), SubResource("Resource_gpgfs")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [resource]
 script = ExtResource("1_4cmsw")
 id = &"stage_003"
-display_name = "Ash Road 3"
+display_name = "Drain Channel 3"
 index = 3
+act_number = 1
+intent = &"reinforce"
 reward_cores = 9
 hp_scale = 1.12
 speed_scale = 1.02

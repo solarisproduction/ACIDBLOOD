@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="TurretBranchData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://data/types/turret_branch_data.gd" id="1"]
+[ext_resource type="Script" path="res://data/types/card_effect.gd" id="2"]
+
+[sub_resource type="Resource" id="eff1"]
+script = ExtResource("2")
+op = 1
+stat = &"turret.bolt.damage"
+value = 0.9
+
+[sub_resource type="Resource" id="eff2"]
+script = ExtResource("2")
+op = 0
+stat = &"turret.bolt.range"
+value = -0.5
+
+[sub_resource type="Resource" id="eff3"]
+script = ExtResource("2")
+op = 1
+stat = &"turret.bolt.attack_interval"
+value = 1.18
+
+[resource]
+script = ExtResource("1")
+id = &"bolt_field"
+turret_id = &"bolt"
+display_name = "Static Field"
+description = "Bolt Turret strikes seed a short-lived electric field that shocks enemies standing inside, trading some reach and cadence for area hold."
+excludes_branches = Array[StringName]([&"bolt_chain"])
+attack_mode = &"lightning_field"
+field_radius = 1.35
+field_duration = 2.4
+field_tick_interval = 0.45
+field_damage_factor = 0.35
+effects = Array[ExtResource("2")]([SubResource("eff1"), SubResource("eff2"), SubResource("eff3")])

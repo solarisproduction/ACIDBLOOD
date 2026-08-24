@@ -13,7 +13,7 @@ target = &""
 [resource]
 script = ExtResource("1")
 id = &"bolt_overcharge"
-title = "Bolt Damage"
+title = "Bolt Output"
 description = "Bolt Turrets deal 60% more damage."
 weight = 8.0
 tags = Array[StringName]([&"shock"])

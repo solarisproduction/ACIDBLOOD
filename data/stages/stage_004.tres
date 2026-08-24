@@ -27,6 +27,8 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_xxd5r"]
 script = ExtResource("2_51md3")
 groups = Array[ExtResource("3_hyawk")]([SubResource("Resource_ksk2s"), SubResource("Resource_5uj8m"), SubResource("Resource_xgkwt")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_81b2k"]
 script = ExtResource("3_hyawk")
@@ -42,6 +44,8 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_ov4qh"]
 script = ExtResource("2_51md3")
 groups = Array[ExtResource("3_hyawk")]([SubResource("Resource_81b2k"), SubResource("Resource_tac5q")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_io6vf"]
 script = ExtResource("3_hyawk")
@@ -58,6 +62,8 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_l36y6"]
 script = ExtResource("2_51md3")
 groups = Array[ExtResource("3_hyawk")]([SubResource("Resource_io6vf"), SubResource("Resource_jlxdr")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_hyn7u"]
 script = ExtResource("3_hyawk")
@@ -82,12 +88,16 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_phnj1"]
 script = ExtResource("2_51md3")
 groups = Array[ExtResource("3_hyawk")]([SubResource("Resource_hyn7u"), SubResource("Resource_agsq3"), SubResource("Resource_3i6n6")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [resource]
 script = ExtResource("1_j5lyx")
 id = &"stage_004"
-display_name = "Mire 4"
+display_name = "Pump Station 4"
 index = 4
+act_number = 1
+intent = &"reinforce"
 reward_cores = 10
 hp_scale = 1.24
 speed_scale = 1.04

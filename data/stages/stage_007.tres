@@ -27,6 +27,8 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_261bw"]
 script = ExtResource("2_42v34")
 groups = Array[ExtResource("3_d5jds")]([SubResource("Resource_tocmb"), SubResource("Resource_6qcg8"), SubResource("Resource_bkwnf")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_6qd38"]
 script = ExtResource("3_d5jds")
@@ -42,6 +44,8 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_345pl"]
 script = ExtResource("2_42v34")
 groups = Array[ExtResource("3_d5jds")]([SubResource("Resource_6qd38"), SubResource("Resource_8lfs0")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_ej2fc"]
 script = ExtResource("3_d5jds")
@@ -58,6 +62,8 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_5j3hu"]
 script = ExtResource("2_42v34")
 groups = Array[ExtResource("3_d5jds")]([SubResource("Resource_ej2fc"), SubResource("Resource_tlobe")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_owr10"]
 script = ExtResource("3_d5jds")
@@ -82,12 +88,16 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_7n3vd"]
 script = ExtResource("2_42v34")
 groups = Array[ExtResource("3_d5jds")]([SubResource("Resource_owr10"), SubResource("Resource_a2he6"), SubResource("Resource_klj53")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [resource]
 script = ExtResource("1_i1om4")
 id = &"stage_007"
-display_name = "Ridge 7"
+display_name = "Reservoir Access 7"
 index = 7
+act_number = 1
+intent = &"elite"
 reward_cores = 13
 hp_scale = 1.6
 speed_scale = 1.1

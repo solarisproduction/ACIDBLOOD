@@ -17,6 +17,33 @@ WARNINGS=()
 note() { RESULTS+=("$1  $2"); }
 warn() { WARNINGS+=("WARN  $1"); }
 
+classify_failure() {
+    local phase="$1"
+    local output="$2"
+    if printf '%s' "$output" | grep -qE "SCRIPT ERROR|Parse Error|Compile Error|Failed to load script"; then
+        case "$phase" in
+            import) printf 'parse/import failure' ;;
+            test) printf 'editor bootstrap failure' ;;
+            smoke) printf 'game runtime failure' ;;
+            *) printf '%s failure' "$phase" ;;
+        esac
+        return
+    fi
+    case "$phase" in
+        test) printf 'test failure' ;;
+        smoke) printf 'smoke failure' ;;
+        *) printf '%s failure' "$phase" ;;
+    esac
+}
+
+has_fatal_project_errors() {
+    printf '%s' "$1" | grep -qE "SCRIPT ERROR|Parse Error|Compile Error|Failed to load script"
+}
+
+has_boot_context_ok() {
+    printf '%s' "$1" | grep -qE '^BOOT_CONTEXT .*game_available=true '
+}
+
 # Wall-clock watchdog (macOS has no `timeout`); relies on perl's alarm.
 with_timeout() { perl -e 'alarm shift; exec @ARGV' "$@"; }
 
@@ -45,10 +72,13 @@ if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/n
 fi
 
 # --- 2. Headless import / parse check ---------------------------------
-IMPORT_OUT="$(with_timeout 300 "$GODOT" --headless --path "$ROOT" --import 2>&1)"
+VALIDATION_USER_DIR="/private/tmp/acidblood-validate-user"
+VALIDATION_LOG="/private/tmp/acidblood-validate-godot.log"
+mkdir -p "$VALIDATION_USER_DIR"
+IMPORT_OUT="$(with_timeout 300 "$GODOT" --headless --log-file "$VALIDATION_LOG" --user-data-dir "$VALIDATION_USER_DIR" --path "$ROOT" --import 2>&1)"
 IMPORT_CODE=$?
-if [ $IMPORT_CODE -ne 0 ] || echo "$IMPORT_OUT" | grep -qE "SCRIPT ERROR|Parse Error|Failed to load script"; then
-    note "FAIL" "project import / script parse"
+if [ $IMPORT_CODE -ne 0 ] || has_fatal_project_errors "$IMPORT_OUT"; then
+    note "FAIL" "$(classify_failure import "$IMPORT_OUT")"
     echo "$IMPORT_OUT" | grep -E "ERROR|Parse Error" | head -20
     FAIL=1
 else
@@ -56,29 +86,39 @@ else
 fi
 
 # --- 3. Core test suite (RNG, draft, save/load, campaign, data refs) ---
-TEST_OUT="$(with_timeout 300 "$GODOT" --headless --path "$ROOT" --script res://tests/run_tests.gd 2>&1)"
+TEST_OUT="$(with_timeout 300 "$GODOT" --headless --log-file "$VALIDATION_LOG" --user-data-dir "$VALIDATION_USER_DIR" --path "$ROOT" --scene res://tests/acidblood_suite_runner.tscn 2>&1)"
 TEST_CODE=$?
 echo "$TEST_OUT" | grep -E "^\[|PASS|FAIL"
-if [ $TEST_CODE -ne 0 ]; then
-    note "FAIL" "core test suite (tests/run_tests.gd)"
+if [ $TEST_CODE -ne 0 ] || has_fatal_project_errors "$TEST_OUT" || ! has_boot_context_ok "$TEST_OUT"; then
+    if ! has_boot_context_ok "$TEST_OUT"; then
+        note "FAIL" "editor/bootstrap failure (tests/acidblood_suite_runner.tscn)"
+    else
+        note "FAIL" "$(classify_failure test "$TEST_OUT") (tests/acidblood_suite_runner.tscn)"
+    fi
+    if has_fatal_project_errors "$TEST_OUT"; then
+        echo "$TEST_OUT" | grep -E "SCRIPT ERROR|Parse Error|Compile Error|Failed to load script" | head -20
+    fi
+    if ! has_boot_context_ok "$TEST_OUT"; then
+        echo "$TEST_OUT" | grep -E "^BOOT_CONTEXT|^BOOT_FAILURE" | head -20
+    fi
     FAIL=1
 else
-    note "PASS" "core test suite ($(echo "$TEST_OUT" | grep -c '  PASS') checks)"
+    note "PASS" "official suite ($(echo "$TEST_OUT" | grep -c '  PASS') checks via tests/acidblood_suite_runner.tscn)"
 fi
 
 # --- 4/5. Battle smoke tests (stage 1 and stage 2) ---------------------
 for STAGE in 1 2; do
-    SMOKE_OUT="$(with_timeout 300 "$GODOT" --headless --path "$ROOT" -- --smoke --smoke-stage=$STAGE 2>&1)"
+    SMOKE_OUT="$(with_timeout 300 "$GODOT" --headless --log-file "$VALIDATION_LOG" --user-data-dir "$VALIDATION_USER_DIR" --path "$ROOT" -- --smoke --smoke-stage=$STAGE 2>&1)"
     SMOKE_CODE=$?
     LINE="$(echo "$SMOKE_OUT" | grep "SMOKE_RESULT" | head -1)"
-    if echo "$SMOKE_OUT" | grep -q "SCRIPT ERROR"; then
-        note "FAIL" "battle smoke stage $STAGE (script errors)"
-        echo "$SMOKE_OUT" | grep -A2 "SCRIPT ERROR" | head -12
+    if has_fatal_project_errors "$SMOKE_OUT"; then
+        note "FAIL" "$(classify_failure smoke "$SMOKE_OUT") stage $STAGE"
+        echo "$SMOKE_OUT" | grep -E "SCRIPT ERROR|Parse Error|Compile Error|Failed to load script" | head -12
         FAIL=1
     elif [ $SMOKE_CODE -eq 0 ] && [ -n "$LINE" ]; then
-        note "PASS" "battle smoke stage $STAGE ($LINE)"
+        note "PASS" "RUNTIME SMOKE PASS stage $STAGE (simulation result: $LINE)"
     else
-        note "FAIL" "battle smoke stage $STAGE (exit $SMOKE_CODE)"
+        note "FAIL" "$(classify_failure smoke "$SMOKE_OUT") stage $STAGE (exit $SMOKE_CODE)"
         echo "$SMOKE_OUT" | tail -10
         FAIL=1
     fi

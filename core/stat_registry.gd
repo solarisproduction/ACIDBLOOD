@@ -19,6 +19,7 @@ const TURRET_LOCAL_STATS: Array[StringName] = [
 	&"attack_interval",
 	&"range",
 	&"projectile_speed",
+	&"projectile_radius",
 	&"splash_radius",
 	&"slow_factor",
 	&"slow_duration",

@@ -19,6 +19,8 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_bofqy"]
 script = ExtResource("2_t1pdt")
 groups = Array[ExtResource("3_4w3e8")]([SubResource("Resource_116rd"), SubResource("Resource_h5mty")])
+intent = &"reinforce"
+label = "Opening Mix"
 
 [sub_resource type="Resource" id="Resource_ivx5c"]
 script = ExtResource("3_4w3e8")
@@ -35,6 +37,8 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_gqma8"]
 script = ExtResource("2_t1pdt")
 groups = Array[ExtResource("3_4w3e8")]([SubResource("Resource_ivx5c"), SubResource("Resource_2tsk0")])
+intent = &"pressure"
+label = "Frontline Pressure"
 
 [sub_resource type="Resource" id="Resource_viulw"]
 script = ExtResource("3_4w3e8")
@@ -59,6 +63,8 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_0d0ab"]
 script = ExtResource("2_t1pdt")
 groups = Array[ExtResource("3_4w3e8")]([SubResource("Resource_viulw"), SubResource("Resource_cxf7s"), SubResource("Resource_tyg4a")])
+intent = &"test"
+label = "Target Priority"
 
 [sub_resource type="Resource" id="Resource_dm1l7"]
 script = ExtResource("3_4w3e8")
@@ -75,6 +81,8 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_aqoov"]
 script = ExtResource("2_t1pdt")
 groups = Array[ExtResource("3_4w3e8")]([SubResource("Resource_dm1l7"), SubResource("Resource_usbag")])
+intent = &"elite"
+label = "Elite Check"
 
 [sub_resource type="Resource" id="Resource_ffvms"]
 script = ExtResource("3_4w3e8")
@@ -91,6 +99,9 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_h710t"]
 script = ExtResource("2_t1pdt")
 groups = Array[ExtResource("3_4w3e8")]([SubResource("Resource_ffvms"), SubResource("Resource_fd0xj")])
+intent = &"boss"
+label = "Boss: Containment Tyrant"
+pre_wave_delay = 4
 
 [sub_resource type="Resource" id="Resource_n28af"]
 script = ExtResource("3_4w3e8")
@@ -106,12 +117,18 @@ start_delay = 4.0
 [sub_resource type="Resource" id="Resource_qqoio"]
 script = ExtResource("2_t1pdt")
 groups = Array[ExtResource("3_4w3e8")]([SubResource("Resource_n28af"), SubResource("Resource_vsjba")])
+intent = &"boss"
+label = "Boss: Containment Tyrant"
+pre_wave_delay = 4
 
 [resource]
 script = ExtResource("1_31wgn")
 id = &"stage_020"
-display_name = "Ridge 20"
+display_name = "Reservoir Access 20"
 index = 20
+act_number = 2
+intent = &"boss"
+briefing = "Act II boss check. The build should already be online."
 reward_cores = 26
 hp_scale = 3.16
 speed_scale = 1.3599999999999999

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"spitter"
-display_name = "Spitter"
+display_name = "Pressure Spitter"
 max_hp = 14.0
 speed = 1.4
 armor = 0.0
@@ -16,4 +16,6 @@ stop_range = 5.0
 is_boss = false
 shape = 2
 color = Color(0.35, 0.8, 0.35, 1)
-body_scale = Vector3(0.6, 0.8, 0.6)
+body_scale = Vector3(0.42, 0.56, 0.42)
+fortress_projectile_radius = 0.08
+threat_profile = 1

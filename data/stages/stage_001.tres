@@ -13,6 +13,8 @@ interval = 1.2
 [sub_resource type="Resource" id="Resource_heo36"]
 script = ExtResource("2_oahpk")
 groups = Array[ExtResource("3_frdef")]([SubResource("Resource_m5ody")])
+intent = &"introduce"
+label = "Opening"
 
 [sub_resource type="Resource" id="Resource_e1vv5"]
 script = ExtResource("3_frdef")
@@ -29,6 +31,8 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_k6c87"]
 script = ExtResource("2_oahpk")
 groups = Array[ExtResource("3_frdef")]([SubResource("Resource_e1vv5"), SubResource("Resource_627eg")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_3jqdb"]
 script = ExtResource("3_frdef")
@@ -53,10 +57,12 @@ start_delay = 2.0
 [sub_resource type="Resource" id="Resource_fcyer"]
 script = ExtResource("2_oahpk")
 groups = Array[ExtResource("3_frdef")]([SubResource("Resource_3jqdb"), SubResource("Resource_a015l"), SubResource("Resource_jdduq")])
+intent = &"test"
+label = "First Test"
 
 [resource]
 script = ExtResource("1_d5bj0")
 id = &"stage_001"
-display_name = "Outer Fields"
+display_name = "Processing Yard"
 reward_cores = 6
 waves = Array[ExtResource("2_oahpk")]([SubResource("Resource_heo36"), SubResource("Resource_k6c87"), SubResource("Resource_fcyer")])

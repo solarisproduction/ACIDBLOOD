@@ -1,7 +1,4 @@
-```gitignore
-# No build artifacts, dependencies, or temporary files detected in changes
-# Only README.md was added, which should not be ignored
-```
+.DS_Store
 .aider*
 .godot/
 .agents/

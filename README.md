@@ -1,21 +1,27 @@
-# Bastion Vale
+# ACIDBLOOD
 
 **3D Tower Defense + Roguelite Card Draft Prototype**  
 *Godot 4.7.1 • GDScript • Zero external plugins*
 
-This repository (`TD-Game-System`) contains **Bastion Vale**, a vertical slice prototype validating a tower defense core loop enhanced by roguelite card draft mechanics.
+This repository (`TD-Game-System`) contains **ACIDBLOOD**, a vertical slice prototype validating a tower defense core loop enhanced by roguelite card draft mechanics.
+
+ACIDBLOOD is an alternate late-1980s industrial contamination game: analog
+machines, chemical infrastructure, CRT-era systems, biological corruption, and
+a city that rotted while still standing. Naming, visual direction, and future
+player-facing work should follow
+[`docs/ACIDBLOOD_DIRECTION.md`](docs/ACIDBLOOD_DIRECTION.md).
 
 ---
 
 ## 🎮 Gameplay Overview
 
-**Core Loop:** `Home` → `Campaign` → `Battle` → `Result` → `Campaign`
+**Core Loop:** `Command` → `Operations` → `Battle` → `Report` → `Operations`
 
 - **Guardian**: Player-controlled character with auto-attack weapon
-- **4 Tower Slots**: Place and upgrade 3 archetypes (bolt, cannon, frost)
+- **4 Tower Slots**: Place and upgrade 3 archetypes (arc coil, pressure cannon, cryo sprayer)
 - **Deterministic Waves**: Enemy spawns follow pre-authored `StageData` with reproducible timing
-- **Card Draft**: On level-up, pause game and choose 1 of 3 random cards (16-card pool)
-- **Permanent Progression**: Earn "cores" (currency) to buy persistent upgrades between runs
+- **Card Draft**: On level-up, pause game and choose 1 of 3 random cards (20-card pool)
+- **Persistent Progression**: Earn salvage to buy persistent upgrades between runs
 
 ---
 
@@ -37,7 +43,7 @@ godot --path .
 
 ## ✅ Tests (Headless)
 
-Automated test suite with **44 checks** covering script loads, RNG determinism, draft rules, combat math, save/load, and data integrity.
+Automated test suite with **80 checks** covering script loads, RNG determinism, draft rules, combat math, save/load, campaign traversal, data references, and content conventions.
 
 ```bash
 godot --headless --path . --script res://tests/run_tests.gd
@@ -75,8 +81,8 @@ godot --headless --path . --script res://tools/balance_report.gd
 | **Tests** | `tests/run_tests.gd` | Headless validation suite |
 | **Tools** | `tools/*.gd` | Data pipeline scripts |
 
-**Data-Driven Content:** 54 `.tres` files managed via [`core/catalog.gd`](core/catalog.gd):
-- 5 enemies, 3 turrets, 16 cards, 30 stages, 3 perm upgrades, 1 guardian
+**Data-Driven Content:** 68 `.tres` files managed via [`core/catalog.gd`](core/catalog.gd):
+- 5 enemies, 3 turrets, 20 cards, 30 stages, 6 branches, 3 perm upgrades, 1 guardian
 
 ---
 
@@ -88,18 +94,10 @@ godot --headless --path . --script res://tools/balance_report.gd
 
 ---
 
-## 📊 Status: Done vs Roadmap
+## 📊 Status
 
-| ✅ Done | 📅 Roadmap |
-|---------|-----------|
-| Core loop (Home → Battle → Result) | Audio system (SFX, music) |
-| Wave director with deterministic spawns | VFX / particle systems |
-| Targeting (most-advanced enemy, tiebreak by spawn_index) | GLB assets (see [`docs/ASSET_CONTRACT.md`](docs/ASSET_CONTRACT.md)) |
-| Card draft with prerequisites/excludes/unlocks | Larger card pool (30–50 cards) |
-| Permanent progression (save/load via `progression.gd`) | Elite enemy variants |
-| 44 automated tests (headless) | Mobile touch input |
-| Balance report tool | Tutorial / onboarding |
-| Sequential stage unlock (complete N-1 to unlock N) | Tooltips, richer UI feedback |
+Core loop, deterministic waves, draft, progression, and tests are in place.
+The current backlog lives in [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 ---
 
@@ -118,10 +116,12 @@ godot --headless --path . --script res://tools/balance_report.gd
 
 ## 📄 Documentation
 
+- [`AGENTS.md`](AGENTS.md) — mandatory operating rules for future sessions
+- [`docs/ACIDBLOOD_DIRECTION.md`](docs/ACIDBLOOD_DIRECTION.md) — product identity, world, visual language, and naming direction
 - [`docs/ASSET_CONTRACT.md`](docs/ASSET_CONTRACT.md) — GLB production specs for future asset replacement
-- [`docs/SYSTEM_BLUEPRINT.md`](docs/SYSTEM_BLUEPRINT.md) — Technical design overview
-- [`docs/DECISIONS.md`](docs/DECISIONS.md) — Architecture decisions log
-- [`docs/HANDOFF.md`](docs/HANDOFF.md) — Developer handoff notes
+- [`docs/SYSTEM_BLUEPRINT.md`](docs/SYSTEM_BLUEPRINT.md) — technical design overview
+- [`docs/HANDOFF.md`](docs/HANDOFF.md) — developer handoff notes
+- [`docs/ROADMAP.md`](docs/ROADMAP.md) — single living backlog for future work
 
 ---
 

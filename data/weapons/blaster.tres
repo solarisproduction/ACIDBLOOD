@@ -5,11 +5,13 @@
 [resource]
 script = ExtResource("1")
 id = &"blaster"
-damage = 5.0
-attack_interval = 0.5
+damage = 0.75
+attack_interval = 0.125
 attack_range = 7.0
-projectile_speed = 14.0
+projectile_speed = 20.0
+projectile_radius = 0.035
 projectile_count = 1
 pierce = 0
+visual_tracers_per_shot = 3
 spread_degrees = 8.0
 projectile_color = Color(0.4, 0.9, 1.0, 1)

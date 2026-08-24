@@ -19,6 +19,8 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_imbw5"]
 script = ExtResource("2_klbld")
 groups = Array[ExtResource("3_kdlem")]([SubResource("Resource_8bmce"), SubResource("Resource_binjc")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_tq3ms"]
 script = ExtResource("3_kdlem")
@@ -43,6 +45,8 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_0eocj"]
 script = ExtResource("2_klbld")
 groups = Array[ExtResource("3_kdlem")]([SubResource("Resource_tq3ms"), SubResource("Resource_x06nh"), SubResource("Resource_873pn")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_v58e4"]
 script = ExtResource("3_kdlem")
@@ -58,12 +62,16 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_x720p"]
 script = ExtResource("2_klbld")
 groups = Array[ExtResource("3_kdlem")]([SubResource("Resource_v58e4"), SubResource("Resource_7fxvi")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [resource]
 script = ExtResource("1_stlfv")
 id = &"stage_009"
-display_name = "Ramparts 9"
+display_name = "Pressure Deck 9"
 index = 9
+act_number = 1
+intent = &"test"
 reward_cores = 15
 hp_scale = 1.8399999999999999
 speed_scale = 1.1400000000000001

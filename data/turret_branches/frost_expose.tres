@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="TurretBranchData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://data/types/turret_branch_data.gd" id="1"]
+[ext_resource type="Script" path="res://data/types/card_effect.gd" id="2"]
+
+[sub_resource type="Resource" id="eff1"]
+script = ExtResource("2")
+op = 1
+stat = &"turret.frost.damage"
+value = 1.55
+
+[sub_resource type="Resource" id="eff2"]
+script = ExtResource("2")
+op = 0
+stat = &"turret.frost.range"
+value = 0.8
+
+[sub_resource type="Resource" id="eff3"]
+script = ExtResource("2")
+op = 1
+stat = &"turret.frost.slow_factor"
+value = 0.85
+
+[sub_resource type="Resource" id="eff4"]
+script = ExtResource("2")
+op = 1
+stat = &"turret.frost.slow_duration"
+value = 0.8
+
+[resource]
+script = ExtResource("1")
+id = &"frost_expose"
+turret_id = &"frost"
+display_name = "Crack Ice"
+description = "Frost Turrets mark enemies with exposed ice, making follow-up damage hit harder while giving up some lockdown."
+excludes_branches = Array[StringName]([&"frost_control"])
+expose_damage_multiplier = 1.35
+expose_duration = 2.25
+projectile_visual = &"ice_shard_expose"
+effects = Array[ExtResource("2")]([SubResource("eff1"), SubResource("eff2"), SubResource("eff3"), SubResource("eff4")])

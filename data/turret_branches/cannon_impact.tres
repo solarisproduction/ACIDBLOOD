@@ -1,0 +1,48 @@
+[gd_resource type="Resource" script_class="TurretBranchData" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://data/types/turret_branch_data.gd" id="1"]
+[ext_resource type="Script" path="res://data/types/card_effect.gd" id="2"]
+
+[sub_resource type="Resource" id="eff1"]
+script = ExtResource("2")
+op = 1
+stat = &"turret.cannon.damage"
+value = 1.45
+
+[sub_resource type="Resource" id="eff2"]
+script = ExtResource("2")
+op = 0
+stat = &"turret.cannon.range"
+value = 1.2
+
+[sub_resource type="Resource" id="eff3"]
+script = ExtResource("2")
+op = 1
+stat = &"turret.cannon.splash_radius"
+value = 0.8
+
+[sub_resource type="Resource" id="eff4"]
+script = ExtResource("2")
+op = 1
+stat = &"turret.cannon.attack_interval"
+value = 1.15
+
+[sub_resource type="Resource" id="eff5"]
+script = ExtResource("2")
+op = 0
+stat = &"turret.cannon.projectile_radius"
+value = 0.05
+
+[resource]
+script = ExtResource("1")
+id = &"cannon_impact"
+turret_id = &"cannon"
+display_name = "Impact Cannon"
+description = "Cannon Turrets fire heavier shells that crack armor and briefly stagger the direct target, trading splash width for elite pressure."
+excludes_branches = Array[StringName]([&"cannon_blast"])
+force_heavy_impact = true
+impact_stun_duration = 0.18
+impact_armor_break = 2.0
+impact_armor_break_duration = 2.5
+impact_knockback = 0.35
+effects = Array[ExtResource("2")]([SubResource("eff1"), SubResource("eff2"), SubResource("eff3"), SubResource("eff4"), SubResource("eff5")])

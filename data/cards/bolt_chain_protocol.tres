@@ -11,11 +11,11 @@ target = &"bolt_chain"
 [resource]
 script = ExtResource("1")
 id = &"bolt_chain_protocol"
-title = "Branch: Fast Bolt"
-description = "Bolt Turrets fire faster, but with shorter range. Choose 1 branch."
+title = "Branch: Chain Lightning"
+description = "Bolt lightning jumps to up to two nearby enemies with reduced follow-up damage."
 weight = 6.0
 tags = Array[StringName]([&"shock"])
 max_stacks = 1
 prerequisites = Array[StringName]([&"build_bolt"])
-excludes = Array[StringName]([&"bolt_sniper_protocol"])
+excludes = Array[StringName]([&"bolt_field_protocol"])
 effects = Array[ExtResource("2")]([SubResource("eff1")])

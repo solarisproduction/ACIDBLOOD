@@ -13,9 +13,9 @@ const TRACK_ORDER: Array[StringName] = [
 ]
 
 const TRACK_TITLES := {
-	PermUpgradeData.TRACK_FORTRESS: "Fortress",
-	PermUpgradeData.TRACK_COMMAND: "Command",
-	PermUpgradeData.TRACK_ENGINEERING: "Engineering",
+	PermUpgradeData.TRACK_FORTRESS: "Barricade",
+	PermUpgradeData.TRACK_COMMAND: "Guardian",
+	PermUpgradeData.TRACK_ENGINEERING: "Turrets",
 	PermUpgradeData.TRACK_GENERAL: "General",
 }
 
@@ -24,7 +24,7 @@ func _ready() -> void:
 	_refresh()
 
 func _refresh() -> void:
-	cores_label.text = "Cores: %d" % Game.progression.cores
+	cores_label.text = "Salvage: %d" % Game.progression.cores
 	for child in upgrades_box.get_children():
 		child.queue_free()
 	var grouped := _group_upgrades_by_track(Catalog.perm_upgrades())
@@ -77,7 +77,7 @@ func _make_upgrade_row(up: PermUpgradeData) -> Control:
 		btn.text = _requirements_text(up)
 		btn.disabled = true
 	else:
-		btn.text = "Buy (%d)" % Game.progression.upgrade_cost(up)
+		btn.text = _upgrade_button_text(up, level)
 		btn.disabled = not Game.progression.can_buy_upgrade(up)
 		btn.pressed.connect(func() -> void:
 			if Game.progression.buy_upgrade(up):
@@ -100,6 +100,12 @@ func _upgrade_tooltip(up: PermUpgradeData) -> String:
 	if not up.requires_nodes.is_empty():
 		text += "\nRequires: %s" % ", ".join(_required_upgrade_names(up))
 	return text
+
+func _upgrade_button_text(up: PermUpgradeData, level: int) -> String:
+	var cost := Game.progression.upgrade_cost(up)
+	if up.max_level == 1 and level == 0:
+		return "Unlock (%d)" % cost
+	return "Upgrade (%d)" % cost
 
 func _required_upgrade_names(up: PermUpgradeData) -> Array[String]:
 	var names: Array[String] = []

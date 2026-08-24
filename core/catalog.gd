@@ -3,7 +3,7 @@ extends RefCounted
 ## Lazy-loading registry over the data directories. All content lookup goes
 ## through here so the rest of the game never hardcodes resource paths.
 ## NOTE: DirAccess listing of res:// works in editor/headless runs; exported
-## builds would need a manifest — acceptable for the prototype (documented).
+## builds would need a manifest.
 
 static var _enemies: Dictionary = {}
 static var _turrets: Dictionary = {}
@@ -97,7 +97,6 @@ static func guardian() -> GuardianData:
 		_guardian = load("res://data/guardian.tres")
 	return _guardian
 
-# Novo método para listar os nomes dos inimigos
 static func enemy_names() -> Array[String]:
 	var names: Array[String] = []
 	for e in enemies().values():

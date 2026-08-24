@@ -13,9 +13,9 @@ target = &"cannon"
 [resource]
 script = ExtResource("1")
 id = &"build_cannon"
-title = "Build: Cannon Turret"
-description = "Build a slow splash-damage turret in the next free slot."
+title = "Deploy: Cannon Turret"
+description = "Deploy a slow pressure cannon with splash damage."
 weight = 10.0
-tags = Array[StringName]([&"siege"])
+tags = Array[StringName]([&"impact"])
 max_stacks = 2
 effects = Array[ExtResource("2")]([SubResource("eff1")])

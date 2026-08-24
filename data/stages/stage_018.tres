@@ -19,6 +19,8 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_axgeq"]
 script = ExtResource("2_5r4xa")
 groups = Array[ExtResource("3_8i62v")]([SubResource("Resource_lkxep"), SubResource("Resource_xsk2e")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_sx4q6"]
 script = ExtResource("3_8i62v")
@@ -43,6 +45,8 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_y05rv"]
 script = ExtResource("2_5r4xa")
 groups = Array[ExtResource("3_8i62v")]([SubResource("Resource_sx4q6"), SubResource("Resource_l0r4y"), SubResource("Resource_w23al")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_y01l7"]
 script = ExtResource("3_8i62v")
@@ -59,13 +63,17 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_gqa72"]
 script = ExtResource("2_5r4xa")
 groups = Array[ExtResource("3_8i62v")]([SubResource("Resource_y01l7"), SubResource("Resource_wchcd")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [resource]
 script = ExtResource("1_rqyfh")
 id = &"stage_018"
-display_name = "Watchpost 18"
+display_name = "Control Annex 18"
 index = 18
+act_number = 2
+intent = &"reinforce"
 reward_cores = 24
-hp_scale = 2.92
-speed_scale = 1.32
+hp_scale = 2.77
+speed_scale = 1.29
 waves = Array[ExtResource("2_5r4xa")]([SubResource("Resource_axgeq"), SubResource("Resource_y05rv"), SubResource("Resource_gqa72")])

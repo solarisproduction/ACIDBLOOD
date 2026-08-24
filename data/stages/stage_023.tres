@@ -19,6 +19,8 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_qvr6l"]
 script = ExtResource("2_fbpu5")
 groups = Array[ExtResource("3_fv5v3")]([SubResource("Resource_4b5rx"), SubResource("Resource_gobnj")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_80y8v"]
 script = ExtResource("3_fv5v3")
@@ -35,6 +37,8 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_mbji3"]
 script = ExtResource("2_fbpu5")
 groups = Array[ExtResource("3_fv5v3")]([SubResource("Resource_80y8v"), SubResource("Resource_j85th")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_86kfi"]
 script = ExtResource("3_fv5v3")
@@ -59,6 +63,8 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_rqljn"]
 script = ExtResource("2_fbpu5")
 groups = Array[ExtResource("3_fv5v3")]([SubResource("Resource_86kfi"), SubResource("Resource_sd8ok"), SubResource("Resource_bfb7v")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_riif4"]
 script = ExtResource("3_fv5v3")
@@ -75,6 +81,8 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_ek66d"]
 script = ExtResource("2_fbpu5")
 groups = Array[ExtResource("3_fv5v3")]([SubResource("Resource_riif4"), SubResource("Resource_65cdt")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_tbrm4"]
 script = ExtResource("3_fv5v3")
@@ -91,13 +99,17 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_bf60o"]
 script = ExtResource("2_fbpu5")
 groups = Array[ExtResource("3_fv5v3")]([SubResource("Resource_tbrm4"), SubResource("Resource_7cewt")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [resource]
 script = ExtResource("1_wd37w")
 id = &"stage_023"
-display_name = "Old Keep 23"
+display_name = "Lab Intake 23"
 index = 23
+act_number = 3
+intent = &"reinforce"
 reward_cores = 29
-hp_scale = 3.52
-speed_scale = 1.42
+hp_scale = 3.27
+speed_scale = 1.39
 waves = Array[ExtResource("2_fbpu5")]([SubResource("Resource_qvr6l"), SubResource("Resource_mbji3"), SubResource("Resource_rqljn"), SubResource("Resource_ek66d"), SubResource("Resource_bf60o")])

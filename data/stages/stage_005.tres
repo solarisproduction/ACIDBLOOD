@@ -18,6 +18,8 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_fw3x4"]
 script = ExtResource("2_koayf")
 groups = Array[ExtResource("3_bq47s")]([SubResource("Resource_acr3i"), SubResource("Resource_sp6id")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_q51lk"]
 script = ExtResource("3_bq47s")
@@ -34,6 +36,8 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_gydds"]
 script = ExtResource("2_koayf")
 groups = Array[ExtResource("3_bq47s")]([SubResource("Resource_q51lk"), SubResource("Resource_l57ua")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_8ec18"]
 script = ExtResource("3_bq47s")
@@ -58,6 +62,8 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_c0vgi"]
 script = ExtResource("2_koayf")
 groups = Array[ExtResource("3_bq47s")]([SubResource("Resource_8ec18"), SubResource("Resource_ljxt6"), SubResource("Resource_5etmv")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_00w2p"]
 script = ExtResource("3_bq47s")
@@ -73,6 +79,8 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_cy5nm"]
 script = ExtResource("2_koayf")
 groups = Array[ExtResource("3_bq47s")]([SubResource("Resource_00w2p"), SubResource("Resource_lm20m")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_x5vrs"]
 script = ExtResource("3_bq47s")
@@ -89,12 +97,16 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_oe6l7"]
 script = ExtResource("2_koayf")
 groups = Array[ExtResource("3_bq47s")]([SubResource("Resource_x5vrs"), SubResource("Resource_nmgaw")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [resource]
 script = ExtResource("1_ue1ye")
 id = &"stage_005"
-display_name = "Watchpost 5"
+display_name = "Control Annex 5"
 index = 5
+act_number = 1
+intent = &"reinforce"
 reward_cores = 11
 hp_scale = 1.3599999999999999
 speed_scale = 1.06

@@ -9,13 +9,19 @@ extends Resource
 @export var speed: float = 1.5
 @export var armor: float = 0.0
 @export var xp: int = 2
-## Damage dealt to the fortress: per contact (kamikaze) or per attack tick.
+## Damage dealt to the barricade per attack tick once the enemy is in attack
+## state.
 @export var fortress_damage: float = 5.0
-## 0 = kamikaze: deal fortress_damage once on contact and die.
-## > 0 = stop at stop_range from the fortress line and attack repeatedly.
+## > 0 = stop at stop_range from the barricade line and attack repeatedly
+## from range. 0 = contact attacker: reach the barricade line, stay there, and
+## attack it at the runtime default contact cadence.
 @export var attack_interval: float = 0.0
 @export var stop_range: float = 0.0
+@export var fortress_projectile_radius: float = 0.16
 @export var is_boss: bool = false
+
+@export_group("Threat")
+@export_enum("Basic", "Ranged", "Elite", "Boss") var threat_profile: int = 0
 
 @export_group("Presentation")
 @export_enum("Box", "Capsule", "Cylinder", "Sphere") var shape: int = 0

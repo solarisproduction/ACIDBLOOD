@@ -13,7 +13,7 @@ target = &""
 [resource]
 script = ExtResource("1")
 id = &"piercing_rounds"
-title = "Piercing Shots"
+title = "Piercing Rounds"
 description = "Guardian shots pierce +1 enemy."
 weight = 6.0
 tags = Array[StringName]([&"guardian"])

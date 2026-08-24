@@ -19,6 +19,8 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_trqay"]
 script = ExtResource("2_7frb6")
 groups = Array[ExtResource("3_fv51y")]([SubResource("Resource_fd8n1"), SubResource("Resource_wxcqc")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_7i2fr"]
 script = ExtResource("3_fv51y")
@@ -43,6 +45,8 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_shc4v"]
 script = ExtResource("2_7frb6")
 groups = Array[ExtResource("3_fv51y")]([SubResource("Resource_7i2fr"), SubResource("Resource_bk3w2"), SubResource("Resource_4howv")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_ky8vo"]
 script = ExtResource("3_fv51y")
@@ -59,13 +63,17 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_54p2m"]
 script = ExtResource("2_7frb6")
 groups = Array[ExtResource("3_fv51y")]([SubResource("Resource_ky8vo"), SubResource("Resource_y3guy")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [resource]
 script = ExtResource("1_43tqf")
 id = &"stage_015"
-display_name = "Sanctum 15"
+display_name = "Containment Core 15"
 index = 15
+act_number = 2
+intent = &"reinforce"
 reward_cores = 21
-hp_scale = 2.56
-speed_scale = 1.26
+hp_scale = 2.43
+speed_scale = 1.23
 waves = Array[ExtResource("2_7frb6")]([SubResource("Resource_trqay"), SubResource("Resource_shc4v"), SubResource("Resource_54p2m")])

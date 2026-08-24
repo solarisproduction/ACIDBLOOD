@@ -15,9 +15,9 @@ value = 30.0
 
 [resource]
 script = ExtResource("1")
-id = &"bastion_core"
-title = "Fortress Boost"
-description = "Fortress max HP +30. Restore 30 HP. Choose 1 with Damage Boost."
+id = &"acidblood_core"
+title = "Barricade Plating"
+description = "Barricade max HP +30. Restore 30 HP."
 weight = 5.0
 tags = Array[StringName]([&"fortress", &"support"])
 excludes = Array[StringName]([&"overload_core"])

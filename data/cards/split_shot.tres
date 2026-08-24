@@ -13,7 +13,7 @@ target = &""
 [resource]
 script = ExtResource("1")
 id = &"split_shot"
-title = "Multi Shot"
+title = "Split Feed"
 description = "Guardian fires +1 projectile per attack."
 weight = 6.0
 tags = Array[StringName]([&"guardian"])

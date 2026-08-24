@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="TurretBranchData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://data/types/turret_branch_data.gd" id="1"]
+[ext_resource type="Script" path="res://data/types/card_effect.gd" id="2"]
+
+[sub_resource type="Resource" id="eff1"]
+script = ExtResource("2")
+op = 1
+stat = &"turret.cannon.damage"
+value = 0.9
+
+[sub_resource type="Resource" id="eff2"]
+script = ExtResource("2")
+op = 0
+stat = &"turret.cannon.splash_radius"
+value = 1.0
+
+[sub_resource type="Resource" id="eff3"]
+script = ExtResource("2")
+op = 1
+stat = &"turret.cannon.attack_interval"
+value = 0.92
+
+[resource]
+script = ExtResource("1")
+id = &"cannon_blast"
+turret_id = &"cannon"
+display_name = "Wide Blast"
+description = "Cannon Turrets clear lanes with broader splash, trading some direct damage for safer crowd control."
+excludes_branches = Array[StringName]([&"cannon_impact"])
+effects = Array[ExtResource("2")]([SubResource("eff1"), SubResource("eff2"), SubResource("eff3")])

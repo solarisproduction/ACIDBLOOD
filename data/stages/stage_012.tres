@@ -19,6 +19,8 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_q51l1"]
 script = ExtResource("2_jg1jw")
 groups = Array[ExtResource("3_iwafx")]([SubResource("Resource_7cfay"), SubResource("Resource_cctda")])
+intent = &"introduce"
+label = "Runners Arrive"
 
 [sub_resource type="Resource" id="Resource_x7we6"]
 script = ExtResource("3_iwafx")
@@ -43,6 +45,8 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_m0gd1"]
 script = ExtResource("2_jg1jw")
 groups = Array[ExtResource("3_iwafx")]([SubResource("Resource_x7we6"), SubResource("Resource_74vxi"), SubResource("Resource_kr184")])
+intent = &"reinforce"
+label = "Pressure Mix"
 
 [sub_resource type="Resource" id="Resource_exkfb"]
 script = ExtResource("3_iwafx")
@@ -59,13 +63,17 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_s21vh"]
 script = ExtResource("2_jg1jw")
 groups = Array[ExtResource("3_iwafx")]([SubResource("Resource_exkfb"), SubResource("Resource_nrwmp")])
+intent = &"test"
+label = "Target Priority"
 
 [resource]
 script = ExtResource("1_byii0")
 id = &"stage_012"
-display_name = "Wastes 12"
+display_name = "Cooling Duct 12"
 index = 12
+act_number = 2
+intent = &"reinforce"
 reward_cores = 18
-hp_scale = 2.2
-speed_scale = 1.2
+hp_scale = 2.09
+speed_scale = 1.18
 waves = Array[ExtResource("2_jg1jw")]([SubResource("Resource_q51l1"), SubResource("Resource_m0gd1"), SubResource("Resource_s21vh")])

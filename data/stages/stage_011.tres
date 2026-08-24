@@ -18,6 +18,8 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_dhg6r"]
 script = ExtResource("2_4v4ba")
 groups = Array[ExtResource("3_bl1t1")]([SubResource("Resource_mwvx6"), SubResource("Resource_rlwnn")])
+intent = &"introduce"
+label = "Opening"
 
 [sub_resource type="Resource" id="Resource_e8775"]
 script = ExtResource("3_bl1t1")
@@ -34,6 +36,8 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_ixed3"]
 script = ExtResource("2_4v4ba")
 groups = Array[ExtResource("3_bl1t1")]([SubResource("Resource_e8775"), SubResource("Resource_ys7ys")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_o0uhw"]
 script = ExtResource("3_bl1t1")
@@ -58,6 +62,8 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_x5c33"]
 script = ExtResource("2_4v4ba")
 groups = Array[ExtResource("3_bl1t1")]([SubResource("Resource_o0uhw"), SubResource("Resource_j7v2m"), SubResource("Resource_yd8ls")])
+intent = &"test"
+label = "First Test"
 
 [sub_resource type="Resource" id="Resource_qrlof"]
 script = ExtResource("3_bl1t1")
@@ -73,6 +79,8 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_gqjue"]
 script = ExtResource("2_4v4ba")
 groups = Array[ExtResource("3_bl1t1")]([SubResource("Resource_qrlof"), SubResource("Resource_llb8o")])
+intent = &"test"
+label = "First Test"
 
 [sub_resource type="Resource" id="Resource_4s86t"]
 script = ExtResource("3_bl1t1")
@@ -89,13 +97,17 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_kh61c"]
 script = ExtResource("2_4v4ba")
 groups = Array[ExtResource("3_bl1t1")]([SubResource("Resource_4s86t"), SubResource("Resource_3t5jh")])
+intent = &"test"
+label = "First Test"
 
 [resource]
 script = ExtResource("1_y0h2y")
 id = &"stage_011"
-display_name = "Frontier 11"
+display_name = "Transit Spine 11"
 index = 11
+act_number = 2
+intent = &"introduce"
 reward_cores = 17
-hp_scale = 2.08
-speed_scale = 1.18
+hp_scale = 1.98
+speed_scale = 1.16
 waves = Array[ExtResource("2_4v4ba")]([SubResource("Resource_dhg6r"), SubResource("Resource_ixed3"), SubResource("Resource_x5c33"), SubResource("Resource_gqjue"), SubResource("Resource_kh61c")])

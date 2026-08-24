@@ -6,7 +6,8 @@ extends Resource
 ## ADD_STAT / MULTIPLY_STAT: stat path + value. Projectile count, pierce and
 ## attack behavior changes are stats too ("guardian.projectiles",
 ## "guardian.pierce"), which keeps the vocabulary small.
-## UNLOCK_TURRET: target = turret id; builds it in the next free slot.
+## UNLOCK_TURRET: target = turret id; opens turret placement so the player can
+## choose the slot.
 ## APPLY_BRANCH: target = turret branch id; the branch resource contributes
 ## its own stat effects and is recorded in the run state.
 ## HEAL_FORTRESS: value = flat HP restored (clamped to max).

@@ -19,6 +19,8 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_qbmsx"]
 script = ExtResource("2_ix7mb")
 groups = Array[ExtResource("3_0nu87")]([SubResource("Resource_1owx3"), SubResource("Resource_xliun")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_1kkfw"]
 script = ExtResource("3_0nu87")
@@ -43,6 +45,8 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_qr6pn"]
 script = ExtResource("2_ix7mb")
 groups = Array[ExtResource("3_0nu87")]([SubResource("Resource_1kkfw"), SubResource("Resource_nyxnp"), SubResource("Resource_vag0j")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_eoi16"]
 script = ExtResource("3_0nu87")
@@ -58,12 +62,16 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_shkmg"]
 script = ExtResource("2_ix7mb")
 groups = Array[ExtResource("3_0nu87")]([SubResource("Resource_eoi16"), SubResource("Resource_wcydu")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [resource]
 script = ExtResource("1_45yeh")
 id = &"stage_006"
-display_name = "Deep Vale 6"
+display_name = "Runoff Line 6"
 index = 6
+act_number = 1
+intent = &"pressure"
 reward_cores = 12
 hp_scale = 1.48
 speed_scale = 1.08

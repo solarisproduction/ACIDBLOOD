@@ -73,6 +73,7 @@ func _start_smoke(stage_index: int) -> void:
 		print("SMOKE_ERROR missing stage %d" % stage_index)
 		get_tree().quit(2)
 		return
+	progression.save_path = "/private/tmp/acidblood-smoke-save.json"
 	start_stage(stage, 1337)
 
 func start_stage(stage: StageData, seed_override: int = 0) -> void:

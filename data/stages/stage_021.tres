@@ -19,6 +19,8 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_w5llx"]
 script = ExtResource("2_nm7nb")
 groups = Array[ExtResource("3_afdyp")]([SubResource("Resource_wgf68"), SubResource("Resource_q107l")])
+intent = &"introduce"
+label = "Opening"
 
 [sub_resource type="Resource" id="Resource_w4f77"]
 script = ExtResource("3_afdyp")
@@ -43,6 +45,8 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_xexls"]
 script = ExtResource("2_nm7nb")
 groups = Array[ExtResource("3_afdyp")]([SubResource("Resource_w4f77"), SubResource("Resource_31qcy"), SubResource("Resource_1wh15")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_yh33v"]
 script = ExtResource("3_afdyp")
@@ -59,13 +63,17 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_jxmf1"]
 script = ExtResource("2_nm7nb")
 groups = Array[ExtResource("3_afdyp")]([SubResource("Resource_yh33v"), SubResource("Resource_fnv0e")])
+intent = &"test"
+label = "First Test"
 
 [resource]
 script = ExtResource("1_eiu1j")
 id = &"stage_021"
-display_name = "Hollow 21"
+display_name = "Loading Yard 21"
 index = 21
+act_number = 3
+intent = &"introduce"
 reward_cores = 27
-hp_scale = 3.28
-speed_scale = 1.38
+hp_scale = 3.05
+speed_scale = 1.35
 waves = Array[ExtResource("2_nm7nb")]([SubResource("Resource_w5llx"), SubResource("Resource_xexls"), SubResource("Resource_jxmf1")])

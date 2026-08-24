@@ -6,13 +6,13 @@
 [sub_resource type="Resource" id="eff1"]
 script = ExtResource("2")
 op = 4
-target = &"bolt_sniper"
+target = &"bolt_field"
 
 [resource]
 script = ExtResource("1")
-id = &"bolt_sniper_protocol"
-title = "Branch: Long Bolt"
-description = "Bolt Turrets hit harder and farther, but fire slower. Choose 1 branch."
+id = &"bolt_field_protocol"
+title = "Branch: Static Field"
+description = "Bolt strikes create a short-lived electric field that repeatedly shocks enemies in place."
 weight = 6.0
 tags = Array[StringName]([&"shock"])
 max_stacks = 1

@@ -1,0 +1,477 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="mat_ground"]
+albedo_color = Color(0.16, 0.23, 0.21, 1)
+roughness = 1.0
+
+[sub_resource type="BoxMesh" id="mesh_ground"]
+size = Vector3(11, 0.3, 34)
+
+[sub_resource type="StandardMaterial3D" id="mat_path"]
+albedo_color = Color(0.31, 0.31, 0.29, 1)
+roughness = 0.96
+
+[sub_resource type="BoxMesh" id="mesh_path"]
+size = Vector3(7, 0.06, 32)
+
+[sub_resource type="StandardMaterial3D" id="mat_fortress"]
+albedo_color = Color(0.42, 0.47, 0.58, 1)
+metallic = 0.15
+roughness = 0.72
+
+[sub_resource type="BoxMesh" id="mesh_fortress_wall"]
+size = Vector3(9.6, 0.18, 0.22)
+
+[sub_resource type="BoxMesh" id="mesh_fortress_tower"]
+size = Vector3(0.7, 0.9, 0.7)
+
+[sub_resource type="StandardMaterial3D" id="mat_rock"]
+albedo_color = Color(0.38, 0.42, 0.47, 1)
+metallic = 0.28
+roughness = 0.84
+
+[sub_resource type="BoxMesh" id="mesh_rock"]
+size = Vector3(1.0, 0.8, 1.25)
+
+[sub_resource type="StandardMaterial3D" id="mat_slot"]
+albedo_color = Color(0.44, 0.41, 0.29, 1)
+metallic = 0.16
+roughness = 0.9
+
+[sub_resource type="CylinderMesh" id="mesh_slot"]
+top_radius = 0.56
+bottom_radius = 0.62
+height = 0.1
+radial_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="mat_shoulder"]
+albedo_color = Color(0.22, 0.31, 0.28, 1)
+roughness = 1.0
+
+[sub_resource type="BoxMesh" id="mesh_shoulder"]
+size = Vector3(1.45, 0.05, 32)
+
+[sub_resource type="StandardMaterial3D" id="mat_warning"]
+albedo_color = Color(0.65, 0.49, 0.12, 1)
+emission_enabled = true
+emission = Color(0.35, 0.24, 0.05, 1)
+roughness = 0.55
+
+[sub_resource type="BoxMesh" id="mesh_warning_strip"]
+size = Vector3(2.2, 0.04, 0.35)
+
+[sub_resource type="BoxMesh" id="mesh_gate_door"]
+size = Vector3(2.4, 0.18, 0.18)
+
+[sub_resource type="BoxMesh" id="mesh_gate_lintel"]
+size = Vector3(2.8, 0.08, 0.12)
+
+[sub_resource type="BoxMesh" id="mesh_gate_light"]
+size = Vector3(0.42, 0.18, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="mat_road_line"]
+albedo_color = Color(0.72, 0.68, 0.54, 1)
+roughness = 0.88
+
+[sub_resource type="BoxMesh" id="mesh_road_line"]
+size = Vector3(0.18, 0.03, 1.05)
+
+[sub_resource type="StandardMaterial3D" id="mat_drain"]
+albedo_color = Color(0.11, 0.12, 0.12, 1)
+metallic = 0.22
+roughness = 0.7
+
+[sub_resource type="BoxMesh" id="mesh_drain"]
+size = Vector3(0.22, 0.05, 32)
+
+[sub_resource type="StandardMaterial3D" id="mat_gate_dark"]
+albedo_color = Color(0.18, 0.19, 0.22, 1)
+metallic = 0.35
+roughness = 0.62
+
+[sub_resource type="StandardMaterial3D" id="mat_sandbag"]
+albedo_color = Color(0.52, 0.48, 0.34, 1)
+roughness = 0.98
+
+[sub_resource type="StandardMaterial3D" id="mat_barrel"]
+albedo_color = Color(0.24, 0.27, 0.31, 1)
+metallic = 0.22
+roughness = 0.7
+
+[sub_resource type="BoxMesh" id="mesh_gate_column"]
+size = Vector3(0.45, 0.8, 0.45)
+
+[sub_resource type="BoxMesh" id="mesh_gate_canopy"]
+size = Vector3(9.8, 0.08, 0.16)
+
+[sub_resource type="BoxMesh" id="mesh_sandbag_long"]
+size = Vector3(2.3, 0.55, 0.42)
+
+[sub_resource type="BoxMesh" id="mesh_sandbag_short"]
+size = Vector3(1.1, 0.48, 0.38)
+
+[sub_resource type="CylinderMesh" id="mesh_barrel"]
+top_radius = 0.23
+bottom_radius = 0.25
+height = 0.62
+radial_segments = 10
+
+[sub_resource type="StandardMaterial3D" id="mat_pad_plate"]
+albedo_color = Color(0.30, 0.31, 0.28, 1)
+metallic = 0.18
+roughness = 0.86
+
+[sub_resource type="BoxMesh" id="mesh_pad_plate"]
+size = Vector3(1.55, 0.05, 1.55)
+
+[sub_resource type="BoxMesh" id="mesh_pad_socket"]
+size = Vector3(0.82, 0.08, 0.82)
+
+[sub_resource type="StandardMaterial3D" id="mat_contam"]
+albedo_color = Color(0.21, 0.40, 0.24, 1)
+emission_enabled = true
+emission = Color(0.05, 0.16, 0.06, 1)
+roughness = 0.92
+
+[sub_resource type="BoxMesh" id="mesh_contam"]
+size = Vector3(1.2, 0.03, 0.9)
+
+[sub_resource type="BoxMesh" id="mesh_backfield_wall"]
+size = Vector3(10.4, 5.8, 1.2)
+
+[sub_resource type="BoxMesh" id="mesh_backfield_door"]
+size = Vector3(5.0, 3.2, 0.65)
+
+[sub_resource type="BoxMesh" id="mesh_backfield_frame"]
+size = Vector3(6.6, 0.42, 0.8)
+
+[sub_resource type="BoxMesh" id="mesh_backfield_tower"]
+size = Vector3(1.8, 6.2, 1.8)
+
+[node name="Arena" type="Node3D"]
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+position = Vector3(0, -0.15, -7.5)
+mesh = SubResource("mesh_ground")
+material_override = SubResource("mat_ground")
+
+[node name="Path" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.01, -7.5)
+mesh = SubResource("mesh_path")
+material_override = SubResource("mat_path")
+
+[node name="LeftShoulder" type="MeshInstance3D" parent="."]
+position = Vector3(-4.275, 0.015, -7.5)
+mesh = SubResource("mesh_shoulder")
+material_override = SubResource("mat_shoulder")
+
+[node name="RightShoulder" type="MeshInstance3D" parent="."]
+position = Vector3(4.275, 0.015, -7.5)
+mesh = SubResource("mesh_shoulder")
+material_override = SubResource("mat_shoulder")
+
+[node name="DrainLeft" type="MeshInstance3D" parent="."]
+position = Vector3(-3.62, 0.03, -7.5)
+mesh = SubResource("mesh_drain")
+material_override = SubResource("mat_drain")
+
+[node name="DrainRight" type="MeshInstance3D" parent="."]
+position = Vector3(3.62, 0.03, -7.5)
+mesh = SubResource("mesh_drain")
+material_override = SubResource("mat_drain")
+
+[node name="CenterLine01" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.03, -14.8)
+mesh = SubResource("mesh_road_line")
+material_override = SubResource("mat_road_line")
+
+[node name="CenterLine02" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.03, -11.6)
+mesh = SubResource("mesh_road_line")
+material_override = SubResource("mat_road_line")
+
+[node name="CenterLine03" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.03, -8.4)
+mesh = SubResource("mesh_road_line")
+material_override = SubResource("mat_road_line")
+
+[node name="CenterLine04" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.03, -5.2)
+mesh = SubResource("mesh_road_line")
+material_override = SubResource("mat_road_line")
+
+[node name="CenterLine05" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.03, -2.0)
+mesh = SubResource("mesh_road_line")
+material_override = SubResource("mat_road_line")
+
+[node name="CenterLine06" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.03, 1.2)
+mesh = SubResource("mesh_road_line")
+material_override = SubResource("mat_road_line")
+
+[node name="CenterLine07" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.03, 4.4)
+mesh = SubResource("mesh_road_line")
+material_override = SubResource("mat_road_line")
+
+[node name="Backfield" type="Node3D" parent="."]
+
+[node name="RearWall" type="MeshInstance3D" parent="Backfield"]
+position = Vector3(0, 2.9, -18.4)
+mesh = SubResource("mesh_backfield_wall")
+material_override = SubResource("mat_gate_dark")
+
+[node name="RearDoor" type="MeshInstance3D" parent="Backfield"]
+position = Vector3(0, 1.65, -17.75)
+mesh = SubResource("mesh_backfield_door")
+material_override = SubResource("mat_fortress")
+
+[node name="RearFrame" type="MeshInstance3D" parent="Backfield"]
+position = Vector3(0, 3.75, -17.55)
+mesh = SubResource("mesh_backfield_frame")
+material_override = SubResource("mat_warning")
+
+[node name="RearTowerLeft" type="MeshInstance3D" parent="Backfield"]
+position = Vector3(-4.45, 3.1, -18.0)
+mesh = SubResource("mesh_backfield_tower")
+material_override = SubResource("mat_gate_dark")
+
+[node name="RearTowerRight" type="MeshInstance3D" parent="Backfield"]
+position = Vector3(4.45, 3.1, -18.0)
+mesh = SubResource("mesh_backfield_tower")
+material_override = SubResource("mat_gate_dark")
+
+[node name="RearWarningLightLeft" type="MeshInstance3D" parent="Backfield"]
+position = Vector3(-1.55, 2.75, -17.0)
+mesh = SubResource("mesh_gate_light")
+material_override = SubResource("mat_warning")
+
+[node name="RearWarningLightRight" type="MeshInstance3D" parent="Backfield"]
+position = Vector3(1.55, 2.75, -17.0)
+mesh = SubResource("mesh_gate_light")
+material_override = SubResource("mat_warning")
+
+[node name="Fortress" type="Node3D" parent="."]
+position = Vector3(0, 0, 7.7)
+
+[node name="Wall" type="MeshInstance3D" parent="Fortress"]
+position = Vector3(0, 0.12, 0.10)
+mesh = SubResource("mesh_fortress_wall")
+material_override = SubResource("mat_fortress")
+
+[node name="TowerLeft" type="MeshInstance3D" parent="Fortress"]
+position = Vector3(-4.72, 0.42, 0.06)
+mesh = SubResource("mesh_gate_column")
+material_override = SubResource("mat_gate_dark")
+
+[node name="TowerRight" type="MeshInstance3D" parent="Fortress"]
+position = Vector3(4.72, 0.42, 0.06)
+mesh = SubResource("mesh_gate_column")
+material_override = SubResource("mat_gate_dark")
+
+[node name="GateDoor" type="MeshInstance3D" parent="Fortress"]
+position = Vector3(0, 0.16, -0.20)
+mesh = SubResource("mesh_gate_door")
+material_override = SubResource("mat_gate_dark")
+
+[node name="GateLintel" type="MeshInstance3D" parent="Fortress"]
+position = Vector3(0, 0.18, -0.10)
+mesh = SubResource("mesh_gate_lintel")
+material_override = SubResource("mat_fortress")
+
+[node name="GateCanopy" type="MeshInstance3D" parent="Fortress"]
+position = Vector3(0, 0.06, 0.02)
+mesh = SubResource("mesh_gate_canopy")
+material_override = SubResource("mat_gate_dark")
+
+[node name="SandbagMidLeft" type="MeshInstance3D" parent="Fortress"]
+position = Vector3(-1.38, 0.52, -0.48)
+mesh = SubResource("mesh_sandbag_long")
+material_override = SubResource("mat_sandbag")
+
+[node name="SandbagMidRight" type="MeshInstance3D" parent="Fortress"]
+position = Vector3(1.38, 0.52, -0.48)
+mesh = SubResource("mesh_sandbag_long")
+material_override = SubResource("mat_sandbag")
+
+[node name="SandbagFrontLeft" type="MeshInstance3D" parent="Fortress"]
+position = Vector3(-2.95, 0.42, -0.58)
+mesh = SubResource("mesh_sandbag_short")
+material_override = SubResource("mat_sandbag")
+
+[node name="SandbagFrontRight" type="MeshInstance3D" parent="Fortress"]
+position = Vector3(2.95, 0.42, -0.58)
+mesh = SubResource("mesh_sandbag_short")
+material_override = SubResource("mat_sandbag")
+
+[node name="BarrelLeft" type="MeshInstance3D" parent="Fortress"]
+position = Vector3(-3.85, 0.32, -0.5)
+mesh = SubResource("mesh_barrel")
+material_override = SubResource("mat_barrel")
+
+[node name="BarrelRight" type="MeshInstance3D" parent="Fortress"]
+position = Vector3(3.85, 0.32, -0.5)
+mesh = SubResource("mesh_barrel")
+material_override = SubResource("mat_barrel")
+
+[node name="WarningLightLeft" type="MeshInstance3D" parent="Fortress"]
+position = Vector3(-2.55, 0.28, -0.16)
+mesh = SubResource("mesh_gate_light")
+material_override = SubResource("mat_warning")
+
+[node name="WarningLightRight" type="MeshInstance3D" parent="Fortress"]
+position = Vector3(2.55, 0.28, -0.16)
+mesh = SubResource("mesh_gate_light")
+material_override = SubResource("mat_warning")
+
+[node name="GateStripLeft" type="MeshInstance3D" parent="Fortress"]
+position = Vector3(-1.15, 0.02, -0.85)
+mesh = SubResource("mesh_warning_strip")
+material_override = SubResource("mat_warning")
+
+[node name="GateStripRight" type="MeshInstance3D" parent="Fortress"]
+position = Vector3(1.15, 0.02, -0.85)
+mesh = SubResource("mesh_warning_strip")
+material_override = SubResource("mat_warning")
+
+[node name="Decorations" type="Node3D" parent="."]
+
+[node name="Rock1" type="MeshInstance3D" parent="Decorations"]
+position = Vector3(-4.4, 0, -6)
+rotation = Vector3(0, 0.12, 0)
+scale = Vector3(1.2, 0.65, 0.55)
+mesh = SubResource("mesh_rock")
+material_override = SubResource("mat_rock")
+
+[node name="Rock2" type="MeshInstance3D" parent="Decorations"]
+position = Vector3(4.35, 0, -3.9)
+rotation = Vector3(0, 0.0, 0)
+scale = Vector3(0.78, 1.45, 0.72)
+mesh = SubResource("mesh_rock")
+material_override = SubResource("mat_rock")
+
+[node name="Rock3" type="MeshInstance3D" parent="Decorations"]
+position = Vector3(-4.18, 0, 3.15)
+rotation = Vector3(0, 0.0, 0)
+scale = Vector3(1.0, 0.82, 1.35)
+mesh = SubResource("mesh_rock")
+material_override = SubResource("mat_rock")
+
+[node name="ContamPatchLeft" type="MeshInstance3D" parent="Decorations"]
+position = Vector3(-4.55, 0.02, 5.05)
+rotation = Vector3(0, 0.18, 0)
+mesh = SubResource("mesh_contam")
+material_override = SubResource("mat_contam")
+
+[node name="ContamPatchRight" type="MeshInstance3D" parent="Decorations"]
+position = Vector3(4.38, 0.02, -5.05)
+rotation = Vector3(0, -0.24, 0)
+mesh = SubResource("mesh_contam")
+material_override = SubResource("mat_contam")
+
+[node name="TowerSlots" type="Node3D" parent="."]
+
+[node name="Slot01" type="Marker3D" parent="TowerSlots"]
+position = Vector3(-3.5, 0, 0.5)
+
+[node name="Pad01" type="MeshInstance3D" parent="TowerSlots/Slot01"]
+mesh = SubResource("mesh_slot")
+material_override = SubResource("mat_slot")
+
+[node name="Plate01" type="MeshInstance3D" parent="TowerSlots/Slot01"]
+position = Vector3(0, -0.02, 0)
+mesh = SubResource("mesh_pad_plate")
+material_override = SubResource("mat_pad_plate")
+
+[node name="Socket01" type="MeshInstance3D" parent="TowerSlots/Slot01"]
+position = Vector3(0, 0.04, 0)
+mesh = SubResource("mesh_pad_socket")
+material_override = SubResource("mat_gate_dark")
+
+[node name="Number01" type="Label3D" parent="TowerSlots/Slot01"]
+position = Vector3(0, 0.16, 0)
+text = "3"
+billboard = 1
+modulate = Color(0.68, 0.55, 0.10, 1)
+outline_modulate = Color(0.18, 0.14, 0.04, 1)
+outline_size = 8
+font_size = 64
+
+[node name="Slot02" type="Marker3D" parent="TowerSlots"]
+position = Vector3(3.5, 0, 0.5)
+
+[node name="Pad02" type="MeshInstance3D" parent="TowerSlots/Slot02"]
+mesh = SubResource("mesh_slot")
+material_override = SubResource("mat_slot")
+
+[node name="Plate02" type="MeshInstance3D" parent="TowerSlots/Slot02"]
+position = Vector3(0, -0.02, 0)
+mesh = SubResource("mesh_pad_plate")
+material_override = SubResource("mat_pad_plate")
+
+[node name="Socket02" type="MeshInstance3D" parent="TowerSlots/Slot02"]
+position = Vector3(0, 0.04, 0)
+mesh = SubResource("mesh_pad_socket")
+material_override = SubResource("mat_gate_dark")
+
+[node name="Number02" type="Label3D" parent="TowerSlots/Slot02"]
+position = Vector3(0, 0.16, 0)
+text = "4"
+billboard = 1
+modulate = Color(0.68, 0.55, 0.10, 1)
+outline_modulate = Color(0.18, 0.14, 0.04, 1)
+outline_size = 8
+font_size = 64
+
+[node name="Slot03" type="Marker3D" parent="TowerSlots"]
+position = Vector3(-3.5, 0, -2.5)
+
+[node name="Pad03" type="MeshInstance3D" parent="TowerSlots/Slot03"]
+mesh = SubResource("mesh_slot")
+material_override = SubResource("mat_slot")
+
+[node name="Plate03" type="MeshInstance3D" parent="TowerSlots/Slot03"]
+position = Vector3(0, -0.02, 0)
+mesh = SubResource("mesh_pad_plate")
+material_override = SubResource("mat_pad_plate")
+
+[node name="Socket03" type="MeshInstance3D" parent="TowerSlots/Slot03"]
+position = Vector3(0, 0.04, 0)
+mesh = SubResource("mesh_pad_socket")
+material_override = SubResource("mat_gate_dark")
+
+[node name="Number03" type="Label3D" parent="TowerSlots/Slot03"]
+position = Vector3(0, 0.16, 0)
+text = "1"
+billboard = 1
+modulate = Color(0.68, 0.55, 0.10, 1)
+outline_modulate = Color(0.18, 0.14, 0.04, 1)
+outline_size = 8
+font_size = 64
+
+[node name="Slot04" type="Marker3D" parent="TowerSlots"]
+position = Vector3(3.5, 0, -2.5)
+
+[node name="Pad04" type="MeshInstance3D" parent="TowerSlots/Slot04"]
+mesh = SubResource("mesh_slot")
+material_override = SubResource("mat_slot")
+
+[node name="Plate04" type="MeshInstance3D" parent="TowerSlots/Slot04"]
+position = Vector3(0, -0.02, 0)
+mesh = SubResource("mesh_pad_plate")
+material_override = SubResource("mat_pad_plate")
+
+[node name="Socket04" type="MeshInstance3D" parent="TowerSlots/Slot04"]
+position = Vector3(0, 0.04, 0)
+mesh = SubResource("mesh_pad_socket")
+material_override = SubResource("mat_gate_dark")
+
+[node name="Number04" type="Label3D" parent="TowerSlots/Slot04"]
+position = Vector3(0, 0.16, 0)
+text = "2"
+billboard = 1
+modulate = Color(0.68, 0.55, 0.10, 1)
+outline_modulate = Color(0.18, 0.14, 0.04, 1)
+outline_size = 8
+font_size = 64

@@ -47,7 +47,7 @@ func _stage_definitions() -> Array[Dictionary]:
 	var defs: Array[Dictionary] = []
 	# --- Stage 1: hand-authored tutorial pacing (grunt / runner / spitter).
 	defs.append({
-		"index": 1, "name": "Outer Fields", "reward": 6,
+		"index": 1, "name": "Processing Yard", "reward": 6,
 		"waves": [
 			{"groups": [["grunt", 6, 1.2]]},
 			{"groups": [["grunt", 6, 1.0], ["runner", 3, 0.8, 3.0]]},
@@ -56,7 +56,7 @@ func _stage_definitions() -> Array[Dictionary]:
 	})
 	# --- Stage 2: hand-authored; introduces the brute and the boss.
 	defs.append({
-		"index": 2, "name": "Broken Gate", "reward": 8, "hp_scale": 1.1,
+		"index": 2, "name": "Service Gate", "reward": 8, "hp_scale": 1.1,
 		"waves": [
 			{"groups": [["grunt", 8, 0.9], ["runner", 3, 0.8, 4.0]]},
 			{"groups": [["brute", 2, 4.0], ["grunt", 6, 1.0, 2.0]]},
@@ -65,8 +65,10 @@ func _stage_definitions() -> Array[Dictionary]:
 		],
 	})
 	# --- Stages 3-30: rotating wave patterns + difficulty scaling.
-	var names := ["Ash Road", "Mire", "Watchpost", "Deep Vale", "Ridge", "Hollow",
-		"Ramparts", "Old Keep", "Frontier", "Wastes", "Crossing", "Bluffs", "Sanctum"]
+	var names := ["Drain Channel", "Pump Station", "Control Annex", "Runoff Line",
+		"Reservoir Access", "Loading Yard", "Pressure Deck", "Lab Intake",
+		"Transit Spine", "Cooling Duct", "Service Crossing", "Flooded Block",
+		"Containment Core"]
 	for n in range(3, 31):
 		var hp_scale := 1.0 + 0.12 * (n - 2)
 		var speed_scale := minf(1.0 + 0.02 * (n - 2), 1.5)

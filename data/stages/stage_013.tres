@@ -27,6 +27,8 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_tssuv"]
 script = ExtResource("2_ls7b1")
 groups = Array[ExtResource("3_6x2a7")]([SubResource("Resource_pi48k"), SubResource("Resource_vbjon"), SubResource("Resource_hksxx")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_wxik5"]
 script = ExtResource("3_6x2a7")
@@ -43,6 +45,8 @@ start_delay = 1.5
 [sub_resource type="Resource" id="Resource_g8xlq"]
 script = ExtResource("2_ls7b1")
 groups = Array[ExtResource("3_6x2a7")]([SubResource("Resource_wxik5"), SubResource("Resource_gqpco")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_ccu4w"]
 script = ExtResource("3_6x2a7")
@@ -59,6 +63,8 @@ start_delay = 3.0
 [sub_resource type="Resource" id="Resource_tplr1"]
 script = ExtResource("2_ls7b1")
 groups = Array[ExtResource("3_6x2a7")]([SubResource("Resource_ccu4w"), SubResource("Resource_yrlen")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [sub_resource type="Resource" id="Resource_ump6e"]
 script = ExtResource("3_6x2a7")
@@ -83,13 +89,17 @@ start_delay = 5.0
 [sub_resource type="Resource" id="Resource_prvv5"]
 script = ExtResource("2_ls7b1")
 groups = Array[ExtResource("3_6x2a7")]([SubResource("Resource_ump6e"), SubResource("Resource_na86m"), SubResource("Resource_3j300")])
+intent = &"reinforce"
+label = "Reinforcement"
 
 [resource]
 script = ExtResource("1_ua07a")
 id = &"stage_013"
-display_name = "Crossing 13"
+display_name = "Service Crossing 13"
 index = 13
+act_number = 2
+intent = &"reinforce"
 reward_cores = 19
-hp_scale = 2.32
-speed_scale = 1.22
+hp_scale = 2.2
+speed_scale = 1.2
 waves = Array[ExtResource("2_ls7b1")]([SubResource("Resource_tssuv"), SubResource("Resource_g8xlq"), SubResource("Resource_tplr1"), SubResource("Resource_prvv5")])

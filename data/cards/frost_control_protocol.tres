@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://data/types/card_data.gd" id="1"]
+[ext_resource type="Script" path="res://data/types/card_effect.gd" id="2"]
+
+[sub_resource type="Resource" id="eff1"]
+script = ExtResource("2")
+op = 4
+target = &"frost_control"
+
+[resource]
+script = ExtResource("1")
+id = &"frost_control_protocol"
+title = "Branch: Deep Chill"
+description = "Frost Turrets lock targets down for longer and make lane control safer."
+weight = 6.0
+tags = Array[StringName]([&"frost", &"support"])
+max_stacks = 1
+prerequisites = Array[StringName]([&"build_frost"])
+excludes = Array[StringName]([&"frost_expose_protocol"])
+effects = Array[ExtResource("2")]([SubResource("eff1")])

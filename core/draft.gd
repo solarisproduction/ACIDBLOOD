@@ -11,6 +11,8 @@ extends RefCounted
 ##            (e.g. build cards when all tower slots are full)
 ##   fortress_hp / fortress_max_hp: optional runtime health context used to
 ##            suppress pure-heal cards when they have no value
+##   under_pressure / critical_pressure: optional live threat context used to
+##            weight emergency responses without replacing build choices
 ##   draft_index: optional 1-based draft number in this run, used for light
 ##            early-run guardrails
 static func is_eligible(card: CardData, ctx: Dictionary) -> bool:
@@ -36,6 +38,12 @@ static func is_eligible(card: CardData, ctx: Dictionary) -> bool:
 			return false
 	return true
 
+static func _has_fortress_recovery(card: CardData) -> bool:
+	for eff in card.effects:
+		if eff.op == CardEffect.Op.HEAL_FORTRESS:
+			return true
+	return false
+
 static func _is_pure_fortress_heal(card: CardData) -> bool:
 	if card.effects.is_empty():
 		return false
@@ -51,17 +59,25 @@ static func generate_offer(catalog: Array[CardData], ctx: Dictionary, rng: DetRN
 	for card in catalog:
 		if is_eligible(card, ctx):
 			pool.append(card)
+	var acquired_tags := _acquired_tag_counts(catalog, ctx.get("acquired", {}))
 	var offer: Array[CardData] = []
 	var draft_index := int(ctx.get("draft_index", 0))
-	if draft_index > 0 and draft_index <= 2 and count > 0:
+	var critical_pressure := bool(ctx.get("critical_pressure", false))
+	if critical_pressure and count > 0:
+		var emergency_pool := _cards_with_role(pool, &"emergency")
+		var emergency_card := _draw_weighted(emergency_pool, rng, ctx, acquired_tags, draft_index)
+		if emergency_card != null:
+			offer.append(emergency_card)
+			pool.erase(emergency_card)
+	if draft_index > 0 and draft_index <= 2 and count > offer.size():
 		var build_pool := _cards_with_role(pool, &"build")
-		var guaranteed_build := _draw_weighted(build_pool, rng)
+		var guaranteed_build := _draw_weighted(build_pool, rng, ctx, acquired_tags, draft_index)
 		if guaranteed_build != null:
 			offer.append(guaranteed_build)
 			pool.erase(guaranteed_build)
 	while offer.size() < count and not pool.is_empty():
 		var candidate_pool := _pool_with_category_guard(pool, offer)
-		var picked := _draw_weighted(candidate_pool, rng)
+		var picked := _draw_weighted(candidate_pool, rng, ctx, acquired_tags, draft_index)
 		if picked == null:
 			break
 		offer.append(picked)
@@ -86,10 +102,10 @@ static func card_role(card: CardData) -> StringName:
 			return &"build"
 		if eff.op == CardEffect.Op.APPLY_BRANCH:
 			return &"choice"
+	if _has_fortress_recovery(card):
+		return &"emergency"
 	if not card.prerequisites.is_empty():
 		return &"upgrade"
-	if _is_pure_fortress_heal(card):
-		return &"recovery"
 	return &"passive"
 
 static func card_category(card: CardData) -> StringName:
@@ -111,16 +127,88 @@ static func _cards_with_role(cards: Array[CardData], role: StringName) -> Array[
 			out.append(card)
 	return out
 
-static func _draw_weighted(cards: Array[CardData], rng: DetRNG) -> CardData:
+static func _draw_weighted(cards: Array[CardData], rng: DetRNG, ctx: Dictionary, acquired_tags: Dictionary = {}, draft_index: int = 0) -> CardData:
 	if cards.is_empty():
 		return null
 	var weights: Array[float] = []
 	for card in cards:
-		weights.append(card.weight)
+		weights.append(_effective_weight(card, ctx, acquired_tags, draft_index))
 	var idx := rng.weighted_index(weights)
 	if idx < 0:
 		return null
 	return cards[idx]
+
+static func _effective_weight(card: CardData, ctx: Dictionary, acquired_tags: Dictionary, draft_index: int) -> float:
+	var weight := maxf(0.01, card.weight)
+	var overlap := 0
+	for tag in card.tags:
+		overlap += int(acquired_tags.get(tag, 0))
+	if overlap > 0:
+		weight *= 1.0 + minf(0.85, float(overlap) * 0.18)
+	var preferred_categories: Array = ctx.get("preferred_categories", [])
+	if not preferred_categories.is_empty():
+		var category := card_category(card)
+		if category in preferred_categories:
+			weight *= 1.14
+	var role := card_role(card)
+	if role == &"build":
+		weight *= _build_context_multiplier(ctx, draft_index)
+	elif role == &"emergency":
+		weight *= _recovery_context_multiplier(ctx)
+	elif role == &"choice":
+		weight *= 1.05
+	return weight
+
+static func _build_context_multiplier(ctx: Dictionary, draft_index: int) -> float:
+	var multiplier := 1.0
+	if draft_index <= 4:
+		multiplier *= 1.18
+	var slots_available := int(ctx.get("slots_available", 0))
+	var active_turrets := int(ctx.get("active_turrets", 0))
+	if slots_available > 0:
+		var structural_need := 1.0
+		if active_turrets <= 0:
+			structural_need = 1.0
+		elif active_turrets == 1:
+			structural_need = 0.72
+		elif active_turrets == 2:
+			structural_need = 0.45
+		else:
+			structural_need = 0.25
+		multiplier *= 1.0 + minf(0.5, structural_need * 0.35 + float(slots_available) * 0.06)
+	else:
+		multiplier *= 0.7
+	return multiplier
+
+static func _recovery_context_multiplier(ctx: Dictionary) -> float:
+	var hp := float(ctx.get("fortress_hp", -1.0))
+	var max_hp := float(ctx.get("fortress_max_hp", -1.0))
+	if hp < 0.0 or max_hp <= 0.0:
+		return 1.0
+	var missing := clampf(1.0 - (hp / max_hp), 0.0, 1.0)
+	if missing <= 0.0:
+		return 0.8
+	var multiplier := 1.0 + minf(0.75, missing * 1.35)
+	if bool(ctx.get("critical_pressure", false)):
+		multiplier *= 1.25
+	return multiplier
+
+static func _acquired_tag_counts(catalog: Array[CardData], acquired: Dictionary) -> Dictionary:
+	var counts: Dictionary = {}
+	for card_id in acquired.keys():
+		var card := _find_card(catalog, card_id)
+		if card == null:
+			continue
+		var copies := int(acquired.get(card_id, 0))
+		for tag in card.tags:
+			counts[tag] = int(counts.get(tag, 0)) + copies
+	return counts
+
+static func _find_card(catalog: Array[CardData], id: StringName) -> CardData:
+	for card in catalog:
+		if card.id == id:
+			return card
+	return null
 
 static func _pool_with_category_guard(pool: Array[CardData], offer: Array[CardData]) -> Array[CardData]:
 	if offer.size() < 2:

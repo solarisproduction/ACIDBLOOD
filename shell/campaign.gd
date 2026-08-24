@@ -33,7 +33,9 @@ func _refresh() -> void:
 		else:
 			btn.text = "%d\nX" % stage.index
 			btn.disabled = true
-		btn.tooltip_text = stage.display_name
+		btn.tooltip_text = "Act %d • %s\n%s" % [stage.resolved_act_number(), stage.intent_label(), stage.display_name]
+		if not stage.briefing.is_empty():
+			btn.tooltip_text += "\n" + stage.briefing
 		btn.pressed.connect(func() -> void: Game.start_stage(stage))
 		grid.add_child(btn)
 

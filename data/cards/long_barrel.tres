@@ -13,7 +13,7 @@ target = &""
 [resource]
 script = ExtResource("1")
 id = &"long_barrel"
-title = "Range Up"
+title = "Long Barrel"
 description = "Guardian attack range +1.5."
 weight = 8.0
 tags = Array[StringName]([&"guardian", &"support"])
