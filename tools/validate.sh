@@ -128,7 +128,9 @@ done
 echo ""
 echo "================ VALIDATION REPORT ================"
 for r in "${RESULTS[@]}"; do echo "$r"; done
-for w in "${WARNINGS[@]}"; do echo "$w"; done
+if [ "${#WARNINGS[@]}" -gt 0 ]; then
+    for w in "${WARNINGS[@]}"; do echo "$w"; done
+fi
 echo "==================================================="
 if [ $FAIL -ne 0 ]; then
     echo "RESULT: FAIL"
