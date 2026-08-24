@@ -1,19 +1,32 @@
 # Handoff
 
-Recommended executor: Luna Medium
-Reason: cross-platform GdUnit CI investigation
+Recommended executor for next task: Luna Low
+Reason: infrastructure is green; the next task should be a bounded gameplay/design slice.
 
-## Infrastructure hardening checkpoint
-- A minimal clean-machine GitHub Actions workflow is now defined at
-  `.github/workflows/validate.yml` for pushes to `main`, pull requests targeting
-  `main`, and manual dispatch. It runs on `ubuntu-latest`, installs Godot
-  `4.7.1` with `chickensoft-games/setup-godot` v2.4.1 pinned to
-  `f166999204a4f2722c6fe042fbaa3b3ea0d9c789`, verifies the version, and runs
-  `bash tools/validate.sh` as the sole CI validation command.
+## Pass 08 factual checkpoint
+- Infrastructure hardening is complete. GitHub Actions run `32760784952` is
+  green for the static checks and canonical validation jobs. Godot `4.7.1`
+  runs on clean Ubuntu; `tools/validate.sh` remains the full local authority.
+- `gdlint`, check-only `gdformat`, and lightweight `pre-commit` hooks are
+  active. Full validation is not required on every pre-commit invocation.
+- The verified playable loop is Command/Home → Operations/Campaign → Battle →
+  Report/Result → Operations, with sequential stage unlocks and local save.
+- Battle is a perspective single-lane approach with a Barricade, Guardian
+  behind it, four fixed numbered turret slots, and no branching path grammar.
+- The current content has three data-driven turret families with two branches
+  each, five enemy profiles, twenty cards, three permanent upgrade tracks, and
+  thirty stages. Stages 1–2 are authored teaching/composition encounters;
+  Stage 3 onward is predominantly generated/repeated wave grammar with stat
+  scaling.
+- Current combat feedback is a readable prototype skeleton: recoil, camera
+  shake, impact/death bursts, lightning/frost telegraphs, and tracers exist;
+  no audio or particle layer is implemented. The campaign still exposes
+  prototype `DEV` controls.
+
+## Infrastructure hardening history
 - The workflow is intentionally independent of MCP, local editor caches, local
-  saves, and local reports. The local authority remains `bash tools/validate.sh`;
-  GitHub Actions is an independent clean-machine authority and does not replace
-  Godot AI MCP editor/runtime inspection during development.
+  saves, and local reports. GitHub/main remains authoritative, and GitHub CI
+  does not replace Godot AI MCP editor/runtime inspection during development.
 - Repository-owned validation helpers now use `${TMPDIR:-/tmp}` for temporary
   user-data and log paths, and `tools/run_safe.sh` resolves the repository from
   its own location instead of assuming the developer's Mac path.
@@ -22,10 +35,17 @@ Reason: cross-platform GdUnit CI investigation
   file into a detected local Dropbox `ACIDBLOOD Context` folder. GitHub/main
   remains the authoritative source of truth; Dropbox is only a read bridge for
   ChatGPT/session continuity and is never a project dependency.
-- The first remote run completed after the infrastructure checkpoint but failed
-  8 existing save/load checks in the clean-machine suite (`Can't take value from
-  empty array`); local validation remains green, and the failure is still a
-  separate follow-up from this context-bridge slice.
+- The previous clean-machine save/load and optional GdUnit log-copy failures
+  were resolved by portable temporary paths and an ACIDBLOOD-owned guard; no
+  vendor code was changed.
+
+## Highest-leverage next design question
+- Current gap: the single-lane, fixed-slot battlefield and mostly repeated
+  generated waves provide limited spatial and encounter-structure decisions,
+  even though tower branches and cards now provide substantial build choice.
+- Question: How should the battlefield and encounter grammar create meaningful
+  positioning and timing decisions from the existing tower, enemy, and card
+  systems?
 
 ## What actually works (all verified this session)
 - The project identity is `ACIDBLOOD`. Future player-facing naming, visual

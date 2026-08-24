@@ -263,20 +263,21 @@ deepen the battlefield before adding horizontal content.
 
 ### NOW
 
-- Clean-machine GitHub CI using `setup-godot`, with `tools/validate.sh` as the
-  sole validation command. The workflow is implemented; its first remote run is
-  pending human review, commit, and push.
+- Return to gameplay/product development. The infrastructure hardening slice
+  is complete: clean Ubuntu CI runs the static job and the canonical
+  `tools/validate.sh` job.
 
-### NEXT
+### Completed infrastructure slice
 
-- `godot-gdscript-toolkit`, initially using `gdlint` and `gdformat --check`.
-- `pre-commit`, initially running cheap checks only.
-- Integrate the static checks into GitHub Actions.
-- Do not enable automatic global formatting.
-
-### THEN
-
-- Stop infrastructure hardening and return to gameplay/product development.
+- `godot-gdscript-toolkit` 4.5.0 is pinned by commit in
+  `.pre-commit-config.yaml`; `gdlint` and check-only `gdformat` are active on
+  the bounded clean `data/types/` adoption boundary.
+- `pre-commit` 4.3.0 is pinned in clean CI and runs lightweight whitespace,
+  EOF, `gdlint`, and `gdformat --check` hooks. Full `tools/validate.sh` is not
+  required on every pre-commit invocation.
+- Existing legacy lint/format violations remain bounded adoption debt. Never
+  mass-run formatter write mode or add broad suppression merely for green CI.
+- Do not start another infrastructure initiative in this slice.
 
 ### Preserved combat-development and reference decisions
 

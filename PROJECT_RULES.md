@@ -116,11 +116,16 @@ sits.
 - GitHub Actions provides the independent clean-machine validation authority on
   Ubuntu with the exact project Godot version. It does not replace MCP-based
   editor/runtime inspection during development.
-- `godot-gdscript-toolkit` is the next approved static-analysis/tooling step.
-  Its initial checks are `gdlint` and `gdformat --check`.
-- `pre-commit` is the next approved local hook step. It initially runs cheap
-  checks only; the full `tools/validate.sh` command is not initially required
-  on every commit.
+- `godot-gdscript-toolkit` 4.5.0 is active through `.pre-commit-config.yaml`,
+  with `gdlint` and check-only `gdformat` bounded to the clean
+  `data/types/` adoption boundary. Existing legacy violations remain explicit
+  adoption debt; no repository-wide formatting is enabled.
+- `pre-commit` 4.3.0 is active for lightweight trailing-whitespace, EOF,
+  `gdlint`, and `gdformat --check` hooks. The full `tools/validate.sh` command
+  is not required on every pre-commit invocation.
+- GitHub Actions runs the same static checks on clean Ubuntu before the full
+  validation job. Infrastructure hardening is complete; new work returns to
+  gameplay/product development.
 - Do not enable automatic global formatting. Formatting changes must remain
   intentional, scoped, and reviewable.
 
