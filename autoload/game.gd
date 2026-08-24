@@ -54,6 +54,12 @@ func _process(_delta: float) -> void:
 		print("SMOKE_TIMEOUT")
 		get_tree().quit(3)
 
+func _scratch_save_path(filename: String) -> String:
+	var temp_root := OS.get_environment("TMPDIR")
+	if temp_root.is_empty():
+		temp_root = "/tmp"
+	return temp_root.path_join(filename)
+
 ## Dev tool: launches stage 1 and saves a viewport capture after the delay,
 ## for visual verification without manual play. Ignores pause (draft overlay
 ## stays open without autoplay, so late captures show the card UI).
@@ -73,7 +79,7 @@ func _start_smoke(stage_index: int) -> void:
 		print("SMOKE_ERROR missing stage %d" % stage_index)
 		get_tree().quit(2)
 		return
-	progression.save_path = "/private/tmp/acidblood-smoke-save.json"
+	progression.save_path = _scratch_save_path("acidblood-smoke-save.json")
 	start_stage(stage, 1337)
 
 func start_stage(stage: StageData, seed_override: int = 0) -> void:
