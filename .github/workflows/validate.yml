@@ -25,7 +25,8 @@ jobs:
             pre-commit==4.3.0
 
       - name: Run static checks and lightweight hooks
-        run: "$RUNNER_TEMP/acidblood-static/bin/pre-commit" run --all-files
+        run: |
+          "$RUNNER_TEMP/acidblood-static/bin/pre-commit" run --all-files
 
   validate:
     runs-on: ubuntu-latest
