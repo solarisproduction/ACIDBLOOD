@@ -16,6 +16,12 @@ func run_all(sink) -> void:
 	run_data_references(sink)
 	run_content_conventions(sink)
 
+static func scratch_path(filename: String) -> String:
+	var temp_root := OS.get_environment("TMPDIR")
+	if temp_root.is_empty():
+		temp_root = "/tmp"
+	return temp_root.path_join(filename)
+
 func _card_ids(cards: Array[CardData]) -> Array:
 	var out := []
 	for c in cards:
@@ -252,7 +258,7 @@ func run_stat_registry(sink) -> void:
 
 func run_progression_save_load(sink) -> void:
 	sink.section("progression save/load")
-	var path := "/private/tmp/acidblood-test_save_tmp.json"
+	var path := scratch_path("acidblood-test_save_tmp.json")
 	var p := Progression.new()
 	p.cores = 17
 	p.completed_stages = ["stage_001", "stage_002"]
@@ -305,7 +311,7 @@ func run_campaign_data(sink) -> void:
 			traversal_ok = false
 			break
 		t.apply_victory(ids[i], stages[i].reward_cores)
-	var path := "/private/tmp/acidblood-test_campaign_tmp.json"
+	var path := scratch_path("acidblood-test_campaign_tmp.json")
 	t.save(path)
 	var t2 := Progression.load_or_new(path)
 	sink.check("auto-win traversal unlocks all 30 stages in order", traversal_ok and t.completed_stages.size() == 30)
