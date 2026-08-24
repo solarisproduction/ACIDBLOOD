@@ -1,3 +1,4 @@
 #!/bin/bash
-cd "/Users/manumazzaro/Documents/Games/TD Game System" || exit 1
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$ROOT" || exit 1
 "$@"

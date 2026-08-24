@@ -1,5 +1,22 @@
 # Handoff
 
+## Infrastructure hardening checkpoint
+- A minimal clean-machine GitHub Actions workflow is now defined at
+  `.github/workflows/validate.yml` for pushes to `main`, pull requests targeting
+  `main`, and manual dispatch. It runs on `ubuntu-latest`, installs Godot
+  `4.7.1` with `chickensoft-games/setup-godot` v2.4.1 pinned to
+  `f166999204a4f2722c6fe042fbaa3b3ea0d9c789`, verifies the version, and runs
+  `bash tools/validate.sh` as the sole CI validation command.
+- The workflow is intentionally independent of MCP, local editor caches, local
+  saves, and local reports. The local authority remains `bash tools/validate.sh`;
+  GitHub Actions is an independent clean-machine authority and does not replace
+  Godot AI MCP editor/runtime inspection during development.
+- Repository-owned validation helpers now use `${TMPDIR:-/tmp}` for temporary
+  user-data and log paths, and `tools/run_safe.sh` resolves the repository from
+  its own location instead of assuming the developer's Mac path.
+- This workflow has not yet run on GitHub; the first remote run remains pending
+  human review, commit, and push.
+
 ## What actually works (all verified this session)
 - The project identity is `ACIDBLOOD`. Future player-facing naming, visual
   work, enemy direction, VFX, and art production should follow

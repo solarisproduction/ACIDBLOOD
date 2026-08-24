@@ -3,7 +3,8 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-OUT="/private/tmp/ACIDBLOOD_SESSION_CONTEXT.md"
+TEMP_ROOT="${TMPDIR:-/tmp}"
+OUT="${TEMP_ROOT%/}/ACIDBLOOD_SESSION_CONTEXT.md"
 
 section() {
 	printf '\n## %s\n\n' "$1" >> "$OUT"

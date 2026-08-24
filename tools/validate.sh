@@ -72,8 +72,9 @@ if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/n
 fi
 
 # --- 2. Headless import / parse check ---------------------------------
-VALIDATION_USER_DIR="/private/tmp/acidblood-validate-user"
-VALIDATION_LOG="/private/tmp/acidblood-validate-godot.log"
+TEMP_ROOT="${TMPDIR:-/tmp}"
+VALIDATION_USER_DIR="${TEMP_ROOT%/}/acidblood-validate-user"
+VALIDATION_LOG="${TEMP_ROOT%/}/acidblood-validate-godot.log"
 mkdir -p "$VALIDATION_USER_DIR"
 IMPORT_OUT="$(with_timeout 300 "$GODOT" --headless --log-file "$VALIDATION_LOG" --user-data-dir "$VALIDATION_USER_DIR" --path "$ROOT" --import 2>&1)"
 IMPORT_CODE=$?

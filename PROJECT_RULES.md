@@ -105,6 +105,25 @@ sits.
   ask for a project analysis and one execution plan before edits, and keep it
   inside the documented product direction instead of inventing new systems.
 
+## Approved engineering stack and responsibilities
+
+- Godot AI MCP is the local editor/runtime inspection and gameplay validation
+  path.
+- The 83-check suite covers the shared headless project rules and data checks.
+- GdUnit4 is the behavioral testing layer for stable scene/runtime assertions.
+- `tools/validate.sh` is the canonical local authority and runs the complete
+  local validation sequence.
+- GitHub Actions provides the independent clean-machine validation authority on
+  Ubuntu with the exact project Godot version. It does not replace MCP-based
+  editor/runtime inspection during development.
+- `godot-gdscript-toolkit` is the next approved static-analysis/tooling step.
+  Its initial checks are `gdlint` and `gdformat --check`.
+- `pre-commit` is the next approved local hook step. It initially runs cheap
+  checks only; the full `tools/validate.sh` command is not initially required
+  on every commit.
+- Do not enable automatic global formatting. Formatting changes must remain
+  intentional, scoped, and reviewable.
+
 ## Godot editing workflow
 - Prefer Godot/MCP for scene-oriented work when the operation is supported:
   inspect the project, run the scene, catch runtime errors, and save scene

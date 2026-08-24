@@ -3,6 +3,26 @@
 This repository is worked through the Godot AI MCP workflow for Godot-related
 inspection, edit, run, and validation tasks.
 
+## SESSION BOOTSTRAP
+
+Every new agent/session must begin by reading, in this order:
+
+1. `AGENTS.md`
+2. `PROJECT_RULES.md`
+3. `docs/HANDOFF.md`
+4. `docs/SYSTEM_BLUEPRINT.md`
+5. `docs/ACIDBLOOD_DIRECTION.md`
+6. `docs/ROADMAP.md`
+
+Before modifying anything, inspect:
+
+- `git status --short`
+- `git log -5 --oneline`
+- `git remote -v`
+
+Implementation and Git state are the factual authority if documentation
+conflicts with reality. Documentation drift must be reported and corrected.
+
 ## Required reading order
 
 Before changing Godot scenes, scripts, resources, runtime behavior, or
@@ -57,11 +77,30 @@ is available. Use the local validator for the authoritative headless pass.
 - Do not run destructive git operations such as `git reset --hard`,
   `git checkout --`, or blind file deletion outside an explicitly requested
   cleanup.
-- Do not commit or push automatically unless the user asks for it.
 - Keep writes inside the repository or `/private/tmp` unless the user
   explicitly requests another location.
 - Preserve unrelated dirty files. Do not normalize the worktree by discarding
   unknown changes.
+
+## AUTO-CHECKPOINT POLICY
+
+- Normal infrastructure and maintenance tasks may commit and push automatically
+  only after all objective validation gates pass.
+- Gameplay, product, large-architecture, or ambiguous changes use REVIEW MODE:
+  stop before commit and return the implementation for human review.
+- Never force-push, run `git reset --hard`, use destructive rebase/checkout,
+  delete unknown source files, commit failing validation, or amend an unrelated
+  commit.
+- After an automatic push, inspect the resulting GitHub Actions run.
+- If CI fails unexpectedly, report the failure before speculative repair unless
+  the task explicitly authorizes remediation.
+
+## DECISION CAPTURE GATE
+
+- Important approved, rejected, or deferred tools; engineering decisions;
+  workflow rules; product principles; known limitations; and future
+  capabilities must be preserved in the appropriate authoritative repository
+  document. Do not rely on chat history as the durable record.
 
 ## Validation contract
 

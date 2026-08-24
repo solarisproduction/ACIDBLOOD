@@ -261,20 +261,36 @@ deepen the battlefield before adding horizontal content.
 
 ## Tooling adoption state
 
-- Approved next:
-  - `godot-gdscript-toolkit`
-  - `pre-commit`
-  - clean-machine GitHub CI using `setup-godot`
-- Approved when combat design work begins:
-  - `Debug Draw 3D`
-- Reference only:
-  - mature open-source game implementations such as `Mindustry` for studying
-    data-driven patterns; never copy product design directly
-- Defer until a real need exists:
-  - `State Charts`
-  - `LimboAI`
-  - `Phantom Camera`
-  - `Sentry`
+### NOW
+
+- Clean-machine GitHub CI using `setup-godot`, with `tools/validate.sh` as the
+  sole validation command. The workflow is implemented; its first remote run is
+  pending human review, commit, and push.
+
+### NEXT
+
+- `godot-gdscript-toolkit`, initially using `gdlint` and `gdformat --check`.
+- `pre-commit`, initially running cheap checks only.
+- Integrate the static checks into GitHub Actions.
+- Do not enable automatic global formatting.
+
+### THEN
+
+- Stop infrastructure hardening and return to gameplay/product development.
+
+### Preserved combat-development and reference decisions
+
+- `Debug Draw 3D` is approved when combat/battlefield work begins. Its purpose
+  is runtime visualization of relevant spatial combat information such as
+  turret ranges, targeting, splash/impact areas, enemy paths/path progress,
+  spawn points, choke regions, stop distances, knockback, and zones/status
+  areas. It is not generic base infrastructure; reconsider/install it when
+  combat/battlefield redesign becomes active.
+- Mature open-source game implementations such as `Mindustry` are reference
+  only for studying data-driven patterns; never copy product design directly.
+- Defer `State Charts` until a proven need exists; defer `LimboAI` until a
+  proven need exists; defer `Phantom Camera` until a later camera need; and
+  defer `Sentry` until an external QA/release need.
 
 ## Current implementation notes
 

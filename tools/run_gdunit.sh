@@ -8,8 +8,9 @@
 set -u
 
 godot_binary="${GODOT_BIN:-${GODOT:-}}"
-user_data_dir="${ACIDBLOOD_GDUNIT_USER_DIR:-/private/tmp/acidblood-gdunit-user}"
-log_file="${ACIDBLOOD_GDUNIT_LOG:-/private/tmp/acidblood-gdunit.log}"
+TEMP_ROOT="${TMPDIR:-/tmp}"
+user_data_dir="${ACIDBLOOD_GDUNIT_USER_DIR:-${TEMP_ROOT%/}/acidblood-gdunit-user}"
+log_file="${ACIDBLOOD_GDUNIT_LOG:-${TEMP_ROOT%/}/acidblood-gdunit.log}"
 runner_args=()
 
 while [ $# -gt 0 ]; do
