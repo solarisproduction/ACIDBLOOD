@@ -11,6 +11,18 @@ inspection, edit, run, and validation tasks.
   decision requiring human input.
 - Otherwise execute silently and return one concise final report.
 
+## EXECUTOR ROUTING
+
+- Default executor: GPT-5.6 Luna LOW for routine implementation, maintenance,
+  documentation, known tests, simple CI/tooling, commits, and bounded tasks.
+- Escalate to Luna MEDIUM when the root cause is unknown, cross-platform or
+  tool interaction must be investigated, architecture reasoning is materially
+  required, or Luna LOW cannot resolve the task cleanly.
+- Do not automatically escalate to a more expensive model; report or recommend
+  further escalation for a human/ChatGPT decision.
+- Use the least expensive reasoning level that reliably solves the task. Never
+  reduce validation quality to save tokens.
+
 ## TOOL OUTPUT DISCIPLINE
 
 - Do not dump large files, full repository diffs, or long validation logs into

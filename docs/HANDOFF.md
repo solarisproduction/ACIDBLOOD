@@ -1,5 +1,8 @@
 # Handoff
 
+Recommended executor: Luna Medium
+Reason: cross-platform GdUnit CI investigation
+
 ## Infrastructure hardening checkpoint
 - A minimal clean-machine GitHub Actions workflow is now defined at
   `.github/workflows/validate.yml` for pushes to `main`, pull requests targeting

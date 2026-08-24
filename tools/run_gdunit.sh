@@ -40,6 +40,12 @@ mkdir -p "$user_data_dir"
 test_exit_code=$?
 echo "Run tests ends with $test_exit_code"
 
-# Preserve the vendored runner's report log copy step.
-"$godot_binary" --headless --log-file "$log_file" --user-data-dir "$user_data_dir" --path . --quiet -s res://addons/gdUnit4/bin/GdUnitCopyLog.gd "${runner_args[@]}" > /dev/null
+# Preserve the vendored runner's optional report log copy step when its input
+# exists. GdUnitCopyLog.gd calls Array.back() without checking for an empty
+# log directory, which fails on clean machines where no user log was created.
+if find "$user_data_dir/logs" -maxdepth 1 -type f -print -quit 2>/dev/null | grep -q .; then
+	"$godot_binary" --headless --log-file "$log_file" --user-data-dir "$user_data_dir" --path . --quiet -s res://addons/gdUnit4/bin/GdUnitCopyLog.gd "${runner_args[@]}" > /dev/null
+else
+	echo "Skipping optional GdUnit log copy: no user log file available."
+fi
 exit "$test_exit_code"
