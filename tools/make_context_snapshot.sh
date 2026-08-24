@@ -19,6 +19,57 @@ write_file() {
 	printf '\n```\n' >> "$OUT"
 }
 
+find_dropbox_root() {
+	local home_dir="${HOME:-}"
+	local candidate
+
+	[ -n "$home_dir" ] || return 0
+
+	local candidates=(
+		"$home_dir/Dropbox"
+		"$home_dir/Dropbox (Personal)"
+		"$home_dir/Dropbox (Company)"
+		"$home_dir/Library/CloudStorage/Dropbox"
+		"$home_dir/Library/CloudStorage/Dropbox (Personal)"
+		"$home_dir/Library/CloudStorage/Dropbox (Company)"
+	)
+
+	for candidate in "${candidates[@]}"; do
+		if [ -d "$candidate" ] && [ -w "$candidate" ]; then
+			printf '%s\n' "$candidate"
+			return 0
+		fi
+	done
+
+	for candidate in "$home_dir/Library/CloudStorage" "$home_dir"; do
+		if [ -d "$candidate" ]; then
+			while IFS= read -r dropbox_root; do
+				if [ -w "$dropbox_root" ]; then
+					printf '%s\n' "$dropbox_root"
+					return 0
+				fi
+			done < <(find "$candidate" -maxdepth 1 -type d -name 'Dropbox*' -print 2>/dev/null)
+		fi
+	done
+}
+
+export_to_dropbox() {
+	local dropbox_root
+	local export_dir
+
+	dropbox_root="$(find_dropbox_root)"
+	[ -n "$dropbox_root" ] || return 0
+
+	export_dir="$dropbox_root/ACIDBLOOD Context"
+	if ! mkdir -p "$export_dir"; then
+		printf 'warning: Dropbox context export skipped (cannot create %s)\n' "$export_dir" >&2
+		return 0
+	fi
+	if ! cp -f "$OUT" "$export_dir/ACIDBLOOD_SESSION_CONTEXT.md"; then
+		printf 'warning: Dropbox context export skipped (cannot copy snapshot)\n' >&2
+	fi
+}
+
 {
 	printf '# ACIDBLOOD Session Context\n\n'
 	printf 'Generated: %s\n\n' "$(date '+%Y-%m-%d %H:%M:%S %Z')"
@@ -83,4 +134,5 @@ write_file() {
 	printf '```\n'
 } > "$OUT"
 
+export_to_dropbox
 printf '%s\n' "$OUT"

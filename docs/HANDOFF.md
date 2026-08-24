@@ -14,8 +14,15 @@
 - Repository-owned validation helpers now use `${TMPDIR:-/tmp}` for temporary
   user-data and log paths, and `tools/run_safe.sh` resolves the repository from
   its own location instead of assuming the developer's Mac path.
-- This workflow has not yet run on GitHub; the first remote run remains pending
-  human review, commit, and push.
+- `tools/make_context_snapshot.sh` continues to write the canonical temporary
+  `ACIDBLOOD_SESSION_CONTEXT.md` and optionally mirrors only that generated
+  file into a detected local Dropbox `ACIDBLOOD Context` folder. GitHub/main
+  remains the authoritative source of truth; Dropbox is only a read bridge for
+  ChatGPT/session continuity and is never a project dependency.
+- The first remote run completed after the infrastructure checkpoint but failed
+  8 existing save/load checks in the clean-machine suite (`Can't take value from
+  empty array`); local validation remains green, and the failure is still a
+  separate follow-up from this context-bridge slice.
 
 ## What actually works (all verified this session)
 - The project identity is `ACIDBLOOD`. Future player-facing naming, visual
