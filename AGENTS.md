@@ -3,6 +3,25 @@
 This repository is worked through the Godot AI MCP workflow for Godot-related
 inspection, edit, run, and validation tasks.
 
+## QUIET EXECUTION
+
+- Do not narrate routine progress, restate the task or plan after starting, or
+  announce ordinary tool calls.
+- Speak during execution only for a blocker, an unexpected conflict, or a
+  decision requiring human input.
+- Otherwise execute silently and return one concise final report.
+
+## TOOL OUTPUT DISCIPLINE
+
+- Do not dump large files, full repository diffs, or long validation logs into
+  context unless required to diagnose a failure.
+- Prefer targeted inspection: `git status --short`, `git diff --stat`,
+  `git diff --name-only`, `rg`, and bounded `sed` ranges.
+- Capture verbose validation output to a temporary file; on pass, inspect and
+  report only the relevant summary. On failure, inspect the failure region
+  first and expand only as needed.
+- Do not repeatedly read content already inspected in the same session.
+
 ## SESSION BOOTSTRAP
 
 Every new agent/session must begin by reading, in this order:
@@ -10,9 +29,12 @@ Every new agent/session must begin by reading, in this order:
 1. `AGENTS.md`
 2. `PROJECT_RULES.md`
 3. `docs/HANDOFF.md`
-4. `docs/SYSTEM_BLUEPRINT.md`
-5. `docs/ACIDBLOOD_DIRECTION.md`
-6. `docs/ROADMAP.md`
+
+For efficient bootstrap, always read `AGENTS.md`, `PROJECT_RULES.md`, and
+`docs/HANDOFF.md`. Read `docs/SYSTEM_BLUEPRINT.md` for implementation/runtime
+work, `docs/ACIDBLOOD_DIRECTION.md` for gameplay/product/art work, and
+`docs/ROADMAP.md` for planning/tooling work. Use targeted search in an
+authority document whenever the task may depend on a decision stored there.
 
 Before modifying anything, inspect:
 
