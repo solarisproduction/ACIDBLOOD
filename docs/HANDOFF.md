@@ -207,7 +207,7 @@ pilot → stage 1 + stage 2 runtime smokes. Exits non-zero on failure.
 Observed current baseline: `./tools/validate.sh` passed end-to-end this
 session, including parse/load, the 83-check suite, the GdUnit4 pilot, and the
 runtime smoke stages.
-The canonical behavioral suite uses `./addons/gdUnit4/runtest.sh --godot_binary
+The canonical behavioral suite uses `./tools/run_gdunit.sh --godot_binary
 "$GODOT" --headless --ignoreHeadlessMode -a res://tests/gdunit/`.
 Reports land under `res://reports/` and are ignored in git.
 Additional Godot MCP smoke checks continue to be useful for live runtime

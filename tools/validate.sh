@@ -107,7 +107,7 @@ else
 fi
 
 # --- 4. GdUnit4 behavioral pilot --------------------------------------
-GDUNIT_OUT="$(with_timeout 300 "$ROOT/addons/gdUnit4/runtest.sh" --godot_binary "$GODOT" --headless --ignoreHeadlessMode -a res://tests/gdunit/ 2>&1)"
+GDUNIT_OUT="$(with_timeout 300 "$ROOT/tools/run_gdunit.sh" --godot_binary "$GODOT" --headless --ignoreHeadlessMode -a res://tests/gdunit/ 2>&1)"
 GDUNIT_CODE=$?
 echo "$GDUNIT_OUT" | grep -E "PASS|FAIL|ERROR|warning|Running"
 if [ $GDUNIT_CODE -ne 0 ] || has_fatal_project_errors "$GDUNIT_OUT"; then

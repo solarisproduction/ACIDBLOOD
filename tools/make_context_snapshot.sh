@@ -27,7 +27,7 @@ write_file() {
 	printf -- '- Godot target: 4.7.1\n'
 	printf -- '- Canonical MCP: Godot AI MCP\n'
 	printf -- '- Canonical local validation: bash tools/validate.sh\n'
-	printf -- '- Canonical behavioral CLI: ./addons/gdUnit4/runtest.sh --godot_binary "$GODOT" --headless --ignoreHeadlessMode -a res://tests/gdunit/\n'
+	printf -- '- Canonical behavioral CLI: ./tools/run_gdunit.sh --godot_binary "$GODOT" --headless --ignoreHeadlessMode -a res://tests/gdunit/\n'
 	printf -- '- Current validation layers: 83-check core suite, GdUnit4 behavioral pilot, runtime smoke stages 1 and 2\n'
 
 	section "Git state"

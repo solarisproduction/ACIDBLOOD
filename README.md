@@ -3,7 +3,7 @@
 **3D Tower Defense + Roguelite Card Draft Prototype**  
 *Godot 4.7.1 • GDScript • Vendored GdUnit4 behavioral pilot*
 
-This repository (`TD-Game-System`) contains **ACIDBLOOD**, a vertical slice prototype validating a tower defense core loop enhanced by roguelite card draft mechanics.
+**ACIDBLOOD** is a vertical slice prototype validating a tower defense core loop enhanced by roguelite card draft mechanics.
 
 ACIDBLOOD is an alternate late-1980s industrial contamination game: analog
 machines, chemical infrastructure, CRT-era systems, biological corruption, and

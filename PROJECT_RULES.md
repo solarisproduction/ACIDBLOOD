@@ -78,8 +78,8 @@ sits.
 - Shared suite logic: `tests/run_tests.gd`.
 - MCP-discovered suite alias: `tests/test_acidblood.gd`.
 - GdUnit4 v6.2.1 is the pilot behavioral-testing layer. The canonical CLI
-  command is the vendored runner:
-  `./addons/gdUnit4/runtest.sh --godot_binary "$GODOT" --headless --ignoreHeadlessMode -a res://tests/gdunit/`
+  command is the ACIDBLOOD-owned wrapper around GdUnit4's command tool:
+  `./tools/run_gdunit.sh --godot_binary "$GODOT" --headless --ignoreHeadlessMode -a res://tests/gdunit/`
 - GdUnit4 behavioral tests complement the 83-check suite; they do not replace
   it.
 - `res://reports/` is the standard GdUnit4 report destination and is ignored

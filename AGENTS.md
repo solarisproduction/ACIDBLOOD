@@ -35,7 +35,7 @@ when project state, parse state, runtime behavior, or validation matter.
 
 - Canonical MCP: Godot AI MCP
 - Canonical local validation: `bash tools/validate.sh`
-- Canonical behavioral CLI: `./addons/gdUnit4/runtest.sh --godot_binary "$GODOT" --headless --ignoreHeadlessMode -a res://tests/gdunit/`
+- Canonical behavioral CLI: `./tools/run_gdunit.sh --godot_binary "$GODOT" --headless --ignoreHeadlessMode -a res://tests/gdunit/`
 
 Use the MCP for scene inspection, runtime checks, and project runs whenever it
 is available. Use the local validator for the authoritative headless pass.
