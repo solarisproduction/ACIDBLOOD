@@ -40,6 +40,24 @@ and background details.
 The central question is not "what monster lives here?" It is "what happened
 here?"
 
+## Design Principles
+
+- ACIDBLOOD is a real tower-defense game enriched by roguelite draft/buildcraft.
+- Player mastery comes from decisions, not passive stat inflation.
+- Space, enemy composition, timing, targeting, and build choice must interact.
+- Cards should preferably change behavior, tradeoffs, positioning, timing, or
+  synergy rather than only increase output.
+- Enemy roles should create tactical questions and combinations.
+- Future tower, status, and damage families are not pre-approved content.
+  They should be introduced only when they create a readable strategic
+  relationship and fit ACIDBLOOD's physical and thematic language.
+- Avoid arbitrary elemental taxonomies or hard-counter matrices merely because
+  they are common videogame patterns.
+- New gameplay concepts, names, and product-facing vocabulary require explicit
+  product/design approval before implementation.
+- Prefer proven tower-defense and game-development patterns over speculative
+  abstraction.
+
 ## World Rules
 
 - The world is industrial, analog, chemical, and physical.

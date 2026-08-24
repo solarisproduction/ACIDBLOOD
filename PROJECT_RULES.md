@@ -77,28 +77,30 @@ sits.
 - Canonical local suite entry point: `tests/acidblood_suite_runner.tscn`.
 - Shared suite logic: `tests/run_tests.gd`.
 - MCP-discovered suite alias: `tests/test_acidblood.gd`.
-- `./tools/validate.sh` is still the project-wide validation entry point, but
-  on macOS its headless smoke path is known to be unstable in Godot 4.7.1 and
-  may fail in the engine before the game code runs. Treat that failure as an
-  environment/engine issue unless the editor/runtime path shows a real gameplay
-  regression.
+- GdUnit4 v6.2.1 is the pilot behavioral-testing layer. The canonical CLI
+  command is the vendored runner:
+  `./addons/gdUnit4/runtest.sh --godot_binary "$GODOT" --headless --ignoreHeadlessMode -a res://tests/gdunit/`
+- GdUnit4 behavioral tests complement the 83-check suite; they do not replace
+  it.
+- `res://reports/` is the standard GdUnit4 report destination and is ignored
+  in git.
+- `./tools/validate.sh` is the project-wide validation entry point and the
+  final local authority for parse/import checks, the 83-check suite, GdUnit4,
+  and the runtime smoke stages.
 - Before considering gameplay work done, validate the change in the live
-  editor/runtime path through Godot AI MCP. Use `./tools/validate.sh` as an
-  additional check when it is behaving on the current machine.
+  editor/runtime path through Godot AI MCP. Use `./tools/validate.sh` as the
+  local authority that should also stay green.
 - Validation hierarchy:
   - editor/runtime MCP = source of truth for gameplay behavior
-  - `./tools/validate.sh` = secondary safety net
-  - macOS headless smoke crash = environment issue until runtime proves otherwise
+  - GdUnit4 behavioral pilot = scene/runtime assertions for stable
+    interactions
+  - `./tools/validate.sh` = local canonical validation
 - Balance overview: `godot --headless --path . --script res://tools/balance_report.gd`.
   Use it before tuning numbers: it prints shared geometry / combat floors,
   guardian + enemy + turret bases, cards, permanent upgrades, and per-stage
   wave pacing (`enemies`, `xp`, projected `lvl_ups`).
 - For every Godot task, use the Godot AI MCP workflow first so the editor and
   runtime validate the change, not just the raw script text.
-- If a local headless smoke fails with a Metal/ZSTD or similar engine crash on
-  macOS, do not block gameplay iteration on that result alone. Prefer a live
-  editor/runtime check, then rerun headless on a more stable environment when
-  you need CI-grade confirmation.
 - When delegating to another coding agent, make it read the project docs first,
   ask for a project analysis and one execution plan before edits, and keep it
   inside the documented product direction instead of inventing new systems.

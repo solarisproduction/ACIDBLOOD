@@ -20,7 +20,8 @@ game/  battle runtime                 shell/  screens
 ├─ wave_director.gd wave lifecycle   ├─ campaign.tscn/.gd  30 stages + dev tools
 ├─ guardian, enemy, turret,          └─ result.tscn/.gd    report step
 │  projectile (.gd [+ .tscn])
-├─ battle_hud.gd    HUD + draft UI   tests/run_tests.gd    80 headless checks
+├─ battle_hud.gd    HUD + draft UI   tests/run_tests.gd    83 headless checks
+│                                      tests/gdunit/      GdUnit4 behavioral pilot
 └─ visuals.gd       material cache   tools/  validate.sh, gen_stages.gd,
                                              balance_report.gd
 ```

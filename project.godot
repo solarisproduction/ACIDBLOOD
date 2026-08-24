@@ -28,9 +28,14 @@ window/size/window_height_override=960
 window/stretch/mode="canvas_items"
 window/handheld/orientation=1
 
+[debug/file_logging]
+
+enable_file_logging=true
+log_path="user://logs/godot.log"
+
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg", "res://addons/gdUnit4/plugin.cfg")
 
 [rendering]
 

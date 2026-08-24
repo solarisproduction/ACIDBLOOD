@@ -200,19 +200,18 @@
 ```
 ./tools/validate.sh
 ```
-Runs: Godot detection → headless import/parse → 80-check core suite (RNG
+Runs: Godot detection → headless import/parse → 83-check core suite (RNG
 determinism, draft rules, save/load, campaign traversal, data references,
-content conventions, projectile collision coverage) → stage 1 + stage 2
-headless battle smokes. Exits non-zero on failure.
+content conventions, projectile collision coverage) → GdUnit4 behavioral
+pilot → stage 1 + stage 2 runtime smokes. Exits non-zero on failure.
 Observed current baseline: `./tools/validate.sh` passed end-to-end this
-session, including parse/load, the 80-check suite, and the headless battle
-smokes.
-Additional Godot MCP smoke checks passed for stages 1, 10, 20, and 30 after
-the macro-flow balance pass.
-On macOS, the headless smoke path can crash in Godot 4.7.1 before game code
-runs, typically through Metal or ZSTD/cache loading. When that happens, treat
-the editor/runtime path as the authoritative gameplay validation and reserve
-headless smoke for a more stable machine or CI runner.
+session, including parse/load, the 83-check suite, the GdUnit4 pilot, and the
+runtime smoke stages.
+The canonical behavioral suite uses `./addons/gdUnit4/runtest.sh --godot_binary
+"$GODOT" --headless --ignoreHeadlessMode -a res://tests/gdunit/`.
+Reports land under `res://reports/` and are ignored in git.
+Additional Godot MCP smoke checks continue to be useful for live runtime
+behavior after scene changes.
 
 ## Known limitations
 - The macro-flow baseline is in place; any later tuning should be treated as

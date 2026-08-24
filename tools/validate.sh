@@ -106,7 +106,21 @@ else
     note "PASS" "official suite ($(echo "$TEST_OUT" | grep -c '  PASS') checks via tests/acidblood_suite_runner.tscn)"
 fi
 
-# --- 4/5. Battle smoke tests (stage 1 and stage 2) ---------------------
+# --- 4. GdUnit4 behavioral pilot --------------------------------------
+GDUNIT_OUT="$(with_timeout 300 "$ROOT/addons/gdUnit4/runtest.sh" --godot_binary "$GODOT" --headless --ignoreHeadlessMode -a res://tests/gdunit/ 2>&1)"
+GDUNIT_CODE=$?
+echo "$GDUNIT_OUT" | grep -E "PASS|FAIL|ERROR|warning|Running"
+if [ $GDUNIT_CODE -ne 0 ] || has_fatal_project_errors "$GDUNIT_OUT"; then
+    note "FAIL" "$(classify_failure test "$GDUNIT_OUT") (GdUnit4 behavioral pilot)"
+    if has_fatal_project_errors "$GDUNIT_OUT"; then
+        echo "$GDUNIT_OUT" | grep -E "SCRIPT ERROR|Parse Error|Compile Error|Failed to load script" | head -20
+    fi
+    FAIL=1
+else
+    note "PASS" "GdUnit4 behavioral suite (res://tests/gdunit)"
+fi
+
+# --- 5/6. Battle smoke tests (stage 1 and stage 2) ---------------------
 for STAGE in 1 2; do
     SMOKE_OUT="$(with_timeout 300 "$GODOT" --headless --log-file "$VALIDATION_LOG" --user-data-dir "$VALIDATION_USER_DIR" --path "$ROOT" -- --smoke --smoke-stage=$STAGE 2>&1)"
     SMOKE_CODE=$?

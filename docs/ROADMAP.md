@@ -51,9 +51,9 @@ deepen the battlefield before adding horizontal content.
   - Extend schemas first, then content, then rules, then runtime, then shell.
   - Validate the change in Godot through the editor/runtime path when scenes,
     nodes, or live behavior are involved.
-  - On macOS, if `./tools/validate.sh` fails because the Godot headless smoke
-    crashes in Metal/ZSTD before the game boots, do not treat that as a
-    gameplay regression until the editor/runtime path has also failed.
+  - If a local validator step fails, classify it by the actual output before
+    changing gameplay code. Keep tooling failures and gameplay regressions
+    separate.
   - Keep code and data changes small enough to inspect in one pass.
   - Prefer `data/types/` and `data/*.tres` over one-off scripts.
   - For ambiguous spatial UI, make the level itself explicit with labels or
@@ -258,6 +258,23 @@ deepen the battlefield before adding horizontal content.
   - Rankings
   - Narrative expansion
   - Online features only if they are genuinely needed
+
+## Tooling adoption state
+
+- Approved next:
+  - `godot-gdscript-toolkit`
+  - `pre-commit`
+  - clean-machine GitHub CI using `setup-godot`
+- Approved when combat design work begins:
+  - `Debug Draw 3D`
+- Reference only:
+  - mature open-source game implementations such as `Mindustry` for studying
+    data-driven patterns; never copy product design directly
+- Defer until a real need exists:
+  - `State Charts`
+  - `LimboAI`
+  - `Phantom Camera`
+  - `Sentry`
 
 ## Current implementation notes
 

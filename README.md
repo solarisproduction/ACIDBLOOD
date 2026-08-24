@@ -1,7 +1,7 @@
 # ACIDBLOOD
 
 **3D Tower Defense + Roguelite Card Draft Prototype**  
-*Godot 4.7.1 • GDScript • Zero external plugins*
+*Godot 4.7.1 • GDScript • Vendored GdUnit4 behavioral pilot*
 
 This repository (`TD-Game-System`) contains **ACIDBLOOD**, a vertical slice prototype validating a tower defense core loop enhanced by roguelite card draft mechanics.
 
@@ -43,13 +43,14 @@ godot --path .
 
 ## ✅ Tests (Headless)
 
-Automated test suite with **80 checks** covering script loads, RNG determinism, draft rules, combat math, save/load, campaign traversal, data references, and content conventions.
+Canonical local validation runs the 83-check suite, the GdUnit4 behavioral pilot, and the runtime smoke stages:
 
 ```bash
-godot --headless --path . --script res://tests/run_tests.gd
+bash tools/validate.sh
 ```
 
-Exits with code `1` on any failure, `0` if all pass. See [`tests/run_tests.gd`](tests/run_tests.gd).
+The shared 83-check suite still lives in [`tests/run_tests.gd`](tests/run_tests.gd) and
+[`tests/acidblood_suite_runner.tscn`](tests/acidblood_suite_runner.tscn).
 
 ---
 
@@ -78,7 +79,7 @@ godot --headless --path . --script res://tools/balance_report.gd
 | **Data Types** | `data/types/*.gd` | Resource classes (`EnemyData`, `TurretData`, `CardData`, `StageData`, etc.) |
 | **Runtime** | `game/*.gd` | `Node3D` actors (`battle.gd`, `enemy.gd`, `turret.gd`, `guardian.gd`) |
 | **Shell UI** | `shell/*.gd` | Screens (`home.gd`, `campaign.gd`, `result.gd`) |
-| **Tests** | `tests/run_tests.gd` | Headless validation suite |
+| **Tests** | `tests/acidblood_suite_runner.tscn`, `tests/run_tests.gd`, `tests/gdunit/` | 83-check core suite + GdUnit4 behavioral pilot |
 | **Tools** | `tools/*.gd` | Data pipeline scripts |
 
 **Data-Driven Content:** 68 `.tres` files managed via [`core/catalog.gd`](core/catalog.gd):
@@ -125,4 +126,4 @@ The current backlog lives in [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 ---
 
-**License:** All code and data in this repository are proprietary. No external plugins or assets used.
+**License:** All code and data in this repository are proprietary. Vendored tooling is kept under `addons/` when needed for the project.
