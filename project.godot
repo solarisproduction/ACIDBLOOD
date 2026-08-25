@@ -19,6 +19,10 @@ config/features=PackedStringArray("4.7")
 Game="*res://autoload/game.gd"
 _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
+[debug]
+
+file_logging/enable_file_logging=true
+
 [display]
 
 window/size/viewport_width=720
@@ -27,11 +31,6 @@ window/size/window_width_override=540
 window/size/window_height_override=960
 window/stretch/mode="canvas_items"
 window/handheld/orientation=1
-
-[debug/file_logging]
-
-enable_file_logging=true
-log_path="user://logs/godot.log"
 
 [editor_plugins]
 
