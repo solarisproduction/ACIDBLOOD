@@ -10,6 +10,7 @@ var stage_id: StringName
 var run_seed: int = 0
 var level: int = 1
 var xp: int = 0
+var total_xp_earned: int = 0
 var kills: int = 0
 var wave_index: int = 0            # 1-based; 0 = not started
 var fortress_hp: float = 0.0
@@ -46,10 +47,15 @@ func install_turret(turret_id: StringName, slot_index: int) -> bool:
 	return true
 
 func grant_kill_xp(kill_id: StringName, amount: int) -> int:
+	return int(award_kill(kill_id, amount).get("level_ups", 0))
+
+func award_kill(kill_id: StringName, amount: int) -> Dictionary:
 	if kill_id == &"" or _awarded_kills.has(kill_id):
-		return 0
+		return {"accepted": false, "xp": 0, "level_ups": 0}
 	_awarded_kills[kill_id] = true
-	return grant_xp(amount)
+	kills += 1
+	var level_ups := grant_xp(amount)
+	return {"accepted": true, "xp": maxi(0, amount), "level_ups": level_ups}
 
 func consume_draft_choice() -> bool:
 	if draft_count >= max_draft_choices:
@@ -71,10 +77,21 @@ func branch_for(turret_id: StringName) -> StringName:
 
 func grant_xp(amount: int) -> int:
 	## Returns the number of level-ups triggered.
-	xp += amount
+	var awarded := maxi(0, amount)
+	total_xp_earned += awarded
+	xp += awarded
 	var ups := 0
 	while xp >= Leveling.xp_required(level, run_xp_thresholds):
 		xp -= Leveling.xp_required(level, run_xp_thresholds)
 		level += 1
 		ups += 1
 	return ups
+
+func to_dict() -> Dictionary:
+	return {
+		"level": level,
+		"xp": xp,
+		"total_xp_earned": total_xp_earned,
+		"kills": kills,
+		"draft_count": draft_count,
+	}

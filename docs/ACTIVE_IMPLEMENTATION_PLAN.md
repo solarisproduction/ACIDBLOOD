@@ -136,13 +136,13 @@ Interfaces:
 - Consumes: enemy death signal/callback, Task 1 XP thresholds and draft budget.
 - Produces: one XP transaction per enemy, level-up pause/state, and a request for a three-choice draft.
 
-- [ ] Write failing tests for duplicate death notification, XP threshold transition, pause/resume, and budget exhaustion.
-- [ ] Run focused tests and require failure before changing the battle callback.
-- [ ] Implement one authoritative death transaction and explicit level-up state transitions.
-- [ ] Run focused tests and require PASS with no double-counted kills or XP.
-- [ ] Run wave, result-flow, save-state, and deterministic regression tests.
-- [ ] Verify a short runtime stage can kill Guardian targets and open a draft without log errors.
-- [ ] Commit with `feat: connect battle kills to run progression`.
+- [x] Write failing tests for duplicate death notification, XP threshold transition, pause/resume, and budget exhaustion.
+- [x] Run focused tests and require failure before changing the battle callback.
+- [x] Implement one authoritative death transaction and explicit level-up state transitions.
+- [x] Run focused tests and require PASS with no double-counted kills or XP.
+- [x] Run wave, result-flow, save-state, and deterministic regression tests.
+- [x] Verify a short runtime stage can kill Guardian targets and open a draft without log errors.
+- [x] Commit with `feat: connect battle kills to run progression`.
 
 ### Task 4: Implement the Phase 1 three-choice draft contract
 

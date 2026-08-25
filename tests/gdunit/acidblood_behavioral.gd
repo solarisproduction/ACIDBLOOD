@@ -46,6 +46,37 @@ func test_phase1_kill_xp_is_awarded_once_and_crosses_threshold() -> void:
 	assert_int(duplicate).is_equal(0)
 	assert_int(run.level).is_equal(2)
 
+func test_task3_xp_overflow_and_multiple_levels_are_deterministic() -> void:
+	var first := RunState.new()
+	first.run_xp_thresholds = [10, 10, 10]
+	var second := RunState.new()
+	second.run_xp_thresholds = [10, 10, 10]
+	var first_levels := first.grant_xp(25)
+	var second_levels := second.grant_xp(25)
+	assert_int(first_levels).is_equal(2)
+	assert_int(first.level).is_equal(3)
+	assert_int(first.xp).is_equal(5)
+	assert_int(first.total_xp_earned).is_equal(25)
+	assert_int(second_levels).is_equal(first_levels)
+	assert_dict(second.to_dict()).is_equal(first.to_dict())
+
+func test_task3_duplicate_battle_death_callback_awards_one_kill_and_xp() -> void:
+	var boot := await _boot_battle()
+	var battle := boot["battle"] as Battle
+	battle.spawn_wave_enemy(&"grunt", 0.0)
+	var enemy := battle.enemies.back() as Enemy
+	battle.notify_enemy_died(enemy, true)
+	battle.notify_enemy_died(enemy, true)
+	assert_int(battle.run_state.kills).is_equal(1)
+	assert_int(battle.run_state.total_xp_earned).is_equal(enemy.data.xp)
+
+func test_task3_draft_budget_limits_pending_level_ups() -> void:
+	var run := RunState.new()
+	run.max_draft_choices = 2
+	assert_bool(run.consume_draft_choice()).is_true()
+	assert_bool(run.consume_draft_choice()).is_true()
+	assert_bool(run.consume_draft_choice()).is_false()
+
 func test_phase1_new_turret_capacity_and_duplicate_occupancy() -> void:
 	var run := RunState.new()
 	assert_bool(run.install_turret(&"cannon", 0)).is_true()

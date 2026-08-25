@@ -1,7 +1,7 @@
 # Handoff
 
-Recommended executor for Task 2.5 review: Luna 5.6 Low
-Reason: bounded QA/development infrastructure is implemented; Task 3 remains next.
+Recommended executor for Task 3 review: Luna 5.6 Medium
+Reason: Task 3 progression and pause ownership now require behavioral review.
 
 ## Architectural reset checkpoint
 - Human-approved architectural reset: the first serious ACIDBLOOD version now
@@ -46,8 +46,15 @@ Reason: bounded QA/development infrastructure is implemented; Task 3 remains nex
   pacing target, not a rigid timer; XP curve, density, XP supply, wave timing,
   and draft cadence must be balanced together. Boss/special modes may differ;
   the exact XP curve remains tunable/UNVERIFIED.
-- NEXT: `Task 3: Integrate deterministic kills, XP and level-up interruption`.
-  Task 3 has not started and Phase 1 is not complete.
+- Task 3 has now been implemented locally: killed enemies are credited once,
+  award data-driven XP, cross deterministic thresholds, emit XP/level telemetry,
+  and queue bounded draft interruptions. Persistent progression remains untouched.
+- Task 3 runtime evidence: FRESH Stage 1 reached 2 kills/4 XP/level 1 in 2.916s;
+  BENCHMARK reached 7 kills/14 XP/level 2, opened one draft at 2.774s, resumed
+  after selecting Field Repairs, and ended in 3.390s. Reports were written to
+  `/private/tmp/t3-fresh.json` and `/private/tmp/t3-benchmark.json`.
+- NEXT: `Task 4: Implement the Phase 1 three-choice draft contract`. Task 4 has
+  not started and Phase 1 is not complete.
 
 ## Pass 08 factual checkpoint
 - Infrastructure hardening is complete. GitHub Actions run `32760784952` is

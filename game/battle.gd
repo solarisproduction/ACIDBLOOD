@@ -439,10 +439,24 @@ func notify_enemy_died(enemy: Enemy, killed: bool) -> void:
 	trigger_enemy_death(enemy, killed)
 	if _ended or not killed:
 		return
-	run_state.kills += 1
-	var level_ups := run_state.grant_xp(enemy.data.xp)
+	var kill_result := run_state.award_kill(StringName("enemy_%d" % enemy.spawn_index), enemy.data.xp)
+	if not bool(kill_result.get("accepted", false)):
+		return
+	var xp_amount := int(kill_result.get("xp", 0))
+	var level_ups := int(kill_result.get("level_ups", 0))
+	_telemetry("xp_gain", {
+		"amount": xp_amount,
+		"total_xp": run_state.total_xp_earned,
+		"level": run_state.level,
+		"kills": run_state.kills,
+	})
 	hud.update_xp()
 	if level_ups > 0:
+		_telemetry("level_up", {
+			"count": level_ups,
+			"level": run_state.level,
+			"pending_level_ups": _pending_drafts + level_ups,
+		})
 		_queue_drafts(level_ups)
 
 # --- Wave / stage lifecycle --------------------------------------------
@@ -499,6 +513,9 @@ func _end(victory: bool) -> void:
 	if Game.playtest_active:
 		Game.finish_playtest(&"victory" if victory else &"defeat", {
 			"kills": run_state.kills,
+			"total_xp": run_state.total_xp_earned,
+			"final_level": run_state.level,
+			"pending_level_ups": _pending_drafts,
 			"fortress_hp": run_state.fortress_hp,
 			"peak_simultaneous_enemies": _peak_enemy_count,
 			"guardian_movement_events": guardian.movement_events,
@@ -516,7 +533,8 @@ func _end(victory: bool) -> void:
 # --- Card draft ---------------------------------------------------------
 
 func _queue_drafts(count: int) -> void:
-	_pending_drafts += count
+	var available_budget := maxi(0, run_state.max_draft_choices - run_state.draft_count - _pending_drafts)
+	_pending_drafts += mini(count, available_budget)
 	hud.set_level_up_ready(_pending_drafts > 0, _pending_drafts)
 	if not _draft_open:
 		if _barricade_under_pressure() and not _barricade_critical():
@@ -530,8 +548,9 @@ func _open_next_draft() -> void:
 		return
 	while _pending_drafts > 0:
 		_pending_drafts -= 1
+		if not run_state.consume_draft_choice():
+			continue
 		hud.set_level_up_ready(_pending_drafts > 0, _pending_drafts)
-		run_state.draft_count += 1
 		var rng := DetRNG.new(DetRNG.derive(run_state.run_seed, "draft", run_state.draft_count))
 		var offer := Draft.generate_offer(Catalog.cards(), draft_context(), rng, 3)
 		if offer.is_empty():

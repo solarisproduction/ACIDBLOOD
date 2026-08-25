@@ -95,6 +95,9 @@ replacing placeholder models.
 Development-only Task 2.5 playtest support now provides isolated FRESH and
 BENCHMARK stage launches with transient progression and JSON telemetry. It is
 not player-facing progression and does not write the normal persistent save.
+Task 3 now makes enemy death the authoritative run-local kill/XP transaction,
+tracks deterministic threshold crossings and pending draft interruptions, and
+records XP/level-up events in playtest telemetry.
 
 Any Godot-related edit, inspection, or validation must go through the Godot AI
 MCP tools when they are available. The engine is part of the editing workflow:
