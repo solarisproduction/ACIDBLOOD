@@ -1,6 +1,6 @@
 # Handoff
 
-Recommended executor for eventual routine implementation: Luna 5.6 Low
+Recommended executor for Task 1: Luna 5.6 Low
 Reason: Phase 1 implementation is expected to be routine after its plan is reviewed.
 
 ## Architectural reset checkpoint
@@ -15,8 +15,9 @@ Reason: Phase 1 implementation is expected to be routine after its plan is revie
 - `docs/SYSTEM_BLUEPRINT.md` remains current implemented technical truth; it is
   not the target design.
 - Phase 0 is complete after this documentation checkpoint.
-- NEXT: write the detailed Phase 1 implementation plan, then stop for human
-  review/approval before implementing gameplay.
+- Phase 1 planning is complete in [`docs/ACTIVE_IMPLEMENTATION_PLAN.md`](ACTIVE_IMPLEMENTATION_PLAN.md), which is now the execution authority.
+- NEXT: execute `Task 1: Freeze the Phase 1 domain contract and test harness`
+  only after human review/approval. No Phase 1 gameplay code has been implemented.
 
 ## Pass 08 factual checkpoint
 - Infrastructure hardening is complete. GitHub Actions run `32760784952` is

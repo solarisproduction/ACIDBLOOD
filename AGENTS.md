@@ -41,6 +41,7 @@ Every new agent/session must begin by reading, in this order:
 1. `AGENTS.md`
 2. `PROJECT_RULES.md`
 3. `docs/HANDOFF.md`
+4. `docs/ACTIVE_IMPLEMENTATION_PLAN.md` when an active implementation plan exists
 
 For efficient bootstrap, always read `AGENTS.md`, `PROJECT_RULES.md`, and
 `docs/HANDOFF.md`. Read `docs/SYSTEM_BLUEPRINT.md` for implementation/runtime
@@ -86,6 +87,7 @@ when project state, parse state, runtime behavior, or validation matter.
 - `docs/SYSTEM_BLUEPRINT.md` — current implemented technical truth
 - `docs/ROADMAP.md` — only unfinished NOW / NEXT / LATER / DEFERRED work
 - `docs/HANDOFF.md` — compact current-state bridge between sessions
+- `docs/ACTIVE_IMPLEMENTATION_PLAN.md` — current executable implementation plan when present
 - `docs/ASSET_CONTRACT.md` — 3D asset and import contract
 
 ## Canonical tooling

@@ -24,6 +24,7 @@ detailed implementation plan is reviewed and approved.
 - Preserve engineering infrastructure; require no legacy gameplay compatibility.
 
 ### PHASE 1 — Battle Foundation
+- Detailed execution plan: [`docs/ACTIVE_IMPLEMENTATION_PLAN.md`](ACTIVE_IMPLEMENTATION_PLAN.md).
 
 - T1 – T2 – Guardian – T3 – T4 defensive lineup.
 - Guardian movement and weapon foundation.
