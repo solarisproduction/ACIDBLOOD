@@ -1,9 +1,10 @@
 # ACIDBLOOD
 
-**3D Tower Defense + Roguelite Card Draft Prototype**  
+**3D Tower Defense + Roguelite Card Draft Foundation**
 *Godot 4.7.1 • GDScript • Vendored GdUnit4 behavioral pilot*
 
-**ACIDBLOOD** is a vertical slice prototype validating a tower defense core loop enhanced by roguelite card draft mechanics.
+**ACIDBLOOD** is a playable Phase 1 foundation validating a tower-defense loop
+enhanced by deterministic roguelite card drafts.
 
 ACIDBLOOD is an alternate late-1980s industrial contamination game: analog
 machines, chemical infrastructure, CRT-era systems, biological corruption, and
@@ -18,9 +19,11 @@ player-facing work should follow
 **Core Loop:** `Command` → `Operations` → `Battle` → `Report` → `Operations`
 
 - **Guardian**: Player-controlled character with auto-attack weapon
-- **4 Tower Slots**: Place and upgrade 3 archetypes (arc coil, pressure cannon, cryo sprayer)
+- **Defensive line**: Guardian starts active with four empty T1–T4 slots; the
+  Stage 1 NEW TURRET draft can install the existing Impact Cannon
 - **Deterministic Waves**: Enemy spawns follow pre-authored `StageData` with reproducible timing
-- **Card Draft**: On level-up, pause game and choose 1 of 3 random cards (20-card pool)
+- **Card Draft**: On level-up, pause and choose 1 of 3 deterministic eligible
+  cards, within a 20-choice run budget
 - **Persistent Progression**: Earn salvage to buy persistent upgrades between runs
 
 ---
@@ -29,7 +32,7 @@ player-facing work should follow
 
 | Requirement | Version |
 |-------------|---------|
-| Godot Engine | **4.7.1** (config/features = "4.6" compatible) |
+| Godot Engine | **4.7.1** |
 | Platform | Windows, Linux, macOS (desktop tested) |
 | Main Scene | `res://shell/home.tscn` |
 
@@ -43,13 +46,14 @@ godot --path .
 
 ## ✅ Tests (Headless)
 
-Canonical local validation runs the 83-check suite, the GdUnit4 behavioral pilot, and the runtime smoke stages:
+Canonical local validation runs the 87-check suite, the 25-case GdUnit4
+behavioral pilot, and runtime smoke stages:
 
 ```bash
 bash tools/validate.sh
 ```
 
-The shared 83-check suite still lives in [`tests/run_tests.gd`](tests/run_tests.gd) and
+The shared 87-check suite lives in [`tests/run_tests.gd`](tests/run_tests.gd) and
 [`tests/acidblood_suite_runner.tscn`](tests/acidblood_suite_runner.tscn).
 
 ---
@@ -79,7 +83,7 @@ godot --headless --path . --script res://tools/balance_report.gd
 | **Data Types** | `data/types/*.gd` | Resource classes (`EnemyData`, `TurretData`, `CardData`, `StageData`, etc.) |
 | **Runtime** | `game/*.gd` | `Node3D` actors (`battle.gd`, `enemy.gd`, `turret.gd`, `guardian.gd`) |
 | **Shell UI** | `shell/*.gd` | Screens (`home.gd`, `campaign.gd`, `result.gd`) |
-| **Tests** | `tests/acidblood_suite_runner.tscn`, `tests/run_tests.gd`, `tests/gdunit/` | 83-check core suite + GdUnit4 behavioral pilot |
+| **Tests** | `tests/acidblood_suite_runner.tscn`, `tests/run_tests.gd`, `tests/gdunit/` | 87-check core suite + 25-case GdUnit4 behavioral pilot |
 | **Tools** | `tools/*.gd` | Data pipeline scripts |
 
 **Data-Driven Content:** 68 `.tres` files managed via [`core/catalog.gd`](core/catalog.gd):

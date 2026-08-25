@@ -34,6 +34,32 @@ The defensive lineup is:
 - Pre-battle/home formation configuration may exist following the benchmark;
   exact behavior is `UNVERIFIED` until confirmed.
 
+### Human Phase 1 review findings
+
+The human benchmark playtest reached 124 kills, 260 XP, level 9, eight drafts,
+victory, and 100/100 Barricade HP. One Cannon-focused build was sufficient and
+Guardian repositioning was not meaningfully required. The target therefore
+needs substantially denser and more continuous horde pressure than the current
+Stage 1. The human's perceived several-fold Galaxy volume is calibration
+evidence, not a locked multiplier: enemy count, survivability, cadence, overlap,
+XP supply, thresholds, and draft pacing must be tuned together.
+
+When a NEW TURRET is selected, the approved placement direction is an
+in-world, translucent ghost on an eligible T1–T4 slot. The player cycles among
+the numbered slots, sees a minimal `Choose Slot` instruction, and confirms in
+the battlefield. The current modal slot picker is transitional and is not the
+target flow; exact visual treatment remains tunable.
+
+Guardian movement must earn tactical value through pressure, weapon engagement,
+and enemy relationships rather than forced movement mechanics. Future enemy
+movement variation should be small, role-driven, data-driven, and readable
+(for example direct movement, controlled drift, weave, or intentional pauses),
+not random wandering for visual variety.
+
+Stage 1 remains the grammar/tutorial stage. Later stages may accelerate in
+complexity quickly instead of extending a simplified tutorial across many
+stages.
+
 ## 2. Run economy and level-ups
 
 The initial benchmark loop is:

@@ -34,12 +34,17 @@ sits.
   labels and data as they become relevant; keep stable internal code names
   until changing them has real engineering value.
 - Player-facing naming must stay globally consistent once a term is chosen.
-  Current visible vocabulary standard:
+  Current transitional implementation vocabulary is:
   - defended objective: `Barricade`
   - base tower units: `Bolt Turret`, `Cannon Turret`, `Frost Turret`
   - branch cards: `Branch: <name>`
   - UI/game text should prefer short functional wording over mixed thematic
     synonyms when both refer to the same gameplay object
+- These terms describe code/content that still exists; they are not the future
+  product authority. Target weapon vocabulary and roles come from
+  `docs/GALAXY_FOUNDATION_SPEC.md`: Guardian Rifle, Impact Cannon, Tesla Coil,
+  and Disruption Field. Do not rename transitional code/content during a
+  documentation-only task.
 - Do not mix old and new visible names for the same thing. If one player-facing
   term changes, update all affected visible copy in cards, HUD, progression,
   and shell screens within the same slice unless there is a deliberate design
@@ -94,12 +99,12 @@ sits.
 - GdUnit4 v6.2.1 is the pilot behavioral-testing layer. The canonical CLI
   command is the ACIDBLOOD-owned wrapper around GdUnit4's command tool:
   `./tools/run_gdunit.sh --godot_binary "$GODOT" --headless --ignoreHeadlessMode -a res://tests/gdunit/`
-- GdUnit4 behavioral tests complement the 83-check suite; they do not replace
+- GdUnit4 behavioral tests complement the 87-check suite; they do not replace
   it.
 - `res://reports/` is the standard GdUnit4 report destination and is ignored
   in git.
 - `./tools/validate.sh` is the project-wide validation entry point and the
-  final local authority for parse/import checks, the 83-check suite, GdUnit4,
+  final local authority for parse/import checks, the 87-check suite, GdUnit4,
   and the runtime smoke stages.
 - Before considering gameplay work done, validate the change in the live
   editor/runtime path through Godot AI MCP. Use `./tools/validate.sh` as the
@@ -123,7 +128,7 @@ sits.
 
 - Godot AI MCP is the local editor/runtime inspection and gameplay validation
   path.
-- The 83-check suite covers the shared headless project rules and data checks.
+- The 87-check suite covers the shared headless project rules and data checks.
 - GdUnit4 is the behavioral testing layer for stable scene/runtime assertions.
 - `tools/validate.sh` is the canonical local authority and runs the complete
   local validation sequence.

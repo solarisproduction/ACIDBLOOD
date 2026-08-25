@@ -26,7 +26,7 @@ game/  battle runtime                 shell/  screens
 ├─ wave_director.gd wave lifecycle   ├─ campaign.tscn/.gd  30 stages + dev tools
 ├─ guardian, enemy, turret,          └─ result.tscn/.gd    report step
 │  projectile (.gd [+ .tscn])
-├─ battle_hud.gd    HUD + draft UI   tests/run_tests.gd    83 headless checks
+├─ battle_hud.gd    HUD + draft UI   tests/run_tests.gd    87 headless checks
 │                                      tests/gdunit/      GdUnit4 behavioral pilot
 └─ visuals.gd       material cache   tools/  validate.sh, gen_stages.gd,
                                              balance_report.gd
@@ -109,6 +109,15 @@ current-state data outside the Stage 1 pool until later migration.
 Task 6 closes the current Phase 1 loop with the authored six-wave Stage 1:
 WaveDirector clears the finite wave list into the existing victory/defeat
 handoff, and the result shell remains the normal post-battle destination.
+
+Current Phase 1 truth: the active Stage 1 draft pool contains existing
+Guardian/Cannon-related cards and `build_cannon` is the NEW TURRET entry;
+legacy Bolt/Frost resources remain outside that active pool. The development
+FRESH/BENCHMARK harness writes isolated JSON telemetry under the temporary
+directory and does not touch the normal save. The current benchmark reached
+124 kills, 260 XP, level 9, eight drafts, victory, and 100/100 Barricade HP.
+The placement interaction is still the transitional modal slot picker; the
+approved in-world ghost flow is not implemented.
 
 Any Godot-related edit, inspection, or validation must go through the Godot AI
 MCP tools when they are available. The engine is part of the editing workflow:
