@@ -42,14 +42,15 @@ Interfaces:
 
 Checks:
 
-- [ ] Write failing tests for simulated time, deterministic population metrics,
+- [x] Write failing tests for simulated time, deterministic population metrics,
   compact one-report output, and save isolation.
-- [ ] Run the narrow GdUnit tests and confirm the new fields are absent or
+- [x] Run the narrow GdUnit tests and confirm the new fields are absent or
   incorrect before implementation.
-- [ ] Implement the accumulator and QA-only launcher options.
-- [ ] Run narrow tests, FRESH smoke, and BENCHMARK smoke; expect valid reports.
-- [ ] Run the full behavioral suite and `bash tools/validate.sh`.
-- [ ] Commit: `test: add Phase 1.1 calibration telemetry`
+- [x] Implement the accumulator and QA-only launcher options.
+- [x] Run narrow tests, FRESH smoke, and BENCHMARK smoke; valid reports were
+  produced with simulated-time and pressure metrics.
+- [x] Run the full behavioral suite and `bash tools/validate.sh`.
+- [x] Commit: `test: add Phase 1.1 calibration telemetry`
 
 ## Task B — Stage 1 throughput and pacing calibration
 
@@ -175,6 +176,7 @@ Checks:
 ## Review status
 
 - Phase 1: implemented and human-reviewed.
-- Phase 1.1 automated gate: pending execution of Tasks A–E.
+- Task A: complete; baseline reports are available under `/private/tmp`.
+- Phase 1.1 automated gate: pending execution of Tasks B–E.
 - Human Phase 1.1 graphical playtest: required after the selected build.
 - Phase 2: not started and blocked until Phase 1.1 human review.

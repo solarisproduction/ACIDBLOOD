@@ -278,6 +278,51 @@ func test_task25_telemetry_writes_one_profiled_report() -> void:
 	assert_int(int(report["kills"])).is_equal(4)
 	assert_int(int(report["peak_simultaneous_enemies"])).is_equal(2)
 
+func test_task11_telemetry_reports_simulated_time_and_population_pressure() -> void:
+	var temp_root := OS.get_environment("TMPDIR")
+	if temp_root.is_empty():
+		temp_root = "/tmp"
+	var path := temp_root.path_join("acidblood-task11-metrics-test.json")
+	var profile: Dictionary = PlaytestProfileScript.build(&"FRESH", 444)
+	var telemetry: PlaytestTelemetry = PlaytestTelemetryScript.new()
+	telemetry.begin(profile, &"stage_001", path)
+	telemetry.advance_simulation(0.5, 2)
+	telemetry.advance_simulation(0.5, 0)
+	telemetry.advance_simulation(0.5, 1)
+	telemetry.record_event("draft_open", {"draft_index": 1})
+	telemetry.finish(&"victory", {"kills": 3})
+	var report := JSON.parse_string(FileAccess.get_file_as_string(path)) as Dictionary
+	assert_float(float(report["simulated_gameplay_seconds"])).is_equal_approx(1.5, 0.001)
+	assert_float(float(report["active_combat_seconds"])).is_equal_approx(1.0, 0.001)
+	assert_float(float(report["dead_air_seconds"])).is_equal_approx(0.5, 0.001)
+	assert_float(float(report["active_pressure_ratio"])).is_equal_approx(2.0 / 3.0, 0.001)
+	assert_float(float(report["average_live_enemy_population"])).is_equal_approx(1.0, 0.001)
+	assert_int(int(report["peak_simultaneous_enemies"])).is_equal(2)
+	assert_float(float(report["first_draft_gameplay_seconds"])).is_equal_approx(1.5, 0.001)
+	assert_int((report["progression_events"] as Array).size()).is_equal(1)
+
+func test_task11_telemetry_metrics_are_deterministic_for_same_samples() -> void:
+	var temp_root := OS.get_environment("TMPDIR")
+	if temp_root.is_empty():
+		temp_root = "/tmp"
+	var first_path := temp_root.path_join("acidblood-task11-deterministic-a.json")
+	var second_path := temp_root.path_join("acidblood-task11-deterministic-b.json")
+	var profile: Dictionary = PlaytestProfileScript.build(&"BENCHMARK", 445)
+	var first: PlaytestTelemetry = PlaytestTelemetryScript.new()
+	var second: PlaytestTelemetry = PlaytestTelemetryScript.new()
+	first.begin(profile, &"stage_001", first_path)
+	second.begin(profile, &"stage_001", second_path)
+	for sample in [[0.25, 1], [0.75, 3], [0.5, 0]]:
+		first.advance_simulation(float(sample[0]), int(sample[1]))
+		second.advance_simulation(float(sample[0]), int(sample[1]))
+	first.finish(&"victory")
+	second.finish(&"victory")
+	var first_report := JSON.parse_string(FileAccess.get_file_as_string(first_path)) as Dictionary
+	var second_report := JSON.parse_string(FileAccess.get_file_as_string(second_path)) as Dictionary
+	for key in ["simulated_gameplay_seconds", "active_combat_seconds", "dead_air_seconds",
+			"active_pressure_ratio", "average_live_enemy_population", "peak_simultaneous_enemies"]:
+		assert_bool(is_equal_approx(float(first_report[key]), float(second_report[key]))).is_true()
+
 func test_frost_turret_freezes_target() -> void:
 	var boot := await _boot_battle()
 	var runner: GdUnitSceneRunner = boot["runner"]

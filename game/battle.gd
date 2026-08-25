@@ -98,6 +98,7 @@ func roll_spawn_x(lane: StringName = &"random") -> float:
 	return _wave_rng.randf_range(-ArenaLayout.SPAWN_X_RANGE, ArenaLayout.SPAWN_X_RANGE)
 
 func _physics_process(delta: float) -> void:
+	Game.record_playtest_simulation(delta, enemies.size())
 	_update_lightning_fields(delta)
 	if not _ended and _pending_drafts > 0 and not _draft_open and not get_tree().paused:
 		if not _barricade_under_pressure() or _barricade_critical():

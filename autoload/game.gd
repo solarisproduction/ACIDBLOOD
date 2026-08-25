@@ -44,6 +44,11 @@ func _ready() -> void:
 				stage_index = int(a.get_slice("=", 1))
 		_smoke_start_ms = Time.get_ticks_msec()
 		call_deferred("_start_smoke", stage_index)
+	for argument in args:
+		if argument == "--playtest-autoplay":
+			autoplay = true
+		elif argument.begins_with("--playtest-time-scale="):
+			Engine.time_scale = maxf(0.1, float(argument.get_slice("=", 1)))
 	for a in args:
 		if a.begins_with("--screenshot="):
 			_screenshot_path = a.get_slice("=", 1)
@@ -166,6 +171,10 @@ func change_scene(path: String) -> void:
 func record_playtest_event(event_name: String, payload: Dictionary = {}) -> void:
 	if playtest_active and playtest_telemetry != null:
 		playtest_telemetry.record_event(event_name, payload)
+
+func record_playtest_simulation(delta: float, live_population: int) -> void:
+	if playtest_active and playtest_telemetry != null:
+		playtest_telemetry.advance_simulation(delta, live_population)
 
 func finish_playtest(outcome: StringName, payload: Dictionary = {}) -> void:
 	if not playtest_active or playtest_telemetry == null:

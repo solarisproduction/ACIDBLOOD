@@ -30,6 +30,12 @@ telemetry, controlled Stage 1 pressure experiments, conservative spacing
 calibration, in-world ghost placement, and integrated verification. Phase 2 is
 not started.
 
+Task A is complete. Reports now include simulated gameplay seconds, active and
+dead-air seconds, active-pressure ratio, average/peak live population, draft
+times/intervals, and the existing XP/result fields. Baseline automated reports:
+`/private/tmp/phase11-baseline-fresh-1787702174.json` and
+`/private/tmp/phase11-baseline-benchmark-1787702178.json`.
+
 ## Human Phase 1 review
 
 The human played the graphical BENCHMARK Stage 1: 124 kills, 260 XP, level 9,
