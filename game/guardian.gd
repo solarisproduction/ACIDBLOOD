@@ -12,6 +12,9 @@ var _visual_step := 0
 var _ability_cooldown := 0.0
 var _space_was_down := false
 var _recoil := 0.0
+var movement_events := 0
+var pulse_uses := 0
+var _movement_axis := 0.0
 
 @onready var model: Node3D = $Model
 @onready var muzzle: Marker3D = $Model/Muzzle
@@ -70,6 +73,7 @@ func _physics_process(delta: float) -> void:
 	_update_placeholder_recoil(delta)
 
 func _move(delta: float) -> void:
+	var previous_x := position.x
 	var axis := 0.0
 	if Input.is_physical_key_pressed(KEY_A) or Input.is_physical_key_pressed(KEY_LEFT):
 		axis -= 1.0
@@ -81,8 +85,23 @@ func _move(delta: float) -> void:
 	elif Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		var target_x := _pointer_world_x()
 		if not is_nan(target_x):
+			axis = signf(target_x - position.x)
 			position.x = move_toward(position.x, target_x, step)
 	position.x = clampf(position.x, -ArenaLayout.GUARDIAN_X_LIMIT, ArenaLayout.GUARDIAN_X_LIMIT)
+	var new_episode := _record_movement_axis(axis)
+	if absf(position.x - previous_x) > 0.001 and new_episode:
+		battle.record_playtest_event("guardian_move", {"x": snappedf(position.x, 0.01)})
+
+func _record_movement_axis(axis: float) -> bool:
+	var normalized := signf(axis)
+	if normalized == 0.0:
+		_movement_axis = 0.0
+		return false
+	var started := _movement_axis == 0.0 or _movement_axis != normalized
+	if _movement_axis == 0.0 or _movement_axis != normalized:
+		movement_events += 1
+	_movement_axis = normalized
+	return started
 
 ## Projects the pointer onto the y=0 gameplay plane; NAN when unavailable.
 func _pointer_world_x() -> float:
@@ -160,6 +179,8 @@ func _fire(target: Enemy, w: WeaponData, deals_damage: bool) -> void:
 func _ability(delta: float) -> void:
 	var pressed := Input.is_physical_key_pressed(KEY_SPACE)
 	if pressed and not _space_was_down and _ability_cooldown <= 0.0:
+		pulse_uses += 1
+		battle.record_playtest_event("pulse_use", {"x": snappedf(position.x, 0.01)})
 		_ability_cooldown = maxf(1.0, data.ability_cooldown)
 		battle.trigger_guardian_wave(
 			global_position,

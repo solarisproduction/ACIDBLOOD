@@ -1,7 +1,7 @@
 # Handoff
 
-Recommended executor for Task 1: Luna 5.6 Low
-Reason: Phase 1 implementation is expected to be routine after its plan is reviewed.
+Recommended executor for Task 2.5 review: Luna 5.6 Low
+Reason: bounded QA/development infrastructure is implemented; Task 3 remains next.
 
 ## Architectural reset checkpoint
 - Human-approved architectural reset: the first serious ACIDBLOOD version now
@@ -22,11 +22,32 @@ Reason: Phase 1 implementation is expected to be routine after its plan is revie
 - Phase 1 Task 2 is implemented locally: the active battle scene now uses the
   fixed T1–T2–Guardian–T3–T4 line, with four empty runtime slots and the
   existing laterally movable Guardian.
-- REVIEW GATE A is ready for human playtest. Verify framing, readability,
-  movement feel, and benchmark resemblance before approval.
-- NEXT: human review of Gate A, then `Task 3: Integrate deterministic kills,
-  XP and level-up interruption` after approval. Task 3 has not started and
-  Phase 1 is not complete.
+- REVIEW GATE A is approved by human review.
+- Task 2.5 provides isolated FRESH and BENCHMARK profiles. Launch FRESH with:
+  `GODOT=/Applications/Godot.app/Contents/MacOS/Godot tools/playtest_fresh.sh`
+  Launch BENCHMARK with:
+  `GODOT=/Applications/Godot.app/Contents/MacOS/Godot tools/playtest_benchmark.sh`
+  These are graphical human-playtest commands. Automated headless runs may
+  add `--headless --time-scale 8` to the Godot invocation directly, using the
+  explicit profile flags and report path.
+- BENCHMARK v1 is the smallest evidence-backed evolved snapshot: 17 cores,
+  stages 1 and 2 completed, `guardian_core` level 2, and `frost_protocol`
+  level 1 (unlocking Frost); it has no persistent owned run cards. FRESH has
+  zero cores, no completed stages, and no permanent upgrades.
+- Each run writes one JSON report to the explicit path, or by default to
+  `${TMPDIR:-/tmp}/acidblood-playtest-<profile>-<unix>.json`; reports are
+  development artifacts outside tracked source.
+- Current reports populate identity, seed/profile version, stage, outcome,
+  elapsed time, kills, barricade state, peak population, Guardian movement
+  episodes, Pulse count, and event history. XP/draft fields remain dormant until their
+  owning tasks implement those systems.
+- Approved pacing benchmark: a normal successful run near the approximately
+  20-draft ceiling should tend toward approximately 5 minutes. This is a
+  pacing target, not a rigid timer; XP curve, density, XP supply, wave timing,
+  and draft cadence must be balanced together. Boss/special modes may differ;
+  the exact XP curve remains tunable/UNVERIFIED.
+- NEXT: `Task 3: Integrate deterministic kills, XP and level-up interruption`.
+  Task 3 has not started and Phase 1 is not complete.
 
 ## Pass 08 factual checkpoint
 - Infrastructure hardening is complete. GitHub Actions run `32760784952` is

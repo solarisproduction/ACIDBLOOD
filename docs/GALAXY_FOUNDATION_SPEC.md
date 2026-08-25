@@ -43,6 +43,11 @@ The initial benchmark loop is:
 - Normal stages have a finite draft/level-up budget.
 - The initial benchmark is approximately 20 choices per stage, subject to
   later balance validation.
+- A normal successful run near that approximately 20-draft ceiling should tend
+  toward approximately 5 minutes. This is a pacing target, not a hard timer;
+  XP curve, enemy density, total XP supply, wave timing, and draft cadence must
+  be balanced together. Boss and special modes may later use different
+  duration targets. The exact XP curve remains tunable/UNVERIFIED.
 - Dense hordes and frequent kills feed build evolution.
 - New turret acquisition competes with deepening existing weapons.
 - Stage pacing controls level-up timing; level-ups should not be evenly spaced

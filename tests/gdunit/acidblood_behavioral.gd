@@ -6,6 +6,8 @@ const BattleScene := preload("res://game/battle.tscn")
 const TurretScene := preload("res://game/turret.tscn")
 const StageDataScript := preload("res://data/types/stage_data.gd")
 const WaveDataScript := preload("res://data/types/wave_data.gd")
+const PlaytestProfileScript := preload("res://core/playtest_profile.gd")
+const PlaytestTelemetryScript := preload("res://core/playtest_telemetry.gd")
 
 var _saved_game_stage
 var _saved_game_seed := 0
@@ -99,12 +101,76 @@ func test_task2_battle_starts_with_empty_slots_and_active_guardian() -> void:
 func test_task2_guardian_clamps_to_lateral_limits() -> void:
 	var boot := await _boot_battle()
 	var battle := boot["battle"] as Battle
+	assert_bool(battle.has_method("record_playtest_event")).is_true()
 	battle.guardian.position.x = 100.0
 	battle.guardian._move(0.0)
 	assert_float(battle.guardian.position.x).is_equal_approx(ArenaLayout.GUARDIAN_X_LIMIT, 0.001)
 	battle.guardian.position.x = -100.0
 	battle.guardian._move(0.0)
 	assert_float(battle.guardian.position.x).is_equal_approx(-ArenaLayout.GUARDIAN_X_LIMIT, 0.001)
+
+func test_task25_fresh_profile_isolated_from_persistent_progression() -> void:
+	var persistent := Progression.new()
+	persistent.cores = 17
+	persistent.completed_stages = ["stage_001"]
+	var before := persistent.to_dict()
+	var profile: Dictionary = PlaytestProfileScript.build(&"FRESH", 111)
+	var injected: Progression = PlaytestProfileScript.progression_for(profile)
+	assert_int(injected.cores).is_equal(0)
+	assert_array(injected.completed_stages).is_empty()
+	assert_dict(persistent.to_dict()).is_equal(before)
+
+func test_task25_benchmark_profile_applies_representative_state_and_is_distinct() -> void:
+	var fresh := PlaytestProfileScript.progression_for(PlaytestProfileScript.build(&"FRESH", 111))
+	var benchmark_profile: Dictionary = PlaytestProfileScript.build(&"BENCHMARK", 222)
+	var benchmark := PlaytestProfileScript.progression_for(benchmark_profile)
+	assert_int(benchmark.cores).is_equal(17)
+	assert_array(benchmark.completed_stages).contains_exactly(["stage_001", "stage_002"])
+	assert_int(benchmark.upgrade_level(&"guardian_core")).is_equal(2)
+	assert_int(benchmark.upgrade_level(&"frost_protocol")).is_equal(1)
+	assert_bool(fresh.to_dict() == benchmark.to_dict()).is_false()
+	var repeat := PlaytestProfileScript.progression_for(PlaytestProfileScript.build(&"BENCHMARK", 222))
+	assert_bool(repeat.to_dict() == benchmark.to_dict()).is_true()
+
+func test_task25_guardian_telemetry_counts_movement_episodes() -> void:
+	var boot := await _boot_battle()
+	var guardian := (boot["battle"] as Battle).guardian
+	guardian._record_movement_axis(1.0)
+	guardian._record_movement_axis(1.0)
+	guardian._record_movement_axis(0.0)
+	guardian._record_movement_axis(-1.0)
+	assert_int(guardian.movement_events).is_equal(2)
+
+func test_task25_draft_selection_resumes_when_pressure_delays_next_draft() -> void:
+	var boot := await _boot_battle()
+	var battle := boot["battle"] as Battle
+	battle._pending_drafts = 0
+	battle._last_barricade_hit_msec = Time.get_ticks_msec()
+	get_tree().paused = true
+	battle.on_card_chosen(Catalog.card(&"field_repairs"))
+	assert_bool(get_tree().paused).is_false()
+
+func test_task25_benchmark_initialization_is_seeded_and_versioned() -> void:
+	var first: Dictionary = PlaytestProfileScript.build(&"BENCHMARK", 222)
+	var second: Dictionary = PlaytestProfileScript.build(&"BENCHMARK", 222)
+	assert_dict(first).is_equal(second)
+	assert_str(first["profile_version"]).is_equal("benchmark-v1")
+	assert_int(int(first["seed"])).is_equal(222)
+
+func test_task25_telemetry_writes_one_profiled_report() -> void:
+	var path := "/private/tmp/acidblood-task25-test-report.json"
+	var profile: Dictionary = PlaytestProfileScript.build(&"FRESH", 333)
+	var telemetry: PlaytestTelemetry = PlaytestTelemetryScript.new()
+	telemetry.begin(profile, &"stage_001", path)
+	telemetry.finish(&"victory", {"kills": 4, "peak_simultaneous_enemies": 2, "elapsed_seconds": 1.25})
+	telemetry.finish(&"defeat", {"kills": 99})
+	var report := JSON.parse_string(FileAccess.get_file_as_string(path)) as Dictionary
+	assert_str(report["profile"]).is_equal("FRESH")
+	assert_int(int(report["seed"])).is_equal(333)
+	assert_str(report["outcome"]).is_equal("victory")
+	assert_float(report["elapsed_seconds"]).is_equal_approx(1.25, 0.001)
+	assert_int(int(report["kills"])).is_equal(4)
+	assert_int(int(report["peak_simultaneous_enemies"])).is_equal(2)
 
 func test_frost_turret_freezes_target() -> void:
 	var boot := await _boot_battle()

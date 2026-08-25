@@ -92,6 +92,10 @@ replacing placeholder models.
 
 ## Required workflow
 
+Development-only Task 2.5 playtest support now provides isolated FRESH and
+BENCHMARK stage launches with transient progression and JSON telemetry. It is
+not player-facing progression and does not write the normal persistent save.
+
 Any Godot-related edit, inspection, or validation must go through the Godot AI
 MCP tools when they are available. The engine is part of the editing workflow:
 inspect in-editor, run in-engine, and confirm parse/runtime state before

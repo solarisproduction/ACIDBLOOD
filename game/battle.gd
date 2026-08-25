@@ -33,6 +33,7 @@ var _field_effects: Array[Dictionary] = []
 var _next_barricade_alert_msec := 0
 var _last_barricade_hit_msec := -10000
 var _draft_hold_banner_msec := 0
+var _peak_enemy_count := 0
 
 func _ready() -> void:
 	# Camera/light orientation is authored here (single place, avoids
@@ -113,6 +114,7 @@ func spawn_wave_enemy(enemy_id: StringName, spawn_x: float) -> void:
 	enemy.setup(self, data, _spawn_counter, spawn_x, stage.hp_scale, stage.speed_scale)
 	_spawn_counter += 1
 	enemies.append(enemy)
+	_peak_enemy_count = maxi(_peak_enemy_count, enemies.size())
 	if data.is_boss:
 		hud.show_threat_banner("%s Approaches" % data.display_name)
 
@@ -494,6 +496,14 @@ func _end(victory: bool) -> void:
 		"branches": run_state.chosen_branches,
 		"turrets": run_state.active_turrets,
 	})
+	if Game.playtest_active:
+		Game.finish_playtest(&"victory" if victory else &"defeat", {
+			"kills": run_state.kills,
+			"fortress_hp": run_state.fortress_hp,
+			"peak_simultaneous_enemies": _peak_enemy_count,
+			"guardian_movement_events": guardian.movement_events,
+			"pulse_uses": guardian.pulse_uses,
+		})
 	get_tree().paused = false
 	Game.end_run(victory, {
 		"kills": run_state.kills,
@@ -637,6 +647,7 @@ func on_card_chosen(card: CardData) -> void:
 		hud.show_slot_picker(pending_turret, _slot_placement_options())
 		return
 	hud.hide_overlay()
+	get_tree().paused = false
 	_open_next_draft()
 
 func apply_card(card: CardData) -> void:
@@ -867,6 +878,12 @@ func _telemetry(event_name: String, payload: Dictionary = {}) -> void:
 	out["event"] = event_name
 	out["stage"] = stage.index if stage != null else -1
 	print("RUN_TLM %s" % JSON.stringify(out))
+	if Game.playtest_active:
+		Game.record_playtest_event(event_name, out)
+
+func record_playtest_event(event_name: String, payload: Dictionary = {}) -> void:
+	if Game.playtest_active:
+		Game.record_playtest_event(event_name, payload)
 
 func debug_snapshot() -> Dictionary:
 	var enemy_rows := []

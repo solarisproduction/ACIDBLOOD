@@ -91,6 +91,36 @@ Interfaces:
 - [x] Perform the Review Gate A manual playtest: field framing, T1 T2 G T3 T4 readability, movement feel, and structural resemblance.
 - [x] Commit only after human approval with `feat: establish Phase 1 defensive line`.
 
+### Task 2.5: Reproducible playtest harness
+
+Purpose: provide isolated, reproducible FRESH and BENCHMARK Stage 1 runs with
+one structured telemetry report, without implementing Task 3 progression.
+
+Files:
+- Create: `core/playtest_profile.gd`, `core/playtest_telemetry.gd`.
+- Modify: `autoload/game.gd`, `game/battle.gd`, `game/guardian.gd`,
+  `tests/gdunit/acidblood_behavioral.gd`, `docs/HANDOFF.md`,
+  `docs/SYSTEM_BLUEPRINT.md`.
+- Test: `tests/gdunit/acidblood_behavioral.gd`.
+- Delete: none.
+
+Interfaces:
+- Consumes: explicit profile id/version, seed, stage id, and injected transient
+  `Progression` state.
+- Produces: isolated runtime initialization and one JSON report under
+  `${TMPDIR:-/tmp}` containing run identity, outcome, elapsed time, kills,
+  barricade state, peak population, Guardian events, and dormant future
+  progression fields.
+
+- [x] Write failing tests for profile isolation, seeded initialization, save isolation, and one-report telemetry.
+- [x] Run the narrow GdUnit tests and confirm failure before adding the harness.
+- [x] Implement typed FRESH/BENCHMARK profiles and transient progression injection.
+- [x] Implement event-based JSON telemetry without adding XP/draft gameplay.
+- [x] Run narrow behavioral tests and confirm PASS.
+- [x] Run one FRESH and one BENCHMARK headless runtime smoke with isolated report paths.
+- [x] Record the approximately 20-draft / approximately 5-minute normal-stage pacing benchmark as a tunable target; exact XP curve remains UNVERIFIED.
+- [x] Commit with `test: add reproducible playtest harness`; do not push before review.
+
 ### Task 3: Integrate deterministic kills, XP and level-up interruption
 
 Purpose: connect enemy death to one XP award and a bounded level-up transition
