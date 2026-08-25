@@ -160,6 +160,23 @@ func test_phase1_draft_budget_is_finite() -> void:
 		assert_bool(run.consume_draft_choice()).is_true()
 	assert_bool(run.consume_draft_choice()).is_false()
 
+func test_task6_stage1_is_finite_and_result_shell_is_available() -> void:
+	var stage := Catalog.stage_by_index(1)
+	assert_object(stage).is_valid()
+	assert_int(stage.waves.size()).is_equal(6)
+	assert_int(stage.max_draft_choices).is_equal(20)
+	var enemy_count := 0
+	for wave in stage.waves:
+		for group in wave.groups:
+			enemy_count += group.count
+	assert_int(enemy_count).is_equal(124)
+	var result_scene := load("res://shell/result.tscn") as PackedScene
+	assert_object(result_scene).is_valid()
+	var result := result_scene.instantiate()
+	assert_object(result.get_node("Center/Panel/Margin/VBox/ContinueButton")).is_valid()
+	assert_object(result.get_node("Center/Panel/Margin/VBox/RetryButton")).is_valid()
+	result.free()
+
 func test_task2_defensive_line_is_ordered_around_guardian() -> void:
 	var boot := await _boot_battle()
 	var battle := boot["battle"] as Battle

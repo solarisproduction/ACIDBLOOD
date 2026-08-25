@@ -1,7 +1,7 @@
 # Handoff
 
-Recommended executor for Task 5 review: Luna 5.6 Medium
-Reason: turret installation and structural Gate B behavior require runtime review.
+Recommended executor for Phase 1 final review: Luna 5.6 Medium
+Reason: the foundation is implemented; human runtime/product review remains.
 
 ## Architectural reset checkpoint
 - Human-approved architectural reset: the first serious ACIDBLOOD version now
@@ -39,14 +39,14 @@ Reason: turret installation and structural Gate B behavior require runtime revie
   development artifacts outside tracked source.
 - Current reports populate identity, seed/profile version, stage, outcome,
   elapsed time, kills, barricade state, peak population, Guardian movement
-  episodes, Pulse count, and event history. XP/draft fields remain dormant until their
-  owning tasks implement those systems.
+  episodes, Pulse count, XP/level events, draft offers/selections, turret
+  installs, and event history where the run exposes them.
 - Approved pacing benchmark: a normal successful run near the approximately
   20-draft ceiling should tend toward approximately 5 minutes. This is a
   pacing target, not a rigid timer; XP curve, density, XP supply, wave timing,
   and draft cadence must be balanced together. Boss/special modes may differ;
   the exact XP curve remains tunable/UNVERIFIED.
-- Task 3 has now been implemented locally: killed enemies are credited once,
+- Task 3 has now been implemented and pushed: killed enemies are credited once,
   award data-driven XP, cross deterministic thresholds, emit XP/level telemetry,
   and queue bounded draft interruptions. Persistent progression remains untouched.
 - Task 3 runtime evidence: FRESH Stage 1 reached 2 kills/4 XP/level 1 in 2.916s;
@@ -55,7 +55,7 @@ Reason: turret installation and structural Gate B behavior require runtime revie
   `/private/tmp/t3-fresh.json` and `/private/tmp/t3-benchmark.json`.
 - Task 3 was freshly reverified after the Godot settings maintenance checkpoint:
   20 behavioral cases, both isolated profiles, and canonical validation passed.
-- Task 4 is implemented locally: active draft ownership now accepts only one of
+- Task 4 is implemented and pushed: active draft ownership now accepts only one of
   the offered cards, records pending state in telemetry, consumes one selection,
   and opens queued interruptions sequentially without pause deadlock.
 - Task 4 runtime evidence: FRESH reached 2 kills/4 XP/level 1 with no draft;
@@ -74,8 +74,14 @@ Reason: turret installation and structural Gate B behavior require runtime revie
   remaining slots at installation, and final fortress HP 10. FRESH remains an
   isolated clean-new-player smoke. Human Gate B is pending; no human approval
   is implied by the automated checkpoint.
-- NEXT: `Task 6: Complete the finite playable Stage 1 foundation`. Task 6 has
-  not started and Phase 1 is not complete.
+- Task 6 is now implemented: the authored Stage 1 remains a finite six-wave,
+  124-enemy foundation with the existing WaveDirector terminal victory/defeat
+  routing and result shell. Automated final Phase 1 review passed: 25 GdUnit
+  cases, 87 official checks, canonical runtime smoke, and isolated FRESH /
+  BENCHMARK evidence. The normal graphical final playthrough has not been
+  performed in this autonomous run, so human final review is pending.
+- NEXT: perform the human final Stage 1 playthrough/review. Do not begin Phase
+  2 until that review is complete.
 
 ## Pass 08 factual checkpoint
 - Infrastructure hardening is complete. GitHub Actions run `32760784952` is

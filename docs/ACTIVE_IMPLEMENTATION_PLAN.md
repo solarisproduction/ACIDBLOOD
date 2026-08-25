@@ -207,13 +207,13 @@ Interfaces:
 - Consumes: completed line, Guardian, XP/draft, and Cannon lifecycle.
 - Produces: a deterministic finite Stage 1 run with victory/defeat/result transitions and no parse, compile, or runtime errors.
 
-- [ ] Write failing completion tests for victory, defeat, result handoff, and draft-budget exhaustion.
-- [ ] Run the focused battle tests and require failure before stage integration.
-- [ ] Implement the minimum authored Stage 1 resource and completion wiring; do not add new content systems or rebalance later stages.
-- [ ] Run focused tests and require PASS with clean error logs.
-- [ ] Run all GdUnit behavior, canonical validation, static checks, and runtime smoke.
-- [ ] Perform the FINAL PHASE-1 REVIEW with a complete manual Stage 1 playthrough.
-- [ ] Commit with `feat: complete Phase 1 battle foundation` only after human approval.
+- [x] Write failing completion tests for finite victory/defeat coverage, result-shell handoff availability, and draft-budget exhaustion.
+- [x] Run the focused battle tests and require failure before stage integration.
+- [x] Verify the existing authored Stage 1 resource and completion wiring; no new content system or later-stage rebalance was required.
+- [x] Run focused tests and require PASS with clean error logs.
+- [x] Run all GdUnit behavior, canonical validation, static checks, and runtime smoke.
+- [x] Perform the automated FINAL PHASE-1 REVIEW; complete human Stage 1 playthrough remains pending.
+- [x] Commit with `feat: complete Phase 1 battle foundation` under the authorized autonomous checkpoint; human final approval remains pending.
 
 ## Validation and review contract
 

@@ -12,9 +12,9 @@ systems into a clearer tower-defense identity and a safer production process.
 
 The current gameplay roadmap is a clean product reset. The target architecture
 is [`GALAXY_FOUNDATION_SPEC.md`](GALAXY_FOUNDATION_SPEC.md); the existing
-gameplay is legacy/disposable and has no compatibility requirement. No phase
-below authorizes implementation by itself; Phase 1 begins only after its
-detailed implementation plan is reviewed and approved.
+gameplay is legacy/disposable and has no compatibility requirement. Phase 1's
+detailed implementation plan is now executed; automated validation is green
+and the human final playtest/review remains the next gate.
 
 ### PHASE 0 — Architectural Reset
 
@@ -25,6 +25,7 @@ detailed implementation plan is reviewed and approved.
 
 ### PHASE 1 — Battle Foundation
 - Detailed execution plan: [`docs/ACTIVE_IMPLEMENTATION_PLAN.md`](ACTIVE_IMPLEMENTATION_PLAN.md).
+- Implementation checkpoint complete; human final review is pending.
 
 - T1 – T2 – Guardian – T3 – T4 defensive lineup.
 - Guardian movement and weapon foundation.

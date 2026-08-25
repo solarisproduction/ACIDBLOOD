@@ -106,6 +106,9 @@ choice, and performs the domain/runtime empty-slot installation transaction.
 Duplicate active turret choices are rejected and `turret_install` telemetry
 records the occupied and remaining slots. Legacy Bolt/Frost resources remain
 current-state data outside the Stage 1 pool until later migration.
+Task 6 closes the current Phase 1 loop with the authored six-wave Stage 1:
+WaveDirector clears the finite wave list into the existing victory/defeat
+handoff, and the result shell remains the normal post-battle destination.
 
 Any Godot-related edit, inspection, or validation must go through the Godot AI
 MCP tools when they are available. The engine is part of the editing workflow:
