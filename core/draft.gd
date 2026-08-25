@@ -97,6 +97,8 @@ static func runtime_blocked_cards(catalog: Array[CardData], slots_available: int
 	return blocked
 
 static func card_role(card: CardData) -> StringName:
+	if card.category == &"NEW_TURRET":
+		return &"build"
 	for eff in card.effects:
 		if eff.op == CardEffect.Op.UNLOCK_TURRET:
 			return &"build"

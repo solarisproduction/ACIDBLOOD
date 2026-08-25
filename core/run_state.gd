@@ -16,9 +16,46 @@ var fortress_hp: float = 0.0
 var fortress_base_max_hp: float = 100.0
 var acquired: Dictionary = {}      # card id (StringName) -> count
 var active_turrets: Array[StringName] = []  # turret id per occupied slot, in slot order
+const DEFENSIVE_SLOT_COUNT := 4
+var turret_slots: Array[StringName] = [&"", &"", &"", &""]
+var guardian_active: bool = true
+var max_draft_choices: int = 20
+var run_xp_thresholds: Array[int] = []
+var _awarded_kills: Dictionary = {}
 var chosen_branches: Dictionary = {}  # turret id (StringName) -> branch id (StringName)
 var mods := ModifierSet.new()
 var draft_count: int = 0           # increments per draft, salts the draft RNG stream
+
+func available_slot_count() -> int:
+	var available := 0
+	for turret_id in turret_slots:
+		if turret_id == &"":
+			available += 1
+	return available
+
+func install_turret(turret_id: StringName, slot_index: int) -> bool:
+	if turret_id == &"" or slot_index < 0 or slot_index >= turret_slots.size():
+		return false
+	if turret_slots[slot_index] != &"" or turret_id in turret_slots:
+		return false
+	turret_slots[slot_index] = turret_id
+	active_turrets.clear()
+	for installed_id in turret_slots:
+		if installed_id != &"":
+			active_turrets.append(installed_id)
+	return true
+
+func grant_kill_xp(kill_id: StringName, amount: int) -> int:
+	if kill_id == &"" or _awarded_kills.has(kill_id):
+		return 0
+	_awarded_kills[kill_id] = true
+	return grant_xp(amount)
+
+func consume_draft_choice() -> bool:
+	if draft_count >= max_draft_choices:
+		return false
+	draft_count += 1
+	return true
 
 func fortress_max_hp() -> float:
 	return mods.value(&"fortress.max_hp", fortress_base_max_hp)
@@ -36,8 +73,8 @@ func grant_xp(amount: int) -> int:
 	## Returns the number of level-ups triggered.
 	xp += amount
 	var ups := 0
-	while xp >= Leveling.xp_required(level):
-		xp -= Leveling.xp_required(level)
+	while xp >= Leveling.xp_required(level, run_xp_thresholds):
+		xp -= Leveling.xp_required(level, run_xp_thresholds)
 		level += 1
 		ups += 1
 	return ups

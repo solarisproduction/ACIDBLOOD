@@ -59,13 +59,13 @@ Interfaces:
 - Consumes: enemy XP values, stage configuration, card catalog, and `DetRNG`.
 - Produces: four `EMPTY` slot records, exactly-once XP transaction, configurable XP thresholds, `draft_count`/`max_draft_choices`, and a deterministic offer contract returning exactly three valid choices when the pool permits.
 
-- [ ] Write failing tests for four empty slots, Guardian-active state, exactly-once XP, threshold crossing, finite budget, and same-seed offer equality.
-- [ ] Run the narrow GdUnit/static checks and record the expected failures against the legacy state model.
-- [ ] Implement the minimum typed state/configuration; keep Phase 2 weapon axes and full card categories out.
-- [ ] Run the narrow tests and require PASS, including no duplicate XP transaction.
-- [ ] Run legacy-independent regression checks for save serialization and deterministic RNG.
-- [ ] Runtime/manual verification is not required for this pure-domain task.
-- [ ] Commit with `feat: define Phase 1 battle foundation contracts`.
+- [x] Write failing tests for four empty slots, Guardian-active state, exactly-once XP, threshold crossing, finite budget, and same-seed offer equality.
+- [x] Run the narrow GdUnit/static checks and record the expected failures against the legacy state model.
+- [x] Implement the minimum typed state/configuration; keep Phase 2 weapon axes and full card categories out.
+- [x] Run the narrow tests and require PASS, including no duplicate XP transaction.
+- [x] Run legacy-independent regression checks for save serialization and deterministic RNG.
+- [x] Runtime/manual verification is not required for this pure-domain task.
+- [x] Commit with `feat: define Phase 1 battle foundation contracts`.
 
 ### Task 2: Build the defensive line and Guardian foundation
 

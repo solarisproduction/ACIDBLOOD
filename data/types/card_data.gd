@@ -6,6 +6,7 @@ extends Resource
 @export var title: String = ""
 @export_multiline var description: String = ""
 @export var weight: float = 10.0
+@export var category: StringName = &"NORMAL"
 ## Build tags used for draft weighting and future synergy checks.
 @export var tags: Array[StringName] = []
 ## Maximum times this card can be acquired in one run.

@@ -30,6 +30,50 @@ func after_test() -> void:
 	Game.autoplay = _saved_game_autoplay
 	Game.progression = _saved_game_progression
 
+func test_phase1_run_starts_with_empty_line_and_active_guardian() -> void:
+	var run := RunState.new()
+	assert_int(run.turret_slots.size()).is_equal(4)
+	assert_array(run.turret_slots).is_equal([&"", &"", &"", &""])
+	assert_bool(run.guardian_active).is_true()
+
+func test_phase1_kill_xp_is_awarded_once_and_crosses_threshold() -> void:
+	var run := RunState.new()
+	var first := run.grant_kill_xp(&"enemy-001", 10)
+	var duplicate := run.grant_kill_xp(&"enemy-001", 10)
+	assert_int(first).is_equal(1)
+	assert_int(duplicate).is_equal(0)
+	assert_int(run.level).is_equal(2)
+
+func test_phase1_new_turret_capacity_and_duplicate_occupancy() -> void:
+	var run := RunState.new()
+	assert_bool(run.install_turret(&"cannon", 0)).is_true()
+	assert_bool(run.install_turret(&"cannon", 0)).is_false()
+	assert_bool(run.install_turret(&"cannon", 1)).is_false()
+	for slot_index in range(1, 4):
+		assert_bool(run.install_turret(StringName("turret_%d" % slot_index), slot_index)).is_true()
+	assert_int(run.available_slot_count()).is_equal(0)
+	assert_bool(run.install_turret(&"cannon", 0)).is_false()
+
+func test_phase1_offer_is_three_choices_and_seeded() -> void:
+	var catalog: Array[CardData] = []
+	for card_index in range(4):
+		var card := CardData.new()
+		card.id = StringName("phase1_card_%d" % card_index)
+		card.category = &"NEW_TURRET" if card_index == 0 else &"NORMAL"
+		card.max_stacks = 1
+		catalog.append(card)
+	var first := Draft.generate_offer(catalog, {"draft_index": 1}, DetRNG.new(99), 3)
+	var second := Draft.generate_offer(catalog, {"draft_index": 1}, DetRNG.new(99), 3)
+	assert_int(first.size()).is_equal(3)
+	assert_array(_card_ids(first)).is_equal(_card_ids(second))
+
+func test_phase1_draft_budget_is_finite() -> void:
+	var run := RunState.new()
+	assert_int(run.max_draft_choices).is_equal(20)
+	for _i in range(20):
+		assert_bool(run.consume_draft_choice()).is_true()
+	assert_bool(run.consume_draft_choice()).is_false()
+
 func test_frost_turret_freezes_target() -> void:
 	var boot := await _boot_battle()
 	var runner: GdUnitSceneRunner = boot["runner"]
@@ -38,9 +82,15 @@ func test_frost_turret_freezes_target() -> void:
 	var enemy := battle.enemies.back() as Enemy
 	enemy.position = Vector3(0.0, 0.0, 0.0)
 	_spawn_turret(battle, &"frost", Vector3(0.0, 0.0, 0.0))
-	await runner.simulate_frames(120)
+	await runner.simulate_frames(30)
 	assert_object(enemy).is_valid()
 	assert_bool(enemy.is_frozen).is_true()
+
+func _card_ids(cards: Array[CardData]) -> Array[StringName]:
+	var ids: Array[StringName] = []
+	for card in cards:
+		ids.append(card.id)
+	return ids
 
 func test_frozen_brute_shatters_on_direct_heavy_impact() -> void:
 	var boot := await _boot_battle()

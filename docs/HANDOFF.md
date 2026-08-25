@@ -16,8 +16,11 @@ Reason: Phase 1 implementation is expected to be routine after its plan is revie
   not the target design.
 - Phase 0 is complete after this documentation checkpoint.
 - Phase 1 planning is complete in [`docs/ACTIVE_IMPLEMENTATION_PLAN.md`](ACTIVE_IMPLEMENTATION_PLAN.md), which is now the execution authority.
-- NEXT: execute `Task 1: Freeze the Phase 1 domain contract and test harness`
-  only after human review/approval. No Phase 1 gameplay code has been implemented.
+- Phase 1 Task 1 is complete: the domain/test contracts now cover four empty
+  slots, active Guardian state, exactly-once kill XP, configurable leveling,
+  bounded drafts, and deterministic offers.
+- NEXT: execute `Task 2: Build the defensive line and Guardian foundation`.
+  No task after Task 1 has begun, and Phase 1 is not complete.
 
 ## Pass 08 factual checkpoint
 - Infrastructure hardening is complete. GitHub Actions run `32760784952` is

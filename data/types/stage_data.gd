@@ -30,6 +30,8 @@ const INTENT_LABELS := {
 @export var fortress_hp: float = 100.0
 @export var hp_scale: float = 1.0
 @export var speed_scale: float = 1.0
+@export var run_xp_thresholds: Array[int] = []
+@export var max_draft_choices: int = 20
 @export var waves: Array[WaveData] = []
 
 func resolved_act_number() -> int:

@@ -12,7 +12,7 @@ extends Resource
 ## its own stat effects and is recorded in the run state.
 ## HEAL_FORTRESS: value = flat HP restored (clamped to max).
 
-enum Op { ADD_STAT, MULTIPLY_STAT, UNLOCK_TURRET, HEAL_FORTRESS, APPLY_BRANCH }
+enum Op { ADD_STAT, MULTIPLY_STAT, UNLOCK_TURRET, HEAL_FORTRESS, APPLY_BRANCH, NEW_TURRET }
 
 @export var op: Op = Op.ADD_STAT
 @export var stat: StringName
