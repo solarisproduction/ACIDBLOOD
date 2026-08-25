@@ -1,7 +1,9 @@
 # Current Session Bridge
 
-Recommended executor: Luna 5.6 Medium
-Reason: the next slice requires gameplay calibration and cross-system judgment.
+Recommended executor: GPT-5.6 Luna XHIGH / ULTRA HIGH for this autonomous
+calibration mission; future routine implementation can return to Luna Medium.
+Reason: Phase 1.1 requires controlled balance experiments, spatial/runtime
+integration, and review-quality evidence.
 
 ## Product and implementation state
 
@@ -19,6 +21,14 @@ Reason: the next slice requires gameplay calibration and cross-system judgment.
   excluded from the active Stage 1 pool.
 - Stage 1 is a finite six-wave authored encounter with 124 current enemies and
   the existing victory/defeat/result flow.
+
+## Active Phase 1.1 plan
+
+`docs/ACTIVE_IMPLEMENTATION_PLAN.md` is now the executable authority for the
+approved Pressure & Placement Calibration slice. Tasks A–E cover simulated-time
+telemetry, controlled Stage 1 pressure experiments, conservative spacing
+calibration, in-world ghost placement, and integrated verification. Phase 2 is
+not started.
 
 ## Human Phase 1 review
 
@@ -41,7 +51,8 @@ tutorial, while later stages may become sophisticated quickly.
 
 ## Validation and playtest
 
-- Latest commit: `5628061`; `origin/main` aligned.
+- Baseline commit: `3a7d640`; the active plan checkpoint is currently
+  uncommitted and must be committed before implementation continues.
 - Latest CI: run `32876035890` PASS.
 - Local canonical validation: 87 official checks, 25 GdUnit cases, runtime
   smoke, and error-log inspection PASS.
@@ -63,9 +74,11 @@ tutorial, while later stages may become sophisticated quickly.
   remain `UNVERIFIED`.
 - In-world ghost placement is approved but not implemented.
 - Legacy Bolt/Frost runtime and content remain outside the active Stage 1 pool.
-- Phase 1.1 and Phase 2 are not started.
+- Phase 1.1 plan is active; implementation is not started. Phase 2 is not
+  started.
 
 ## Exact next milestone
 
-Design and write the reviewed implementation plan for **Phase 1.1 — Pressure &
-Placement Calibration**. Do not implement it yet and do not begin Phase 2.
+Execute **Task A — Calibration telemetry and reproducible measurement** from
+`docs/ACTIVE_IMPLEMENTATION_PLAN.md`, then proceed through the approved task
+sequence only. Do not begin Phase 2.

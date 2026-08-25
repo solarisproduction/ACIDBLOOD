@@ -21,10 +21,11 @@ are required.
 - Finite authored Stage 1 and result flow.
 - FRESH/BENCHMARK isolated playtest harness.
 
-### Phase 1.1 — Pressure & Placement Calibration — NEXT
+### Phase 1.1 — Pressure & Placement Calibration — ACTIVE PLAN
 
-Not yet implementation-approved or planned. The future design/plan should
-investigate:
+The approved executable plan is [`ACTIVE_IMPLEMENTATION_PLAN.md`](ACTIVE_IMPLEMENTATION_PLAN.md).
+Implementation must complete its tasks and preserve the human graphical review
+gate before Phase 2. The scope is:
 
 - several-fold higher, more continuous Stage 1 throughput using existing enemy
   types and fragile common enemies;
