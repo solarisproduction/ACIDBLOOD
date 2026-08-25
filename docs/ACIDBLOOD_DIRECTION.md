@@ -179,6 +179,11 @@ Architecture carries the image. Large masses, circulation, and functional
 objects come before props and detail. Avoid making the world a collage of
 cyberpunk assets.
 
+The current gameplay structural north star is the approved Galaxy Defense
+foundation in [`GALAXY_FOUNDATION_SPEC.md`](GALAXY_FOUNDATION_SPEC.md). That
+benchmark guides structure only; ACIDBLOOD's industrial contamination identity
+remains the visual and product expression.
+
 ## Color
 
 The base palette is restrained:

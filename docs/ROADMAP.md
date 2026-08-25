@@ -8,7 +8,61 @@ The project is already past the basic prototype stage. The next phase is not
 about adding more isolated features; it is about consolidating the existing
 systems into a clearer tower-defense identity and a safer production process.
 
-## Product direction
+## ACTIVE ROADMAP — GALAXY FOUNDATION RESET
+
+The current gameplay roadmap is a clean product reset. The target architecture
+is [`GALAXY_FOUNDATION_SPEC.md`](GALAXY_FOUNDATION_SPEC.md); the existing
+gameplay is legacy/disposable and has no compatibility requirement. No phase
+below authorizes implementation by itself; Phase 1 begins only after its
+detailed implementation plan is reviewed and approved.
+
+### PHASE 0 — Architectural Reset
+
+- Persist the Galaxy Foundation target architecture.
+- Classify old gameplay as legacy/disposable.
+- Return to a clean working tree.
+- Preserve engineering infrastructure; require no legacy gameplay compatibility.
+
+### PHASE 1 — Battle Foundation
+
+- T1 – T2 – Guardian – T3 – T4 defensive lineup.
+- Guardian movement and weapon foundation.
+- Four turret-slot lifecycle.
+- Run XP/energy and 3-choice level-up flow.
+- Finite approximately 20-draft normal-stage budget.
+- Basic battle completion flow.
+
+### PHASE 2 — Weapon Architecture
+
+- `WeaponDefinition`, `DamageFamily`, `EngagementProfile`, `AttackTopology`,
+  and `TargetingPolicy`.
+- Guardian Rifle, Impact Cannon, Tesla Coil, and Disruption Field.
+
+### PHASE 3 — Draft Architecture
+
+- `NEW TURRET`, `NORMAL`, `BREAKTHROUGH`, `CHAIN`, and `COMBO`.
+- Prerequisite, exclusion, context, dead-choice, and deterministic systems.
+
+### PHASE 4 — Enemy and Stage Architecture
+
+- Enemy Role + Affinity + Modifiers with soft counters.
+- Stage Intel and authored StageDefinition.
+- Intentional Stage 1–5 onboarding: Teach → Test → Combine.
+
+### PHASE 5 — Meta / Home / Arsenal
+
+- Weapon Mastery, collection states, acquisition/shop architecture, packs and
+  randomization, duplicates/Card Level, and economy design.
+
+### PHASE 6 — Arsenal Expansion
+
+- Fire, Energy, additional weapons, and additional enemy roles/compositions.
+- Begin only after the core architecture proves itself through playtesting.
+
+The remainder of this file is retained legacy planning context and is not the
+active gameplay backlog during the reset.
+
+## Legacy planning context (historical; not active)
 
 ACIDBLOOD is a tower defense whose spatial and temporal strategy is enriched
 by roguelite buildcraft, set inside a late-1980s industrial contamination
@@ -160,11 +214,9 @@ deepen the battlefield before adding horizontal content.
   - The first implementation pass should record observed results before
     changing numbers. Tuning is allowed only when the live run shows that the
     intended question is not being asked clearly.
-  - Stage 1 density direction is approved: preserve weapon potency and use
-    roughly 100+ disposable enemies, authored rhythm, and explicit left/
-    center/right group pressure to target a readable 150–180 second horde
-    defense. Do not apply this density change to Stage 2 or later in this
-    slice.
+  - Historical Stage 1 density experiment: the 100+ enemy, authored-rhythm,
+    left/center/right direction was tested and explicitly discarded by the
+    architectural reset. It is not an active product baseline.
 - First live observation
   - Before the density iteration, Stage 1 completed without Barricade damage
     and resolved so quickly that its final mixture read more like a damage

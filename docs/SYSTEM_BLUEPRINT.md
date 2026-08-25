@@ -1,5 +1,11 @@
 # System Blueprint (as implemented)
 
+> **Legacy/current-state boundary:** This document records the gameplay and
+> technical implementation that exists today. The gameplay architecture is
+> disposable and may be replaced without backward compatibility. The approved
+> target architecture is [`docs/GALAXY_FOUNDATION_SPEC.md`](GALAXY_FOUNDATION_SPEC.md);
+> do not treat the systems below as the target design.
+
 ## Layers
 
 ```

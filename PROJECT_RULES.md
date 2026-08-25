@@ -9,6 +9,20 @@ sits.
   naming in player-facing content, data labels, docs, tools, or process.
 - The theme source of truth is `docs/ACIDBLOOD_DIRECTION.md`. Read it before
   naming stages, enemies, towers, VFX, environments, UI mood, or art tasks.
+
+## Galaxy foundation architecture
+- `docs/GALAXY_FOUNDATION_SPEC.md` is the approved target product architecture
+  for the gameplay reset; `docs/SYSTEM_BLUEPRINT.md` remains current
+  implemented technical truth.
+- Galaxy Defense is the initial structural benchmark. Prefer verified benchmark
+  behavior over arbitrary invention, and mark unknown benchmark behavior
+  `UNVERIFIED` until researched or confirmed.
+- Never copy proprietary code, assets, names, audiovisual content, or protected
+  creative expression.
+- The legacy gameplay implementation has no backward-compatibility requirement
+  and is disposable when an approved replacement plan exists.
+- Mature engineering infrastructure remains authoritative and must not be
+  casually replaced.
 - ACIDBLOOD is late-1980s industrial contamination, not medieval fantasy and
   not clean neon cyberpunk. Favor analog machines, CRT-era infrastructure,
   chemical industry, concrete, steel, rust, fluorescent light, biological

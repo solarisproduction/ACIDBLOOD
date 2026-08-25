@@ -1,7 +1,22 @@
 # Handoff
 
-Recommended executor for next task: Luna Low
-Reason: infrastructure is green; the next task should be a bounded gameplay/design slice.
+Recommended executor for eventual routine implementation: Luna 5.6 Low
+Reason: Phase 1 implementation is expected to be routine after its plan is reviewed.
+
+## Architectural reset checkpoint
+- Human-approved architectural reset: the first serious ACIDBLOOD version now
+  targets the structural Galaxy Defense foundation documented in
+  [`docs/GALAXY_FOUNDATION_SPEC.md`](GALAXY_FOUNDATION_SPEC.md).
+- The Stage 1 v2 density/pressure experiment was explicitly discarded and is
+  no longer part of the product baseline.
+- Existing gameplay, stages, battlefield geometry, turret behavior, enemies,
+  draft, and progression are legacy/current implementation only. They are
+  disposable and impose no backward-compatibility constraint.
+- `docs/SYSTEM_BLUEPRINT.md` remains current implemented technical truth; it is
+  not the target design.
+- Phase 0 is complete after this documentation checkpoint.
+- NEXT: write the detailed Phase 1 implementation plan, then stop for human
+  review/approval before implementing gameplay.
 
 ## Pass 08 factual checkpoint
 - Infrastructure hardening is complete. GitHub Actions run `32760784952` is
@@ -260,10 +275,11 @@ Reports land under `res://reports/` and are ignored in git.
 Additional Godot MCP smoke checks continue to be useful for live runtime
 behavior after scene changes.
 
-## Stage 1 density iteration
+## Discarded legacy experiment: Stage 1 density iteration
 - Stage 1 was increased from 29 enemies across 3 sparse waves to 124 enemies
   across 6 authored waves. Existing grunt, runner, and spitter identities are
-  preserved; no global HP or weapon changes were made.
+  preserved; no global HP or weapon changes were made. This experiment was
+  discarded during the architectural reset and is not an active baseline.
 - Groups now use deterministic authored left/center/right spawn bands. The
   rhythm progresses from an opening and directional reinforcement through a
   release, mixed pressure, population surge, and climax.

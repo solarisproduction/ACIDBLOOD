@@ -45,8 +45,10 @@ Every new agent/session must begin by reading, in this order:
 For efficient bootstrap, always read `AGENTS.md`, `PROJECT_RULES.md`, and
 `docs/HANDOFF.md`. Read `docs/SYSTEM_BLUEPRINT.md` for implementation/runtime
 work, `docs/ACIDBLOOD_DIRECTION.md` for gameplay/product/art work, and
-`docs/ROADMAP.md` for planning/tooling work. Use targeted search in an
-authority document whenever the task may depend on a decision stored there.
+`docs/ROADMAP.md` for planning/tooling work. Any agent modifying gameplay
+architecture, weapons, enemies, draft, stages, progression, or Home/Arsenal
+must also read `docs/GALAXY_FOUNDATION_SPEC.md` first. Use targeted search in
+an authority document whenever the task may depend on a decision stored there.
 
 Before modifying anything, inspect:
 
@@ -66,10 +68,11 @@ validation:
 2. `AGENTS.md`
 3. `PROJECT_RULES.md`
 4. `docs/ACIDBLOOD_DIRECTION.md`
-5. `docs/SYSTEM_BLUEPRINT.md`
-6. `docs/HANDOFF.md`
-7. `docs/ROADMAP.md`
-8. `docs/ASSET_CONTRACT.md` when working on art/imports
+5. `docs/GALAXY_FOUNDATION_SPEC.md` for gameplay/product architecture work
+6. `docs/SYSTEM_BLUEPRINT.md`
+7. `docs/HANDOFF.md`
+8. `docs/ROADMAP.md`
+9. `docs/ASSET_CONTRACT.md` when working on art/imports
 
 If a task is only about code or text outside Godot, still read the project docs
 when project state, parse state, runtime behavior, or validation matter.
