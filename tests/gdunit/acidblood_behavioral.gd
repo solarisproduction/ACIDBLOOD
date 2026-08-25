@@ -158,7 +158,10 @@ func test_task25_benchmark_initialization_is_seeded_and_versioned() -> void:
 	assert_int(int(first["seed"])).is_equal(222)
 
 func test_task25_telemetry_writes_one_profiled_report() -> void:
-	var path := "/private/tmp/acidblood-task25-test-report.json"
+	var temp_root := OS.get_environment("TMPDIR")
+	if temp_root.is_empty():
+		temp_root = "/tmp"
+	var path := temp_root.path_join("acidblood-task25-test-report.json")
 	var profile: Dictionary = PlaytestProfileScript.build(&"FRESH", 333)
 	var telemetry: PlaytestTelemetry = PlaytestTelemetryScript.new()
 	telemetry.begin(profile, &"stage_001", path)
