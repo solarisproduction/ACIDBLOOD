@@ -1,7 +1,7 @@
 # Handoff
 
-Recommended executor for Task 4 review: Luna 5.6 Medium
-Reason: deterministic draft ownership and queued interruption flow require behavioral review.
+Recommended executor for Task 5 review: Luna 5.6 Medium
+Reason: turret installation and structural Gate B behavior require runtime review.
 
 ## Architectural reset checkpoint
 - Human-approved architectural reset: the first serious ACIDBLOOD version now
@@ -62,10 +62,19 @@ Reason: deterministic draft ownership and queued interruption flow require behav
   BENCHMARK reached 7 kills/14 XP/level 2, opened one three-card draft at
   3.028s, auto-selected Field Repairs at 3.035s, then ended cleanly. Reports:
   `/private/tmp/t4-fresh.json` and `/private/tmp/t4-benchmark.json`.
-- Legacy cards remain temporarily reachable because Task 4 owns the generic
-  contract only. Stage 1 content migration and NEW TURRET/Impact Cannon
-  lifecycle belong to Task 5.
-- NEXT: `Task 5: Add NEW TURRET and Impact Cannon slot lifecycle`. Task 5 has
+- Task 5 is implemented and the automated Gate B review passes. Stage 1 now
+  restricts the active draft pool to the existing Guardian/Cannon-related
+  cards, excludes legacy Bolt/Frost build cards, and treats `build_cannon` as
+  the NEW TURRET entry. Selecting it installs one Impact Cannon in the chosen
+  empty defensive-line slot, updates RunState occupancy, records the install,
+  and blocks duplicate Cannon installation. Other legacy card resources remain
+  in the repository for later migration.
+- Task 5 BENCHMARK evidence: `/private/tmp/t5-benchmark-4.json` reached victory
+  with 124 kills, 260 XP, level 9, 8 drafts, Cannon installed in slot 0, three
+  remaining slots at installation, and final fortress HP 10. FRESH remains an
+  isolated clean-new-player smoke. Human Gate B is pending; no human approval
+  is implied by the automated checkpoint.
+- NEXT: `Task 6: Complete the finite playable Stage 1 foundation`. Task 6 has
   not started and Phase 1 is not complete.
 
 ## Pass 08 factual checkpoint

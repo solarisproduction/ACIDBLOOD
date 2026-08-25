@@ -19,6 +19,12 @@ static func is_eligible(card: CardData, ctx: Dictionary) -> bool:
 	var acquired: Dictionary = ctx.get("acquired", {})
 	var unlocks: Dictionary = ctx.get("unlocks", {})
 	var blocked: Array = ctx.get("blocked", [])
+	var allowed_card_ids: Array = ctx.get("allowed_card_ids", [])
+	var active_turrets: Array = ctx.get("active_turrets", [])
+	if not allowed_card_ids.is_empty() and card.id not in allowed_card_ids:
+		return false
+	if card_role(card) == &"build" and _build_target(card) in active_turrets:
+		return false
 	if card.id in blocked:
 		return false
 	if int(acquired.get(card.id, 0)) >= card.max_stacks:
@@ -166,7 +172,8 @@ static func _build_context_multiplier(ctx: Dictionary, draft_index: int) -> floa
 	if draft_index <= 4:
 		multiplier *= 1.18
 	var slots_available := int(ctx.get("slots_available", 0))
-	var active_turrets := int(ctx.get("active_turrets", 0))
+	var active_turrets_value: Variant = ctx.get("active_turrets", 0)
+	var active_turrets: int = int(active_turrets_value.size()) if active_turrets_value is Array else int(active_turrets_value)
 	if slots_available > 0:
 		var structural_need := 1.0
 		if active_turrets <= 0:
@@ -240,3 +247,9 @@ static func _has_card_marker(card: CardData, marker: StringName) -> bool:
 		if String(eff.target).contains(String(marker)) or String(eff.stat).contains(".%s." % String(marker)):
 			return true
 	return false
+
+static func _build_target(card: CardData) -> StringName:
+	for eff in card.effects:
+		if eff.op == CardEffect.Op.UNLOCK_TURRET:
+			return eff.target
+	return &""

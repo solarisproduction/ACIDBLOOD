@@ -610,7 +610,7 @@ func draft_context() -> Dictionary:
 		"unlocks": Game.progression.unlock_flags(Catalog.perm_upgrades()),
 		"blocked": blocked,
 		"slots_available": _available_slot_count(),
-		"active_turrets": run_state.active_turrets.size(),
+		"active_turrets": run_state.active_turrets,
 		"preferred_categories": _draft_preferred_categories(),
 		"fortress_hp": run_state.fortress_hp,
 		"fortress_max_hp": run_state.fortress_max_hp(),
@@ -618,7 +618,17 @@ func draft_context() -> Dictionary:
 		"critical_pressure": _barricade_under_pressure() and _barricade_critical(),
 		"pressure_ratio": run_state.fortress_hp / maxf(1.0, run_state.fortress_max_hp()),
 		"draft_index": run_state.draft_count + 1,
+		"allowed_card_ids": _stage_allowed_card_ids(),
 	}
+
+func _stage_allowed_card_ids() -> Array[StringName]:
+	if stage.index != 1:
+		return []
+	return [
+		&"build_cannon", &"sharp_rounds", &"rapid_trigger", &"split_shot",
+		&"long_barrel", &"overload_core", &"piercing_rounds",
+		&"cannon_blast_protocol", &"cannon_impact_protocol", &"cannon_shockwave",
+	]
 
 func _draft_preferred_categories() -> Array[StringName]:
 	var categories: Array[StringName] = []
@@ -765,12 +775,20 @@ func _build_turret_at_slot(turret_id: StringName, slot_index: int) -> bool:
 	if slot.turret != null:
 		push_warning("Battle: slot %d already occupied" % slot_index)
 		return false
+	if not run_state.install_turret(turret_id, slot_index):
+		push_warning("Battle: domain slot %d rejected turret %s" % [slot_index, turret_id])
+		return false
 	var turret: Turret = TURRET_SCENE.instantiate()
 	turrets_root.add_child(turret)
 	turret.global_position = (slot.marker as Marker3D).global_position
 	turret.setup(self, data)
 	slot.turret = turret
-	run_state.active_turrets.append(turret_id)
+	_telemetry("turret_install", {
+		"turret_id": String(turret_id),
+		"slot_index": slot_index,
+		"occupied_slots": run_state.active_turrets,
+		"remaining_slots": run_state.available_slot_count(),
+	})
 	return true
 
 func _slot_placement_options() -> Array[Dictionary]:

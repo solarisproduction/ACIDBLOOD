@@ -184,13 +184,13 @@ Interfaces:
 - Consumes: explicit NEW TURRET card result and empty slot lifecycle.
 - Produces: Impact Cannon activation, one-time occupancy, four-slot capacity enforcement, and deterministic slot selection/confirmation.
 
-- [ ] Write failing tests for empty-slot occupation, occupied-slot rejection, four-slot capacity, and Cannon firing after installation.
-- [ ] Run focused tests and require failure before implementing installation.
-- [ ] Implement the minimum install transaction and scene spawn; do not add Tesla, Disruption Field, or free repositioning.
-- [ ] Run focused tests and require PASS, including a deterministic slot result.
-- [ ] Run turret, draft, battle completion, and save-state regressions.
-- [ ] Perform Review Gate B: kill cadence, level-up cadence, interruption flow, turret appearance/activation, and structural benchmark feel.
-- [ ] Commit only after human approval with `feat: add Phase 1 new turret lifecycle`.
+- [x] Write failing tests for empty-slot occupation, occupied-slot rejection, four-slot capacity, and Cannon firing after installation.
+- [x] Run focused tests and require failure before implementing installation.
+- [x] Implement the minimum install transaction and scene spawn; do not add Tesla, Disruption Field, or free repositioning.
+- [x] Run focused tests and require PASS, including a deterministic slot result.
+- [x] Run turret, draft, battle completion, and save-state regressions.
+- [x] Perform automated Review Gate B: kill cadence, level-up cadence, interruption flow, turret appearance/activation, and structural benchmark feel. Human Gate B remains pending.
+- [x] Commit with `feat: add Phase 1 new turret lifecycle` under the authorized autonomous checkpoint; human Gate B remains pending.
 
 ### Task 6: Complete the finite playable Stage 1 foundation
 

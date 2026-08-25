@@ -16,6 +16,7 @@ id = &"build_cannon"
 title = "Deploy: Cannon Turret"
 description = "Deploy a slow pressure cannon with splash damage."
 weight = 10.0
+category = &"NEW_TURRET"
 tags = Array[StringName]([&"impact"])
 max_stacks = 2
 effects = Array[ExtResource("2")]([SubResource("eff1")])

@@ -113,6 +113,12 @@ func run_draft_rules(sink) -> void:
 		not Draft.is_eligible(Catalog.card(&"build_frost"), {"acquired": {}, "unlocks": {}, "blocked": []}))
 	sink.check("locked card eligible with permanent unlock",
 		Draft.is_eligible(Catalog.card(&"build_frost"), {"acquired": {}, "unlocks": {&"frost_turret": true}, "blocked": []}))
+	sink.check("Stage 1 eligible pool keeps Impact Cannon and excludes legacy turret builds",
+		Draft.is_eligible(Catalog.card(&"build_cannon"), {"allowed_card_ids": [&"build_cannon"], "acquired": {}, "unlocks": {}, "blocked": []})
+		and not Draft.is_eligible(Catalog.card(&"build_bolt"), {"allowed_card_ids": [&"build_cannon"], "acquired": {}, "unlocks": {}, "blocked": []})
+		and not Draft.is_eligible(Catalog.card(&"build_frost"), {"allowed_card_ids": [&"build_cannon"], "acquired": {}, "unlocks": {}, "blocked": []}))
+	sink.check("active turret blocks duplicate NEW TURRET choice",
+		not Draft.is_eligible(Catalog.card(&"build_cannon"), {"active_turrets": [&"cannon"], "acquired": {&"build_cannon": 1}, "unlocks": {}, "blocked": []}))
 	sink.check("blocked list removes card",
 		not Draft.is_eligible(Catalog.card(&"build_bolt"), {"acquired": {}, "unlocks": {}, "blocked": [&"build_bolt"]}))
 	sink.check("branch card eligible after bolt turret is built",

@@ -98,10 +98,14 @@ not player-facing progression and does not write the normal persistent save.
 Task 3 now makes enemy death the authoritative run-local kill/XP transaction,
 tracks deterministic threshold crossings and pending draft interruptions, and
 records XP/level-up events in playtest telemetry.
-Task 4 now validates selection against the active three-choice offer, preserves
+Task 4 validates selection against the active three-choice offer, preserves
 deterministic eligibility, records draft offer/selection telemetry, and resolves
-queued interruptions sequentially. Legacy card content remains current-state
-data until the later turret lifecycle task replaces it.
+queued interruptions sequentially. Task 5 adds a Stage 1 allowed-card context
+for the existing Guardian/Cannon content, makes `build_cannon` a NEW TURRET
+choice, and performs the domain/runtime empty-slot installation transaction.
+Duplicate active turret choices are rejected and `turret_install` telemetry
+records the occupied and remaining slots. Legacy Bolt/Frost resources remain
+current-state data outside the Stage 1 pool until later migration.
 
 Any Godot-related edit, inspection, or validation must go through the Godot AI
 MCP tools when they are available. The engine is part of the editing workflow:

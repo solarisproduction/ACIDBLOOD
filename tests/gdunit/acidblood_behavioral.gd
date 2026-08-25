@@ -106,6 +106,30 @@ func test_task4_queued_interruption_opens_next_offer_without_duplicate_selection
 	assert_bool(battle._draft_open).is_true()
 	assert_bool(get_tree().paused).is_true()
 
+func test_task5_stage1_draft_restricts_legacy_turrets_and_keeps_cannon() -> void:
+	var offer := Draft.generate_offer(Catalog.cards(), {
+		"allowed_card_ids": [&"build_cannon", &"sharp_rounds", &"rapid_trigger", &"split_shot", &"long_barrel", &"overload_core", &"piercing_rounds"],
+		"acquired": {}, "unlocks": {}, "blocked": [], "draft_index": 1,
+		"fortress_hp": 100.0, "fortress_max_hp": 100.0,
+	}, DetRNG.new(77), 3)
+	var ids := _card_ids(offer)
+	assert_bool(ids.has(&"build_cannon")).is_true()
+	assert_bool(ids.has(&"build_bolt")).is_false()
+	assert_bool(ids.has(&"build_frost")).is_false()
+	assert_int(offer.size()).is_equal(3)
+
+func test_task5_cannon_install_updates_runtime_and_domain_slot_once() -> void:
+	var boot := await _boot_battle()
+	var battle := boot["battle"] as Battle
+	assert_bool(battle._build_turret_at_slot(&"cannon", 0)).is_true()
+	assert_str(String(battle.run_state.turret_slots[0])).is_equal("cannon")
+	assert_int(battle.run_state.available_slot_count()).is_equal(3)
+	assert_bool(battle._build_turret_at_slot(&"cannon", 0)).is_false()
+	assert_bool(Draft.is_eligible(Catalog.card(&"build_cannon"), {
+		"acquired": {&"build_cannon": 1}, "active_turrets": [&"cannon"],
+		"unlocks": {}, "blocked": [],
+	})).is_false()
+
 func test_phase1_new_turret_capacity_and_duplicate_occupancy() -> void:
 	var run := RunState.new()
 	assert_bool(run.install_turret(&"cannon", 0)).is_true()
