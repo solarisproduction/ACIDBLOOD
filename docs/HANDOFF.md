@@ -1,7 +1,7 @@
 # Handoff
 
-Recommended executor for Task 3 review: Luna 5.6 Medium
-Reason: Task 3 progression and pause ownership now require behavioral review.
+Recommended executor for Task 4 review: Luna 5.6 Medium
+Reason: deterministic draft ownership and queued interruption flow require behavioral review.
 
 ## Architectural reset checkpoint
 - Human-approved architectural reset: the first serious ACIDBLOOD version now
@@ -53,7 +53,19 @@ Reason: Task 3 progression and pause ownership now require behavioral review.
   BENCHMARK reached 7 kills/14 XP/level 2, opened one draft at 2.774s, resumed
   after selecting Field Repairs, and ended in 3.390s. Reports were written to
   `/private/tmp/t3-fresh.json` and `/private/tmp/t3-benchmark.json`.
-- NEXT: `Task 4: Implement the Phase 1 three-choice draft contract`. Task 4 has
+- Task 3 was freshly reverified after the Godot settings maintenance checkpoint:
+  20 behavioral cases, both isolated profiles, and canonical validation passed.
+- Task 4 is implemented locally: active draft ownership now accepts only one of
+  the offered cards, records pending state in telemetry, consumes one selection,
+  and opens queued interruptions sequentially without pause deadlock.
+- Task 4 runtime evidence: FRESH reached 2 kills/4 XP/level 1 with no draft;
+  BENCHMARK reached 7 kills/14 XP/level 2, opened one three-card draft at
+  3.028s, auto-selected Field Repairs at 3.035s, then ended cleanly. Reports:
+  `/private/tmp/t4-fresh.json` and `/private/tmp/t4-benchmark.json`.
+- Legacy cards remain temporarily reachable because Task 4 owns the generic
+  contract only. Stage 1 content migration and NEW TURRET/Impact Cannon
+  lifecycle belong to Task 5.
+- NEXT: `Task 5: Add NEW TURRET and Impact Cannon slot lifecycle`. Task 5 has
   not started and Phase 1 is not complete.
 
 ## Pass 08 factual checkpoint

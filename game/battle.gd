@@ -27,6 +27,7 @@ var _spawn_counter := 0
 var _wave_rng: DetRNG
 var _pending_drafts := 0
 var _draft_open := false
+var _active_offer: Array[CardData] = []
 var _pending_build_turret_id: StringName = &""
 var _ended := false
 var _field_effects: Array[Dictionary] = []
@@ -566,8 +567,10 @@ func _open_next_draft() -> void:
 			"wave": run_state.wave_index,
 			"offer_ids": offer_ids,
 			"offer_titles": offer_titles,
+			"pending_level_ups": _pending_drafts,
 		})
 		_draft_open = true
+		_active_offer = offer.duplicate()
 		hud.set_level_up_ready(false, _pending_drafts)
 		get_tree().paused = true
 		hud.show_draft(offer)
@@ -642,6 +645,9 @@ func _draft_preferred_categories() -> Array[StringName]:
 	return categories
 
 func on_card_chosen(card: CardData) -> void:
+	if not _draft_open or not _active_offer.has(card):
+		return
+	_active_offer.clear()
 	run_state.acquire_card(card.id)
 	_telemetry("card_chosen", {
 		"draft_index": run_state.draft_count,
@@ -650,6 +656,7 @@ func on_card_chosen(card: CardData) -> void:
 		"wave": run_state.wave_index,
 		"level": run_state.level,
 		"acquired_count": int(run_state.acquired.get(card.id, 0)),
+		"pending_level_ups": _pending_drafts,
 	})
 	apply_card(card)
 	hud.hide_draft()

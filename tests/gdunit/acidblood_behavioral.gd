@@ -77,6 +77,35 @@ func test_task3_draft_budget_limits_pending_level_ups() -> void:
 	assert_bool(run.consume_draft_choice()).is_true()
 	assert_bool(run.consume_draft_choice()).is_false()
 
+func test_task4_selection_consumes_one_interruption_and_resumes() -> void:
+	var boot := await _boot_battle()
+	var battle := boot["battle"] as Battle
+	var card := Catalog.card(&"field_repairs")
+	battle._active_offer = [card]
+	battle._draft_open = true
+	battle._pending_drafts = 0
+	get_tree().paused = true
+	battle.on_card_chosen(card)
+	battle.on_card_chosen(card)
+	assert_int(int(battle.run_state.acquired.get(card.id, 0))).is_equal(1)
+	assert_int(battle._pending_drafts).is_equal(0)
+	assert_bool(battle._draft_open).is_false()
+	assert_bool(get_tree().paused).is_false()
+
+func test_task4_queued_interruption_opens_next_offer_without_duplicate_selection() -> void:
+	var boot := await _boot_battle()
+	var battle := boot["battle"] as Battle
+	var card := Catalog.card(&"field_repairs")
+	battle._active_offer = [card]
+	battle._draft_open = true
+	battle._pending_drafts = 2
+	get_tree().paused = true
+	battle.on_card_chosen(card)
+	assert_int(int(battle.run_state.acquired.get(card.id, 0))).is_equal(1)
+	assert_int(battle._pending_drafts).is_equal(1)
+	assert_bool(battle._draft_open).is_true()
+	assert_bool(get_tree().paused).is_true()
+
 func test_phase1_new_turret_capacity_and_duplicate_occupancy() -> void:
 	var run := RunState.new()
 	assert_bool(run.install_turret(&"cannon", 0)).is_true()
@@ -177,6 +206,8 @@ func test_task25_draft_selection_resumes_when_pressure_delays_next_draft() -> vo
 	var battle := boot["battle"] as Battle
 	battle._pending_drafts = 0
 	battle._last_barricade_hit_msec = Time.get_ticks_msec()
+	battle._active_offer = [Catalog.card(&"field_repairs")]
+	battle._draft_open = true
 	get_tree().paused = true
 	battle.on_card_chosen(Catalog.card(&"field_repairs"))
 	assert_bool(get_tree().paused).is_false()

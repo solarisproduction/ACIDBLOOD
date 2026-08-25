@@ -160,13 +160,13 @@ Interfaces:
 - Consumes: seeded `DetRNG`, run eligibility, occupied/empty slot count, and Task 3 level-up requests.
 - Produces: three distinct eligible choices, one committed selection, deterministic repeatability, and no offer after the configured maximum.
 
-- [ ] Write failing tests for exactly three choices, eligibility, no duplicates, one selection, same-seed equality, and finite budget.
-- [ ] Run the focused draft tests and require failure against legacy build/choice inference where applicable.
-- [ ] Implement the minimum explicit Phase 1 category/eligibility fields; retain prerequisites, excludes, max stacks, weights, and context.
-- [ ] Run focused draft/UI tests and require PASS.
-- [ ] Run the full draft and save/load regression subset.
-- [ ] Verify the UI pauses battle, displays three choices, and resumes after selection.
-- [ ] Commit with `feat: add bounded Phase 1 draft flow`.
+- [x] Write failing tests for exactly three choices, eligibility, no duplicates, one selection, same-seed equality, and finite budget.
+- [x] Run the focused draft tests and require failure against legacy build/choice inference where applicable.
+- [x] Implement the minimum explicit Phase 1 category/eligibility fields; retain prerequisites, excludes, max stacks, weights, and context.
+- [x] Run focused draft/UI tests and require PASS.
+- [x] Run the full draft and save/load regression subset.
+- [x] Verify the UI pauses battle, displays three choices, and resumes after selection.
+- [x] Commit with `feat: add bounded Phase 1 draft flow`.
 
 ### Task 5: Add NEW TURRET and Impact Cannon slot lifecycle
 

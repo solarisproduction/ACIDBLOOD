@@ -98,6 +98,10 @@ not player-facing progression and does not write the normal persistent save.
 Task 3 now makes enemy death the authoritative run-local kill/XP transaction,
 tracks deterministic threshold crossings and pending draft interruptions, and
 records XP/level-up events in playtest telemetry.
+Task 4 now validates selection against the active three-choice offer, preserves
+deterministic eligibility, records draft offer/selection telemetry, and resolves
+queued interruptions sequentially. Legacy card content remains current-state
+data until the later turret lifecycle task replaces it.
 
 Any Godot-related edit, inspection, or validation must go through the Godot AI
 MCP tools when they are available. The engine is part of the editing workflow:
