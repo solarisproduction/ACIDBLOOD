@@ -750,19 +750,6 @@ func on_slot_chosen(slot_index: int) -> void:
 		get_tree().paused = false
 		_open_next_draft()
 
-func _build_turret(turret_id: StringName) -> void:
-	var data := Catalog.turret(turret_id)
-	var slot := _free_slot()
-	if data == null or slot.is_empty():
-		push_warning("Battle: cannot build turret %s" % turret_id)
-		return
-	var turret: Turret = TURRET_SCENE.instantiate()
-	turrets_root.add_child(turret)
-	turret.global_position = (slot.marker as Marker3D).global_position
-	turret.setup(self, data)
-	slot.turret = turret
-	run_state.active_turrets.append(turret_id)
-
 func _build_turret_at_slot(turret_id: StringName, slot_index: int) -> bool:
 	var data := Catalog.turret(turret_id)
 	if data == null:
