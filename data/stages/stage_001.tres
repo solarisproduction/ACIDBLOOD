@@ -7,19 +7,23 @@
 [sub_resource type="Resource" id="Resource_m5ody"]
 script = ExtResource("3_frdef")
 enemy_id = &"grunt"
-count = 6
-interval = 1.2
+count = 10
+interval = 0.85
+lane = &"center"
 
 [sub_resource type="Resource" id="Resource_heo36"]
 script = ExtResource("2_oahpk")
 groups = Array[ExtResource("3_frdef")]([SubResource("Resource_m5ody")])
 intent = &"introduce"
 label = "Opening"
+post_delay = 2.0
 
 [sub_resource type="Resource" id="Resource_e1vv5"]
 script = ExtResource("3_frdef")
 enemy_id = &"grunt"
 count = 6
+interval = 0.75
+lane = &"left"
 
 [sub_resource type="Resource" id="Resource_627eg"]
 script = ExtResource("3_frdef")
@@ -27,18 +31,21 @@ enemy_id = &"runner"
 count = 3
 interval = 0.8
 start_delay = 3.0
+lane = &"right"
 
 [sub_resource type="Resource" id="Resource_k6c87"]
 script = ExtResource("2_oahpk")
 groups = Array[ExtResource("3_frdef")]([SubResource("Resource_e1vv5"), SubResource("Resource_627eg")])
 intent = &"reinforce"
 label = "Reinforcement"
+post_delay = 2.0
 
 [sub_resource type="Resource" id="Resource_3jqdb"]
 script = ExtResource("3_frdef")
 enemy_id = &"grunt"
 count = 8
 interval = 0.9
+lane = &"center"
 
 [sub_resource type="Resource" id="Resource_a015l"]
 script = ExtResource("3_frdef")
@@ -46,6 +53,7 @@ enemy_id = &"runner"
 count = 4
 interval = 0.7
 start_delay = 4.0
+lane = &"left"
 
 [sub_resource type="Resource" id="Resource_jdduq"]
 script = ExtResource("3_frdef")
@@ -53,16 +61,107 @@ enemy_id = &"spitter"
 count = 2
 interval = 3.0
 start_delay = 2.0
+lane = &"center"
 
 [sub_resource type="Resource" id="Resource_fcyer"]
 script = ExtResource("2_oahpk")
 groups = Array[ExtResource("3_frdef")]([SubResource("Resource_3jqdb"), SubResource("Resource_a015l"), SubResource("Resource_jdduq")])
 intent = &"test"
 label = "First Test"
+post_delay = 2.5
+
+[sub_resource type="Resource" id="Resource_extra_center"]
+script = ExtResource("3_frdef")
+enemy_id = &"grunt"
+count = 10
+interval = 0.8
+lane = &"center"
+
+[sub_resource type="Resource" id="Resource_extra_right"]
+script = ExtResource("3_frdef")
+enemy_id = &"grunt"
+count = 14
+interval = 0.7
+lane = &"right"
+
+[sub_resource type="Resource" id="Resource_extra_left_runner"]
+script = ExtResource("3_frdef")
+enemy_id = &"runner"
+count = 7
+interval = 0.65
+start_delay = 3.0
+lane = &"left"
+
+[sub_resource type="Resource" id="Resource_extra_mix"]
+script = ExtResource("2_oahpk")
+groups = Array[ExtResource("3_frdef")]([SubResource("Resource_extra_right"), SubResource("Resource_extra_left_runner")])
+intent = &"pressure"
+label = "Directional Pressure"
+post_delay = 2.5
+
+[sub_resource type="Resource" id="Resource_extra_left"]
+script = ExtResource("3_frdef")
+enemy_id = &"grunt"
+count = 18
+interval = 0.65
+lane = &"left"
+
+[sub_resource type="Resource" id="Resource_extra_right2"]
+script = ExtResource("3_frdef")
+enemy_id = &"grunt"
+count = 10
+interval = 0.65
+start_delay = 4.0
+lane = &"right"
+
+[sub_resource type="Resource" id="Resource_extra_center_runner"]
+script = ExtResource("3_frdef")
+enemy_id = &"runner"
+count = 8
+interval = 0.6
+start_delay = 2.5
+lane = &"center"
+
+[sub_resource type="Resource" id="Resource_extra_population"]
+script = ExtResource("2_oahpk")
+groups = Array[ExtResource("3_frdef")]([SubResource("Resource_extra_left"), SubResource("Resource_extra_right2"), SubResource("Resource_extra_center_runner")])
+intent = &"pressure"
+label = "Population Surge"
+post_delay = 3.0
+
+[sub_resource type="Resource" id="Resource_extra_climax_grunt"]
+script = ExtResource("3_frdef")
+enemy_id = &"grunt"
+count = 20
+interval = 0.6
+lane = &"right"
+
+[sub_resource type="Resource" id="Resource_extra_climax_runner"]
+script = ExtResource("3_frdef")
+enemy_id = &"runner"
+count = 10
+interval = 0.55
+start_delay = 2.0
+lane = &"left"
+
+[sub_resource type="Resource" id="Resource_extra_climax_spitter"]
+script = ExtResource("3_frdef")
+enemy_id = &"spitter"
+count = 4
+interval = 2.2
+start_delay = 4.0
+lane = &"center"
+
+[sub_resource type="Resource" id="Resource_extra_climax"]
+script = ExtResource("2_oahpk")
+groups = Array[ExtResource("3_frdef")]([SubResource("Resource_extra_climax_grunt"), SubResource("Resource_extra_climax_runner"), SubResource("Resource_extra_climax_spitter")])
+intent = &"test"
+label = "Yard Climax"
+post_delay = 3.0
 
 [resource]
 script = ExtResource("1_d5bj0")
 id = &"stage_001"
 display_name = "Processing Yard"
 reward_cores = 6
-waves = Array[ExtResource("2_oahpk")]([SubResource("Resource_heo36"), SubResource("Resource_k6c87"), SubResource("Resource_fcyer")])
+waves = Array[ExtResource("2_oahpk")]([SubResource("Resource_heo36"), SubResource("Resource_k6c87"), SubResource("Resource_fcyer"), SubResource("Resource_extra_mix"), SubResource("Resource_extra_population"), SubResource("Resource_extra_climax")])

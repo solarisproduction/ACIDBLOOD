@@ -333,6 +333,16 @@ func run_data_references(sink) -> void:
 				if g.count <= 0:
 					bad.append("%s group with count<=0" % stage.id)
 	sink.check("all stage/wave/enemy references resolve (%s)" % [",".join(bad) if bad else "ok"], bad.is_empty())
+	var stage_one := Catalog.stage_by_index(1)
+	var stage_one_count := 0
+	var stage_one_lanes_ok := true
+	for wave in stage_one.waves:
+		for g in wave.groups:
+			stage_one_count += g.count
+			if not ["random", "left", "center", "right"].has(String(g.lane).to_lower()):
+				stage_one_lanes_ok = false
+	sink.check("stage 1 horde structure stays authored and laterally distributed",
+			stage_one.waves.size() == 6 and stage_one_count >= 100 and stage_one_lanes_ok)
 	bad = []
 	var card_ids := []
 	for card in Catalog.cards():

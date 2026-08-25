@@ -39,19 +39,23 @@ func _build_stage(d: Dictionary) -> StageData:
 			group.count = int(g[1])
 			group.interval = float(g[2])
 			group.start_delay = float(g[3]) if g.size() > 3 else 0.0
+			group.lane = StringName(g[4]) if g.size() > 4 else &"random"
 			wave.groups.append(group)
 		stage.waves.append(wave)
 	return stage
 
 func _stage_definitions() -> Array[Dictionary]:
 	var defs: Array[Dictionary] = []
-	# --- Stage 1: hand-authored tutorial pacing (grunt / runner / spitter).
+	# --- Stage 1: hand-authored horde tutorial pacing (grunt / runner / spitter).
 	defs.append({
 		"index": 1, "name": "Processing Yard", "reward": 6,
 		"waves": [
-			{"groups": [["grunt", 6, 1.2]]},
-			{"groups": [["grunt", 6, 1.0], ["runner", 3, 0.8, 3.0]]},
-			{"groups": [["grunt", 8, 0.9], ["runner", 4, 0.7, 4.0], ["spitter", 2, 3.0, 2.0]]},
+			{"post_delay": 2.0, "groups": [["grunt", 10, 0.85, 0.0, "center"]]},
+			{"post_delay": 2.0, "groups": [["grunt", 12, 0.75, 0.0, "left"], ["runner", 5, 0.75, 3.5, "right"]]},
+			{"post_delay": 2.5, "groups": [["grunt", 8, 0.9, 0.0, "center"], ["runner", 4, 0.7, 4.0, "left"], ["spitter", 2, 3.0, 2.0, "center"]]},
+			{"post_delay": 2.5, "groups": [["grunt", 14, 0.7, 0.0, "right"], ["runner", 7, 0.65, 3.0, "left"], ["spitter", 2, 2.5, 5.0, "center"]]},
+			{"post_delay": 3.0, "groups": [["grunt", 18, 0.65, 0.0, "left"], ["grunt", 10, 0.65, 4.0, "right"], ["runner", 8, 0.6, 2.5, "center"]]},
+			{"post_delay": 3.0, "groups": [["grunt", 20, 0.6, 0.0, "right"], ["runner", 10, 0.55, 2.0, "left"], ["spitter", 4, 2.2, 4.0, "center"]]},
 		],
 	})
 	# --- Stage 2: hand-authored; introduces the brute and the boss.

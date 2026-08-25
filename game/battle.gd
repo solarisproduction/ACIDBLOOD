@@ -86,7 +86,13 @@ func _apply_permanent_bonuses() -> void:
 func stat(path: StringName, base: float) -> float:
 	return run_state.mods.value(path, base)
 
-func roll_spawn_x() -> float:
+func roll_spawn_x(lane: StringName = &"random") -> float:
+	if lane == &"left":
+		return _wave_rng.randf_range(-ArenaLayout.SPAWN_X_RANGE, -0.9)
+	if lane == &"center":
+		return _wave_rng.randf_range(-0.9, 0.9)
+	if lane == &"right":
+		return _wave_rng.randf_range(0.9, ArenaLayout.SPAWN_X_RANGE)
 	return _wave_rng.randf_range(-ArenaLayout.SPAWN_X_RANGE, ArenaLayout.SPAWN_X_RANGE)
 
 func _physics_process(delta: float) -> void:

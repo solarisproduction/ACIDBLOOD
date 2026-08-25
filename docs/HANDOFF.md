@@ -260,6 +260,19 @@ Reports land under `res://reports/` and are ignored in git.
 Additional Godot MCP smoke checks continue to be useful for live runtime
 behavior after scene changes.
 
+## Stage 1 density iteration
+- Stage 1 was increased from 29 enemies across 3 sparse waves to 124 enemies
+  across 6 authored waves. Existing grunt, runner, and spitter identities are
+  preserved; no global HP or weapon changes were made.
+- Groups now use deterministic authored left/center/right spawn bands. The
+  rhythm progresses from an opening and directional reinforcement through a
+  release, mixed pressure, population surge, and climax.
+- An autoplay runtime pass won with 124 kills, 7 cards, four turrets, and no
+  Barricade loss. Normal-speed duration still needs human-paced confirmation.
+- Unresolved gameplay question: does the higher population create meaningful
+  lateral and timing decisions for a human player, or mostly increase visual
+  throughput?
+
 ## Known limitations
 - The macro-flow baseline is in place; any later tuning should be treated as
   normal balance work, not missing implementation.

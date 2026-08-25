@@ -61,7 +61,7 @@ func _tick_spawns(delta: float) -> void:
 		all_done = false
 		gs.t -= delta
 		while gs.t <= 0.0 and gs.spawned < g.count:
-			battle.spawn_wave_enemy(g.enemy_id, battle.roll_spawn_x())
+			battle.spawn_wave_enemy(g.enemy_id, battle.roll_spawn_x(StringName(g.lane)))
 			gs.spawned += 1
 			gs.t += maxf(g.interval, 0.0)
 			if g.interval <= 0.0:

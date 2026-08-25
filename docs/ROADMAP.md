@@ -160,11 +160,17 @@ deepen the battlefield before adding horizontal content.
   - The first implementation pass should record observed results before
     changing numbers. Tuning is allowed only when the live run shows that the
     intended question is not being asked clearly.
+  - Stage 1 density direction is approved: preserve weapon potency and use
+    roughly 100+ disposable enemies, authored rhythm, and explicit left/
+    center/right group pressure to target a readable 150–180 second horde
+    defense. Do not apply this density change to Stage 2 or later in this
+    slice.
 - First live observation
-  - Stage 1 completed without Barricade damage in the observed run. The HUD
-    labels and silhouettes made the opening, reinforcement, and test waves
-    legible, but the run resolved so quickly that the final mixture read more
-    like a damage check than a meaningful target-priority decision.
+  - Before the density iteration, Stage 1 completed without Barricade damage
+    and resolved so quickly that its final mixture read more like a damage
+    check than a meaningful target-priority decision. The HUD labels and
+    silhouettes were legible; the approved density slice addresses the pacing
+    and population gap without changing weapon or enemy HP fundamentals.
   - Stage 2 made the roles more distinct in motion: the larger purple Brute,
     small fast Runners, and green Spitters were visually separable. Its Elite
     Escort did create real Barricade pressure, reducing the objective to
