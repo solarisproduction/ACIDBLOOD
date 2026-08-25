@@ -74,6 +74,38 @@ func test_phase1_draft_budget_is_finite() -> void:
 		assert_bool(run.consume_draft_choice()).is_true()
 	assert_bool(run.consume_draft_choice()).is_false()
 
+func test_task2_defensive_line_is_ordered_around_guardian() -> void:
+	var boot := await _boot_battle()
+	var battle := boot["battle"] as Battle
+	var markers: Array[Node] = battle.slots_root.get_children()
+	assert_int(markers.size()).is_equal(4)
+	for index in range(markers.size()):
+		assert_str(markers[index].name).is_equal("Slot%02d" % (index + 1))
+		assert_float((markers[index] as Marker3D).position.z).is_equal_approx(ArenaLayout.GUARDIAN_Z, 0.001)
+	assert_float((markers[0] as Marker3D).position.x).is_less((markers[1] as Marker3D).position.x)
+	assert_float((markers[1] as Marker3D).position.x).is_less(0.0)
+	assert_float((markers[2] as Marker3D).position.x).is_greater(0.0)
+	assert_float((markers[2] as Marker3D).position.x).is_less((markers[3] as Marker3D).position.x)
+
+func test_task2_battle_starts_with_empty_slots_and_active_guardian() -> void:
+	var boot := await _boot_battle()
+	var battle := boot["battle"] as Battle
+	assert_int(battle._slots.size()).is_equal(4)
+	for slot in battle._slots:
+		assert_object(slot["turret"]).is_null()
+	assert_object(battle.guardian).is_valid()
+	assert_float(battle.guardian.position.z).is_equal_approx(ArenaLayout.GUARDIAN_Z, 0.001)
+
+func test_task2_guardian_clamps_to_lateral_limits() -> void:
+	var boot := await _boot_battle()
+	var battle := boot["battle"] as Battle
+	battle.guardian.position.x = 100.0
+	battle.guardian._move(0.0)
+	assert_float(battle.guardian.position.x).is_equal_approx(ArenaLayout.GUARDIAN_X_LIMIT, 0.001)
+	battle.guardian.position.x = -100.0
+	battle.guardian._move(0.0)
+	assert_float(battle.guardian.position.x).is_equal_approx(-ArenaLayout.GUARDIAN_X_LIMIT, 0.001)
+
 func test_frost_turret_freezes_target() -> void:
 	var boot := await _boot_battle()
 	var runner: GdUnitSceneRunner = boot["runner"]

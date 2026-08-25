@@ -19,8 +19,14 @@ Reason: Phase 1 implementation is expected to be routine after its plan is revie
 - Phase 1 Task 1 is complete: the domain/test contracts now cover four empty
   slots, active Guardian state, exactly-once kill XP, configurable leveling,
   bounded drafts, and deterministic offers.
-- NEXT: execute `Task 2: Build the defensive line and Guardian foundation`.
-  No task after Task 1 has begun, and Phase 1 is not complete.
+- Phase 1 Task 2 is implemented locally: the active battle scene now uses the
+  fixed T1–T2–Guardian–T3–T4 line, with four empty runtime slots and the
+  existing laterally movable Guardian.
+- REVIEW GATE A is ready for human playtest. Verify framing, readability,
+  movement feel, and benchmark resemblance before approval.
+- NEXT: human review of Gate A, then `Task 3: Integrate deterministic kills,
+  XP and level-up interruption` after approval. Task 3 has not started and
+  Phase 1 is not complete.
 
 ## Pass 08 factual checkpoint
 - Infrastructure hardening is complete. GitHub Actions run `32760784952` is

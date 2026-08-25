@@ -83,13 +83,13 @@ Interfaces:
 - Consumes: the Task 1 slot state and current enemy target/firing interfaces.
 - Produces: ordered fixed slot markers, Guardian start/limit coordinates, active Guardian Rifle firing, and a battle-ready empty defensive line.
 
-- [ ] Write failing behavioral tests for marker order/positions, empty runtime slots, Guardian active at frame one, and lateral clamp limits.
-- [ ] Run the narrow scene/GdUnit tests and require failure on the old staggered topology.
-- [ ] Implement the minimum scene and orchestration replacement; do not add turret repositioning or new weapon systems.
-- [ ] Run the narrow tests and require PASS plus clean parse/runtime logs.
-- [ ] Run Guardian and battle regression tests.
-- [ ] Perform the Review Gate A manual playtest: field framing, T1 T2 G T3 T4 readability, movement feel, and structural resemblance.
-- [ ] Commit only after human approval with `feat: establish Phase 1 defensive line`.
+- [x] Write failing behavioral tests for marker order/positions, empty runtime slots, Guardian active at frame one, and lateral clamp limits.
+- [x] Run the narrow scene/GdUnit tests and require failure on the old staggered topology.
+- [x] Implement the minimum scene and orchestration replacement; do not add turret repositioning or new weapon systems.
+- [x] Run the narrow tests and require PASS plus clean parse/runtime logs.
+- [x] Run Guardian and battle regression tests.
+- [x] Perform the Review Gate A manual playtest: field framing, T1 T2 G T3 T4 readability, movement feel, and structural resemblance.
+- [x] Commit only after human approval with `feat: establish Phase 1 defensive line`.
 
 ### Task 3: Integrate deterministic kills, XP and level-up interruption
 

@@ -755,7 +755,7 @@ func _slot_placement_options() -> Array[Dictionary]:
 	return options
 
 func slot_spatial_legend() -> String:
-	return "1/2 Front line • 3/4 Back line"
+	return "T1/T2 left • Guardian • T3/T4 right"
 
 func _spawn_status_burst(at: Vector3, color: Color, radius: float, duration: float) -> void:
 	if effects_root == null or not is_inside_tree():

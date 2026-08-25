@@ -373,7 +373,7 @@ material_override = SubResource("mat_contam")
 [node name="TowerSlots" type="Node3D" parent="."]
 
 [node name="Slot01" type="Marker3D" parent="TowerSlots"]
-position = Vector3(-3.5, 0, 0.5)
+position = Vector3(-3.0, 0, 8.7)
 
 [node name="Pad01" type="MeshInstance3D" parent="TowerSlots/Slot01"]
 mesh = SubResource("mesh_slot")
@@ -391,7 +391,7 @@ material_override = SubResource("mat_gate_dark")
 
 [node name="Number01" type="Label3D" parent="TowerSlots/Slot01"]
 position = Vector3(0, 0.16, 0)
-text = "3"
+text = "T1"
 billboard = 1
 modulate = Color(0.68, 0.55, 0.10, 1)
 outline_modulate = Color(0.18, 0.14, 0.04, 1)
@@ -399,7 +399,7 @@ outline_size = 8
 font_size = 64
 
 [node name="Slot02" type="Marker3D" parent="TowerSlots"]
-position = Vector3(3.5, 0, 0.5)
+position = Vector3(-1.5, 0, 8.7)
 
 [node name="Pad02" type="MeshInstance3D" parent="TowerSlots/Slot02"]
 mesh = SubResource("mesh_slot")
@@ -417,7 +417,7 @@ material_override = SubResource("mat_gate_dark")
 
 [node name="Number02" type="Label3D" parent="TowerSlots/Slot02"]
 position = Vector3(0, 0.16, 0)
-text = "4"
+text = "T2"
 billboard = 1
 modulate = Color(0.68, 0.55, 0.10, 1)
 outline_modulate = Color(0.18, 0.14, 0.04, 1)
@@ -425,7 +425,7 @@ outline_size = 8
 font_size = 64
 
 [node name="Slot03" type="Marker3D" parent="TowerSlots"]
-position = Vector3(-3.5, 0, -2.5)
+position = Vector3(1.5, 0, 8.7)
 
 [node name="Pad03" type="MeshInstance3D" parent="TowerSlots/Slot03"]
 mesh = SubResource("mesh_slot")
@@ -443,7 +443,7 @@ material_override = SubResource("mat_gate_dark")
 
 [node name="Number03" type="Label3D" parent="TowerSlots/Slot03"]
 position = Vector3(0, 0.16, 0)
-text = "1"
+text = "T3"
 billboard = 1
 modulate = Color(0.68, 0.55, 0.10, 1)
 outline_modulate = Color(0.18, 0.14, 0.04, 1)
@@ -451,7 +451,7 @@ outline_size = 8
 font_size = 64
 
 [node name="Slot04" type="Marker3D" parent="TowerSlots"]
-position = Vector3(3.5, 0, -2.5)
+position = Vector3(3.0, 0, 8.7)
 
 [node name="Pad04" type="MeshInstance3D" parent="TowerSlots/Slot04"]
 mesh = SubResource("mesh_slot")
@@ -469,7 +469,7 @@ material_override = SubResource("mat_gate_dark")
 
 [node name="Number04" type="Label3D" parent="TowerSlots/Slot04"]
 position = Vector3(0, 0.16, 0)
-text = "2"
+text = "T4"
 billboard = 1
 modulate = Color(0.68, 0.55, 0.10, 1)
 outline_modulate = Color(0.18, 0.14, 0.04, 1)

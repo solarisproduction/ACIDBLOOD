@@ -9,15 +9,16 @@ const SPAWN_Z := -16.0
 const FORTRESS_LINE_Z := 6.8      # enemies contact the barricade here
 const FORTRESS_CENTER := Vector3(0.0, 0.6, 7.6)
 const GUARDIAN_Z := 8.7
+const DEFENSIVE_LINE_Z := GUARDIAN_Z
 const GUARDIAN_X_LIMIT := 3.4
 const SPAWN_X_RANGE := 2.8        # spawn x is rolled in [-range, +range]
 
-const SLOT_PICK_ORDER: Array[int] = [2, 3, 0, 1]
+const SLOT_PICK_ORDER: Array[int] = [0, 1, 2, 3]
 const SLOT_DISPLAY_NAMES: Array[String] = [
-	"Back Left",
-	"Back Right",
-	"Front Left",
-	"Front Right",
+	"T1 Left",
+	"T2 Left",
+	"T3 Right",
+	"T4 Right",
 ]
 
 static func slot_display_name(index: int) -> String:

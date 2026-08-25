@@ -215,13 +215,13 @@ func run_leveling_and_run_state(sink) -> void:
 
 func run_slot_ordering(sink) -> void:
 	sink.section("slots")
-	sink.check("slot helper keeps explicit front/back names",
-		ArenaLayout.slot_display_name(0) == "Back Left"
-		and ArenaLayout.slot_display_name(1) == "Back Right"
-		and ArenaLayout.slot_display_name(2) == "Front Left"
-		and ArenaLayout.slot_display_name(3) == "Front Right")
+	sink.check("slot helper keeps defensive-line names",
+		ArenaLayout.slot_display_name(0) == "T1 Left"
+		and ArenaLayout.slot_display_name(1) == "T2 Left"
+		and ArenaLayout.slot_display_name(2) == "T3 Right"
+		and ArenaLayout.slot_display_name(3) == "T4 Right")
 	sink.check("slot picker uses visual order 1,2,3,4",
-		ArenaLayout.slot_pick_order() == [2, 3, 0, 1])
+		ArenaLayout.slot_pick_order() == [0, 1, 2, 3])
 	var scene := load("res://game/arena.tscn") as PackedScene
 	var root := scene.instantiate()
 	var slots := root.get_node("TowerSlots")
@@ -231,7 +231,7 @@ func run_slot_ordering(sink) -> void:
 		(slots.get_node("Slot03/Number03") as Label3D).text,
 		(slots.get_node("Slot04/Number04") as Label3D).text,
 	]
-	sink.check("arena pads are numbered 3,4,1,2 to match the fixed visual order", labels == ["3", "4", "1", "2"])
+	sink.check("arena pads are labeled T1,T2,T3,T4 to match the defensive line", labels == ["T1", "T2", "T3", "T4"])
 	root.free()
 
 func run_combat(sink) -> void:
