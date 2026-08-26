@@ -22,6 +22,7 @@ var cosmetic_only := false
 var _dir := Vector3.FORWARD
 var _age := 0.0
 var _hit_ids: Dictionary = {}
+var _impact_visual_emitted := false
 
 func setup(heavy_impact: bool = false) -> void:
 	self.is_heavy_impact = heavy_impact
@@ -106,6 +107,8 @@ func _add_mesh(color: Color, radius: float, visual: StringName = &"orb") -> void
 	match visual:
 		&"guardian_comet":
 			_add_guardian_comet_mesh(color, radius)
+		&"impact_shell":
+			_add_impact_shell_mesh(color, radius)
 		&"ice_shard":
 			_add_ice_shard_mesh(color, radius, 1.0)
 		&"ice_shard_control":
@@ -127,10 +130,23 @@ func _add_guardian_comet_mesh(color: Color, radius: float) -> void:
 	var trail := CapsuleMesh.new()
 	trail.radius = radius * 0.36
 	trail.height = radius * 5.8
-	var trail_mi := Visuals.mesh_instance(trail, Color(0.95, 0.97, 1.0, 1.0), true)
+	var trail_mi := Visuals.mesh_instance(trail, color.lightened(0.32), true)
 	trail_mi.rotation_degrees.x = 90.0
 	trail_mi.position.z = radius * 1.9
 	add_child(trail_mi)
+
+func _add_impact_shell_mesh(color: Color, radius: float) -> void:
+	var shell := SphereMesh.new()
+	shell.radius = radius * 1.25
+	shell.height = radius * 2.5
+	var shell_mi := Visuals.mesh_instance(shell, color.darkened(0.12), true)
+	add_child(shell_mi)
+	var band := TorusMesh.new()
+	band.inner_radius = radius * 0.72
+	band.outer_radius = radius * 0.92
+	var band_mi := Visuals.mesh_instance(band, color.lightened(0.28), true)
+	band_mi.rotation_degrees.x = 90.0
+	add_child(band_mi)
 
 func _add_ice_shard_mesh(color: Color, radius: float, length_scale: float) -> void:
 	var shard := PrismMesh.new()
@@ -185,10 +201,14 @@ func _physics_process(delta: float) -> void:
 			continue
 		if _segment_hits_enemy(prev, position, e.gameplay_pos()):
 			_hit_ids[e.get_instance_id()] = true
+			var impact_pos: Vector3 = e.gameplay_pos()
 			var hit_opts := opts.duplicate()
 			hit_opts["heavy_impact"] = self.is_heavy_impact
 			battle.apply_hit(e, damage, hit_opts)
 			battle.apply_impact_payload(e, prev, hit_opts)
+			if not _impact_visual_emitted and opts.get("impact_visual", &"none") == &"splash_ring":
+				_impact_visual_emitted = true
+				battle.spawn_weapon_impact(impact_pos, opts.get("color", Color.WHITE), opts.get("splash_radius", 0.0))
 			if StringName(opts.get("projectile_visual", &"")) == &"ice_shard_control":
 				battle.spawn_frost_pulse(e.gameplay_pos(), opts.get("color", Color.WHITE), 0.55, 0.12)
 			if pierce <= 0:

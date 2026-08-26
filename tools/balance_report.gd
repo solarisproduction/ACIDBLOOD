@@ -28,8 +28,9 @@ func _initialize() -> void:
 	print("=== TURRETS ===")
 	for id in Catalog.turrets():
 		var t: TurretData = Catalog.turret(id)
+		var tw: WeaponDefinition = t.weapon
 		print("  %-8s dmg=%-5.1f interval=%-5.2f range=%-4.1f splash=%-4.1f slow=%.2f/%.1fs" %
-			[t.id, t.damage, t.attack_interval, t.attack_range, t.splash_radius, t.slow_factor, t.slow_duration])
+			[t.id, tw.damage, tw.attack_interval, tw.attack_range, tw.splash_radius, tw.slow_factor, tw.slow_duration])
 	print("=== CARDS ===")
 	for c in Catalog.cards():
 		var bits := []

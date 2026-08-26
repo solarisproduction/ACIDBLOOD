@@ -1,8 +1,9 @@
 class_name Turret
 extends Node3D
-## Turret runtime. One script for all archetypes; splash and slow behavior
-## comes from TurretData. Stats resolve through Battle.stat() using the
-## "turret.<id>.<stat>" path so upgrade cards affect every built instance.
+## Turret runtime. One script for all archetypes; combat identity and base
+## values come from TurretData.weapon. Stats resolve through Battle.stat()
+## using the "turret.<id>.<stat>" path so upgrade cards affect every built
+## instance.
 
 func refresh_branch_visual() -> void:
 	for child in get_children():
@@ -55,7 +56,7 @@ func get_attack_mode() -> StringName:
 	var branch := get_active_branch()
 	if branch != null and branch.attack_mode != &"":
 		return branch.attack_mode
-	return data.attack_mode
+	return data.weapon.attack_mode if data.weapon != null else &"projectile"
 
 func _stat(local: String, base: float) -> float:
 	return battle.stat(StringName("turret.%s.%s" % [data.id, local]), base)
@@ -63,8 +64,11 @@ func _stat(local: String, base: float) -> float:
 func _physics_process(delta: float) -> void:
 	_cooldown -= delta
 	_update_visual_feedback(delta)
-	var attack_range := _stat("range", data.attack_range)
-	var target := Targeting.pick_target(battle.enemies, position, attack_range) as Enemy
+	var weapon := data.weapon
+	if weapon == null:
+		return
+	var attack_range := _stat("range", weapon.attack_range)
+	var target := Targeting.pick_target(battle.enemies, position, attack_range, weapon.targeting_policy) as Enemy
 	if target == null:
 		return
 	var aim := target.gameplay_pos()
@@ -74,19 +78,21 @@ func _physics_process(delta: float) -> void:
 			_head.look_at(look)
 	if _cooldown > 0.0:
 		return
-	_cooldown = maxf(Combat.MIN_ATTACK_INTERVAL, _stat("attack_interval", data.attack_interval))
+	_cooldown = maxf(Combat.MIN_ATTACK_INTERVAL, _stat("attack_interval", weapon.attack_interval))
 	_trigger_visual_fire()
 	var shot_cfg := {
-		"damage": _stat("damage", data.damage),
-		"speed": _stat("projectile_speed", data.projectile_speed),
-		"projectile_radius": _stat("projectile_radius", data.projectile_radius),
-		"splash_radius": _stat("splash_radius", data.splash_radius),
-		"slow_factor": _stat("slow_factor", data.slow_factor),
-		"slow_duration": _stat("slow_duration", data.slow_duration),
+		"damage": _stat("damage", weapon.damage),
+		"speed": _stat("projectile_speed", weapon.projectile_speed),
+		"projectile_radius": _stat("projectile_radius", weapon.projectile_radius),
+		"splash_radius": _stat("splash_radius", weapon.splash_radius),
+		"slow_factor": _stat("slow_factor", weapon.slow_factor),
+		"slow_duration": _stat("slow_duration", weapon.slow_duration),
 		"heavy_impact": target.is_frozen,
-		"color": data.color,
-		"radius": _stat("projectile_radius", data.projectile_radius),
-		"projectile_visual": _default_projectile_visual(),
+		"color": weapon.projectile_color,
+		"radius": _stat("projectile_radius", weapon.projectile_radius),
+		"projectile_visual": weapon.projectile_visual,
+		"attack_topology": weapon.attack_topology,
+		"impact_visual": weapon.impact_visual,
 	}
 	var branch := get_active_branch()
 	if branch != null:
@@ -142,12 +148,6 @@ func _branch_accent_color(branch: TurretBranchData) -> Color:
 		&"frost_expose":
 			return Color(0.75, 0.92, 1.0)
 	return data.color.lightened(0.18)
-
-func _default_projectile_visual() -> StringName:
-	match data.id:
-		&"frost":
-			return &"ice_shard"
-	return &"orb"
 
 func _build_placeholder_family_model(base_color: Color, scale_factor: float) -> void:
 	match data.id:

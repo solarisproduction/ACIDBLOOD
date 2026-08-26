@@ -437,7 +437,7 @@ func run_data_references(sink) -> void:
 	var bolt_field: TurretBranchData = Catalog.turret_branch(&"bolt_field")
 	var cannon_impact: TurretBranchData = Catalog.turret_branch(&"cannon_impact")
 	var frost_expose: TurretBranchData = Catalog.turret_branch(&"frost_expose")
-	sink.check("bolt uses lightning attack mode", bolt_data != null and bolt_data.attack_mode == &"lightning")
+	sink.check("bolt uses lightning attack mode", bolt_data != null and bolt_data.weapon != null and bolt_data.weapon.attack_mode == &"lightning")
 	sink.check("bolt chain has real chain behavior data",
 		bolt_chain != null
 		and bolt_chain.attack_mode == &"lightning_chain"
@@ -464,6 +464,11 @@ func run_data_references(sink) -> void:
 		and frost_expose.expose_duration > 0.0
 		and frost_expose.projectile_visual == &"ice_shard_expose")
 	sink.check("guardian data + weapon present", Catalog.guardian() != null and Catalog.guardian().weapon != null)
+	sink.check("current weapon definitions expose explicit roles",
+		Catalog.guardian().weapon.contract_valid()
+		and Catalog.turret(&"cannon").weapon.contract_valid()
+		and Catalog.guardian().weapon.attack_topology == WeaponDefinition.TOPOLOGY_DIRECT
+		and Catalog.turret(&"cannon").weapon.attack_topology == WeaponDefinition.TOPOLOGY_SPLASH)
 	sink.check("3 permanent upgrades", Catalog.perm_upgrades().size() == 3)
 
 func run_content_conventions(sink) -> void:

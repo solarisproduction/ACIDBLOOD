@@ -192,6 +192,28 @@ func trigger_enemy_hit(enemy: Enemy, amount: float, is_heavy_impact: bool) -> vo
 	_spawn_status_burst(body_pos, color, radius * 0.72, duration * 0.78)
 	_spawn_impact_burst(ground_pos, color, is_heavy_impact or profile >= 2, false, profile)
 
+func spawn_weapon_impact(at: Vector3, color: Color, splash_radius: float) -> void:
+	## Presentation-only weapon feedback. Damage and splash membership have
+	## already been resolved by apply_hit before this is called.
+	_spawn_impact_burst(at + Vector3(0, 0.06, 0), color, true, false, 2)
+	if splash_radius <= 0.0 or effects_root == null or not is_inside_tree():
+		return
+	var fx := Node3D.new()
+	effects_root.add_child(fx)
+	fx.global_position = at + Vector3(0, 0.03, 0)
+	var ring := CylinderMesh.new()
+	ring.top_radius = 0.12
+	ring.bottom_radius = 0.12
+	ring.height = 0.035
+	var ring_mi := Visuals.mesh_instance(ring, color.lightened(0.22), true)
+	ring_mi.rotation_degrees.x = 90.0
+	fx.add_child(ring_mi)
+	fx.scale = Vector3(0.18, 0.18, 0.18)
+	var target_scale := maxf(1.0, splash_radius / 0.12)
+	var tween := create_tween()
+	tween.tween_property(fx, "scale", Vector3(target_scale, 0.35, target_scale), 0.16).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_callback(fx.queue_free)
+
 func trigger_enemy_death(enemy: Enemy, killed: bool) -> void:
 	if not is_instance_valid(enemy):
 		return

@@ -22,6 +22,13 @@ const TRACK_TITLES := {
 func _ready() -> void:
 	play_button.pressed.connect(func() -> void: Game.change_scene(Game.CAMPAIGN_SCENE))
 	_refresh()
+	# The automated playtest leaves Home immediately; guard the deferred focus
+	# against the scene transition before calling Control.grab_focus().
+	call_deferred("_focus_play_button")
+
+func _focus_play_button() -> void:
+	if is_inside_tree() and is_instance_valid(play_button) and play_button.is_inside_tree():
+		play_button.grab_focus()
 
 func _refresh() -> void:
 	cores_label.text = "Salvage: %d" % Game.progression.cores

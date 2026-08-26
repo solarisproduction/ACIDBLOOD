@@ -121,7 +121,7 @@ func _combat(delta: float) -> void:
 	_visual_cooldown -= delta
 	var w := data.weapon
 	var attack_range := battle.stat(&"guardian.range", w.attack_range)
-	var target := Targeting.pick_target(battle.enemies, position, attack_range) as Enemy
+	var target := Targeting.pick_target(battle.enemies, position, attack_range, w.targeting_policy) as Enemy
 	if target != null:
 		var aim := target.gameplay_pos()
 		var look := Vector3(aim.x, global_position.y, aim.z)
@@ -146,7 +146,7 @@ func _combat(delta: float) -> void:
 	_fire(target, w, deals_damage)
 	_visual_step = (_visual_step + 1) % tracer_count
 
-func _fire(target: Enemy, w: WeaponData, deals_damage: bool) -> void:
+func _fire(target: Enemy, w: WeaponDefinition, deals_damage: bool) -> void:
 	var count := int(battle.stat(&"guardian.projectiles", float(w.projectile_count)))
 	var cfg := {
 		"damage": battle.stat(&"guardian.damage", w.damage) if deals_damage else 0.0,
@@ -154,7 +154,9 @@ func _fire(target: Enemy, w: WeaponData, deals_damage: bool) -> void:
 		"pierce": int(battle.stat(&"guardian.pierce", float(w.pierce))) if deals_damage else 0,
 		"color": w.projectile_color,
 		"radius": w.projectile_radius,
-		"projectile_visual": &"guardian_comet",
+		"projectile_visual": w.projectile_visual,
+		"attack_topology": w.attack_topology,
+		"impact_visual": w.impact_visual,
 		"can_home": false,
 	}
 	var base_dir := (target.gameplay_pos() - muzzle.global_position)

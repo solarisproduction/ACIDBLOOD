@@ -80,7 +80,7 @@ export_to_dropbox() {
 	printf -- '- Canonical MCP: Godot AI MCP\n'
 	printf -- '- Canonical local validation: bash tools/validate.sh\n'
 	printf -- '- Canonical behavioral CLI: ./tools/run_gdunit.sh --godot_binary "$GODOT" --headless --ignoreHeadlessMode -a res://tests/gdunit/\n'
-	printf -- '- Current validation layers: 88-check core suite, 33-case GdUnit4 behavioral pilot, runtime smoke stages 1 and 2\n'
+	printf -- '- Current validation layers: 89-check core suite, 37-case GdUnit4 behavioral pilot, runtime smoke stages 1 and 2\n'
 
 	section "Git state"
 	printf -- '- Branch: %s\n' "$(git -C "$ROOT" rev-parse --abbrev-ref HEAD)"
@@ -92,7 +92,7 @@ export_to_dropbox() {
 	git -C "$ROOT" log --oneline --decorate -5 | sed 's/^/  /'
 
 	section "Validation summary"
-	printf -- '- tools/validate.sh: Godot detection → headless import/parse → 88-check suite → 33-case GdUnit4 behavioral pilot → smoke stage 1 → smoke stage 2\n'
+	printf -- '- tools/validate.sh: Godot detection → headless import/parse → 89-check suite → 37-case GdUnit4 behavioral pilot → smoke stage 1 → smoke stage 2\n'
 	printf -- '- GdUnit4 reports: res://reports/ (gitignored)\n'
 	printf -- '- Shared suite entry points: tests/acidblood_suite_runner.tscn, tests/run_tests.gd, tests/test_acidblood.gd\n'
 

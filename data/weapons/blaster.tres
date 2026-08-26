@@ -1,10 +1,15 @@
-[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="WeaponDefinition" load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://data/types/weapon_data.gd" id="1"]
 
 [resource]
 script = ExtResource("1")
-id = &"blaster"
+id = &"guardian_rifle"
+display_name = "Guardian Rifle"
+damage_family = &"Physical"
+engagement_profile = &"ROAMING"
+attack_topology = &"Direct"
+targeting_policy = &"most_advanced"
 damage = 0.75
 attack_interval = 0.125
 attack_range = 7.0
@@ -15,3 +20,4 @@ pierce = 0
 visual_tracers_per_shot = 3
 spread_degrees = 8.0
 projectile_color = Color(0.4, 0.9, 1.0, 1)
+projectile_visual = &"guardian_comet"

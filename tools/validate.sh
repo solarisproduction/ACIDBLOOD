@@ -130,8 +130,8 @@ for STAGE in 1 2; do
         note "FAIL" "$(classify_failure smoke "$SMOKE_OUT") stage $STAGE"
         echo "$SMOKE_OUT" | grep -E "SCRIPT ERROR|Parse Error|Compile Error|Failed to load script" | head -12
         FAIL=1
-    elif [ $SMOKE_CODE -eq 0 ] && [ -n "$LINE" ]; then
-        note "PASS" "RUNTIME SMOKE PASS stage $STAGE (simulation result: $LINE)"
+	elif [ $SMOKE_CODE -eq 0 ] && [ -n "$LINE" ] && echo "$SMOKE_OUT" | grep -q "SMOKE_SHELL_RETURN scene=res://shell/campaign.tscn"; then
+		note "PASS" "RUNTIME SMOKE PASS stage $STAGE (battle + result + campaign return: $LINE)"
     else
         note "FAIL" "$(classify_failure smoke "$SMOKE_OUT") stage $STAGE (exit $SMOKE_CODE)"
         echo "$SMOKE_OUT" | tail -10

@@ -4,6 +4,9 @@ extends GdUnitTestSuite
 
 const BattleScene := preload("res://game/battle.tscn")
 const TurretScene := preload("res://game/turret.tscn")
+const HomeScene := preload("res://shell/home.tscn")
+const CampaignScene := preload("res://shell/campaign.tscn")
+const ResultScene := preload("res://shell/result.tscn")
 const StageDataScript := preload("res://data/types/stage_data.gd")
 const WaveDataScript := preload("res://data/types/wave_data.gd")
 const PlaytestProfileScript := preload("res://core/playtest_profile.gd")
@@ -230,6 +233,86 @@ func test_task11_real_input_path_reaches_placement_while_tree_paused() -> void:
 	await runner.simulate_key_pressed(KEY_SPACE)
 	await runner.await_input_processed()
 	assert_array(battle.run_state.active_turrets).is_equal([&"cannon"])
+
+func test_horizontal_slice_has_real_shell_entry_result_and_return_controls() -> void:
+	var home := HomeScene.instantiate()
+	var campaign := CampaignScene.instantiate()
+	var result := ResultScene.instantiate()
+	assert_object(home.get_node("Margin/VBox/PlayButton")).is_valid()
+	assert_object(campaign.get_node("Margin/VBox/Scroll/StageGrid")).is_valid()
+	assert_object(campaign.get_node("Margin/VBox/StageEntry/Margin/VBox/DeployButton")).is_valid()
+	assert_object(result.get_node("Center/Panel/Margin/VBox/ContinueButton")).is_valid()
+	assert_object(result.get_node("Center/Panel/Margin/VBox/RetryButton")).is_valid()
+	assert_str(Game.HOME_SCENE).is_equal("res://shell/home.tscn")
+	assert_str(Game.CAMPAIGN_SCENE).is_equal("res://shell/campaign.tscn")
+	assert_str(Game.BATTLE_SCENE).is_equal("res://game/battle.tscn")
+	assert_str(Game.RESULT_SCENE).is_equal("res://shell/result.tscn")
+	home.free()
+	campaign.free()
+	result.free()
+
+func test_draft_cards_use_portrait_grid_and_keep_wave_data_internal() -> void:
+	var boot := await _boot_battle()
+	var runner := boot["runner"] as GdUnitSceneRunner
+	var battle := boot["battle"] as Battle
+	var offer: Array[CardData] = [
+		Catalog.card(&"build_cannon"),
+		Catalog.card(&"sharp_rounds"),
+		Catalog.card(&"overload_core"),
+	]
+	battle.hud.show_draft(offer)
+	await runner.simulate_frames(2)
+	assert_bool(battle.hud.wave_label.visible).is_false()
+	assert_int(battle.hud.cards_box.columns).is_equal(3)
+	assert_int(battle.hud.cards_box.get_child_count()).is_equal(3)
+	for child in battle.hud.cards_box.get_children():
+		var card_button := child as Button
+		assert_object(card_button).is_valid()
+		assert_float(card_button.custom_minimum_size.x).is_greater(0.0)
+		assert_float(card_button.custom_minimum_size.y).is_greater_equal(400.0)
+	battle.hud.hide_draft()
+
+func test_phase2_current_guardian_and_cannon_have_explicit_weapon_contracts() -> void:
+	var guardian_weapon := Catalog.guardian().weapon
+	var cannon_weapon := Catalog.turret(&"cannon").weapon
+	assert_object(guardian_weapon).is_valid()
+	assert_object(cannon_weapon).is_valid()
+	assert_bool(guardian_weapon.contract_valid()).is_true()
+	assert_bool(cannon_weapon.contract_valid()).is_true()
+	assert_str(String(guardian_weapon.id)).is_equal("guardian_rifle")
+	assert_str(String(cannon_weapon.id)).is_equal("impact_cannon")
+	assert_str(String(guardian_weapon.damage_family)).is_equal("Physical")
+	assert_str(String(cannon_weapon.damage_family)).is_equal("Physical")
+	assert_str(String(guardian_weapon.engagement_profile)).is_equal("ROAMING")
+	assert_str(String(cannon_weapon.engagement_profile)).is_equal("FORTRESS")
+	assert_str(String(guardian_weapon.attack_topology)).is_equal("Direct")
+	assert_str(String(cannon_weapon.attack_topology)).is_equal("Splash")
+	assert_str(String(guardian_weapon.targeting_policy)).is_equal("most_advanced")
+	assert_str(String(cannon_weapon.targeting_policy)).is_equal("most_advanced")
+	assert_float(cannon_weapon.splash_radius).is_greater(0.0)
+	assert_str(String(cannon_weapon.projectile_visual)).is_equal("impact_shell")
+
+func test_phase2_cannon_weapon_splash_preserves_group_hit_behavior() -> void:
+	var boot := await _boot_battle()
+	var battle := boot["battle"] as Battle
+	var cannon_weapon := Catalog.turret(&"cannon").weapon
+	battle.spawn_wave_enemy(&"grunt", 0.0)
+	var primary := battle.enemies.back() as Enemy
+	battle.spawn_wave_enemy(&"grunt", 0.0)
+	var neighbor := battle.enemies.back() as Enemy
+	battle.spawn_wave_enemy(&"grunt", 0.0)
+	var outside := battle.enemies.back() as Enemy
+	primary.position = Vector3(0.0, 0.0, 0.0)
+	neighbor.position = Vector3(0.8, 0.0, 0.0)
+	outside.position = Vector3(2.4, 0.0, 0.0)
+	var neighbor_hp := neighbor.hp
+	var outside_hp := outside.hp
+	battle.apply_hit(primary, cannon_weapon.damage * 0.5, {
+		"splash_radius": cannon_weapon.splash_radius,
+		"attack_topology": cannon_weapon.attack_topology,
+	})
+	assert_float(neighbor.hp).is_less(neighbor_hp)
+	assert_float(outside.hp).is_equal_approx(outside_hp, 0.001)
 
 func test_task11_placement_keeps_queued_level_up_owned_by_next_draft() -> void:
 	var boot := await _boot_battle()

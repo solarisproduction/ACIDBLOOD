@@ -42,6 +42,7 @@ text = "Stage"
 
 [node name="WaveLabel" type="Label" parent="BattleHUD/TopBar/VBox/Row1" unique_id=1332529217]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 26
 text = "Wave -/-"
@@ -207,7 +208,7 @@ text = "Arrow keys move. Space selects."
 horizontal_alignment = 1
 
 [node name="CardsScroll" type="ScrollContainer" parent="BattleHUD/DraftLayer/Center/Panel" unique_id=339191277]
-custom_minimum_size = Vector2(0, 620)
+custom_minimum_size = Vector2(0, 540)
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0

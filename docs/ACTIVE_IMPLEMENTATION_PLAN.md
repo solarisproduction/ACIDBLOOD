@@ -1,37 +1,37 @@
 # Active Implementation Plan
 
-Status: INACTIVE — the Phase 1.1 automated implementation slice and this
-stabilization mission are complete. The next implementation plan is gated on
-the human Phase 1.1 graphical review.
+Status: COMPLETE — Horizontal Product Checkpoint 1 and the bounded Phase 2
+weapon-foundation slice are implemented and locally validated.
 
-## Current gate
+## Gates and boundaries
 
-- Phase 1.1 automated behavior is implemented and validated.
-- Human review must evaluate pressure, first-draft timing, placement
-  legibility/input, later-wave continuation, density, Guardian relevance,
-  draft cadence, and portrait readability.
-- Phase 2 is not started.
-- The first horizontal product slice is planned in `docs/ROADMAP.md`, but is
-  not active and must not be implemented from this file.
+- Phase 1.1 human review is approved: six waves, victory, 320 kills, 690 XP,
+  level 15, 14 drafts, Impact Cannon installed, and 34/100 final Barricade HP.
+- Preserve the selected 320-enemy Stage 1 calibration; do not retune pressure.
+- Phase 3 draft architecture and Phase 4 enemy/stage architecture are not
+  part of this plan.
+- No fake Home features, economy, monetization, final rarity, or meta systems.
 
-## Stabilization disposition
+## Completed tasks
 
-- The reported FRESH sequence was reproduced through the first draft. With no
-  input, the expected paused interruption produces no later wave or result
-  event.
-- A scene-level physical-key integration test now drives the actual draft
-  choice and paused placement path: Space chooses `build_cannon`, Right moves
-  the ghost, Space confirms, and the tree resumes after one install.
-- The placement state remains owned by `Battle`; `BattleHUD` is the paused
-  presentation/input surface and runs with `PROCESS_MODE_ALWAYS`.
-- The only runtime presentation change in this mission is a two-line,
-  uppercase `CHOOSE SLOT` cue with explicit controls. Stage 1 balance and
-  battlefield geometry were not retuned.
+1. Phase 1.1 closure — record the approved human verdict and verify the
+   current Stage 1 balance remains unchanged.
+2. Horizontal Product Checkpoint 1 — connect the real Home/Campaign stage
+   entry, Battle, Draft, Result, and return route; improve only current
+   player-facing ownership, result clarity, and portrait readability.
+3. Phase 2 weapon foundation — promote the current Guardian weapon boundary
+   into a shared WeaponDefinition contract and migrate Guardian Rifle plus
+   Impact Cannon while preserving stat paths, cards, branches, and targeting
+   determinism.
+4. Weapon/projectile readability — give Guardian and Cannon distinct current
+   projectile/impact presentation without making presentation authoritative or
+   changing damage timing.
+5. Integrated validation and handoff — run narrow tests, full GdUnit, the
+   canonical validator, FRESH/BENCHMARK smoke, shell/combat checks, portrait
+   startup checks, log scans, diff checks, and prepare the human playtest.
 
-## Authoritative next action
+## Next gate
 
-Run the graphical FRESH and BENCHMARK commands in `docs/HANDOFF.md`. After the
-human review, create a new concise executable plan for the approved next
-milestone. Completed implementation history belongs in Git; current runtime
-truth belongs in `docs/SYSTEM_BLUEPRINT.md`; sequencing belongs in
-`docs/ROADMAP.md`; the immediate bridge belongs in `docs/HANDOFF.md`.
+Phase 1.1 human review is complete. The next human decision is graphical
+review of the connected shell and weapon readability. Phase 2 is foundation
+complete, not fully complete; Phase 3 and Phase 4 remain unstarted.

@@ -46,14 +46,14 @@ godot --path .
 
 ## ✅ Tests (Headless)
 
-Canonical local validation runs the 88-check suite, the 33-case GdUnit4
+Canonical local validation runs the 89-check suite, the 37-case GdUnit4
 behavioral pilot, and runtime smoke stages:
 
 ```bash
 bash tools/validate.sh
 ```
 
-The shared 88-check suite lives in [`tests/run_tests.gd`](tests/run_tests.gd) and
+The shared 89-check suite lives in [`tests/run_tests.gd`](tests/run_tests.gd) and
 [`tests/acidblood_suite_runner.tscn`](tests/acidblood_suite_runner.tscn).
 
 ---
@@ -83,10 +83,10 @@ godot --headless --path . --script res://tools/balance_report.gd
 | **Data Types** | `data/types/*.gd` | Resource classes (`EnemyData`, `TurretData`, `CardData`, `StageData`, etc.) |
 | **Runtime** | `game/*.gd` | `Node3D` actors (`battle.gd`, `enemy.gd`, `turret.gd`, `guardian.gd`) |
 | **Shell UI** | `shell/*.gd` | Screens (`home.gd`, `campaign.gd`, `result.gd`) |
-| **Tests** | `tests/acidblood_suite_runner.tscn`, `tests/run_tests.gd`, `tests/gdunit/` | 88-check core suite + 33-case GdUnit4 behavioral pilot |
+| **Tests** | `tests/acidblood_suite_runner.tscn`, `tests/run_tests.gd`, `tests/gdunit/` | 89-check core suite + 37-case GdUnit4 behavioral pilot |
 | **Tools** | `tools/*.gd` | Data pipeline scripts |
 
-**Data-Driven Content:** 68 `.tres` files managed via [`core/catalog.gd`](core/catalog.gd):
+**Data-Driven Content:** 72 `.tres` files managed via [`core/catalog.gd`](core/catalog.gd):
 - 5 enemies, 3 turrets, 20 cards, 30 stages, 6 branches, 3 perm upgrades, 1 guardian
 
 ---

@@ -56,6 +56,48 @@ theme_override_constants/h_separation = 12
 theme_override_constants/v_separation = 12
 columns = 4
 
+[node name="StageEntry" type="PanelContainer" parent="Margin/VBox" unique_id=1038379311]
+custom_minimum_size = Vector2(0, 192)
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="Margin/VBox/StageEntry" unique_id=1038379312]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 14
+
+[node name="VBox" type="VBoxContainer" parent="Margin/VBox/StageEntry/Margin" unique_id=1038379313]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="EntryTitle" type="Label" parent="Margin/VBox/StageEntry/Margin/VBox" unique_id=1038379314]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "STAGE 01"
+
+[node name="EntryMeta" type="Label" parent="Margin/VBox/StageEntry/Margin/VBox" unique_id=1038379315]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "ACT 1"
+
+[node name="EntryBriefing" type="Label" parent="Margin/VBox/StageEntry/Margin/VBox" unique_id=1038379316]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 17
+text = "Briefing"
+autowrap_mode = 2
+
+[node name="DeployButton" type="Button" parent="Margin/VBox/StageEntry/Margin/VBox" unique_id=1038379317]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 54)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "DEPLOY OPERATION"
+
 [node name="DevBox" type="HBoxContainer" parent="Margin/VBox" unique_id=1468368214]
 unique_name_in_owner = true
 layout_mode = 2

@@ -2,7 +2,7 @@ class_name RunState
 extends RefCounted
 ## All rule-relevant state for one battle run. Owned by the battle runtime but
 ## deliberately free of Node references so it can be driven by a simulator.
-## Guardian rules state is fully derived: GuardianData/WeaponData bases +
+## Guardian rules state is fully derived: GuardianData/WeaponDefinition bases +
 ## `mods` (guardian.* stat paths). Its position is presentation-only and
 ## lives on the Guardian node.
 

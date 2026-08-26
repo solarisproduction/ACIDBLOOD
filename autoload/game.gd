@@ -156,10 +156,15 @@ func end_run(victory: bool, stats: Dictionary) -> void:
 		print("SMOKE_RESULT victory=%s stage=%d kills=%d wave=%d level=%d fortress_hp=%.1f cards=%d" % [
 			victory, current_stage.index, stats.get("kills", 0), stats.get("wave", 0),
 			stats.get("level", 0), stats.get("fortress_hp", 0.0), stats.get("cards", 0)])
-		# Still traverse the result screen so the full shell loop is exercised.
+		# Traverse the result and return route so smoke validates the real shell
+		# handoff rather than stopping at battle completion.
 		change_scene(RESULT_SCENE)
 		for i in 5:
 			await get_tree().process_frame
+		change_scene(CAMPAIGN_SCENE)
+		for i in 5:
+			await get_tree().process_frame
+		print("SMOKE_SHELL_RETURN scene=%s" % get_tree().current_scene.scene_file_path)
 		get_tree().quit(0)
 		return
 	change_scene(RESULT_SCENE)

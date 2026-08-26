@@ -7,7 +7,11 @@ extends RefCounted
 ## Rule: among alive candidates within range of origin, pick the one most
 ## advanced toward the fortress (largest z); ties break on lowest spawn_index.
 
-static func pick_target(candidates: Array, origin: Vector3, max_range: float) -> Object:
+static func pick_target(candidates: Array, origin: Vector3, max_range: float, policy: StringName = &"most_advanced") -> Object:
+	# The current game has one proven policy. Passing it explicitly keeps the
+	# choice on the weapon boundary without inventing unsupported tactics.
+	if policy != &"most_advanced":
+		return null
 	var best: Object = null
 	var best_z := -INF
 	var best_index := 0x7FFFFFFF

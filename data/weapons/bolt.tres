@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="WeaponDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/types/weapon_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"tesla_coil_legacy"
+display_name = "Bolt Turret"
+damage_family = &"Electric"
+engagement_profile = &"FORTRESS"
+attack_topology = &"Direct"
+targeting_policy = &"most_advanced"
+damage = 3.0
+attack_interval = 0.35
+attack_range = 6.5
+projectile_speed = 16.0
+projectile_radius = 0.07
+attack_mode = &"lightning"
+projectile_color = Color(0.95, 0.85, 0.3, 1)
+projectile_visual = &"orb"

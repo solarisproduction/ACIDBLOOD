@@ -1,72 +1,74 @@
 # Current Session Bridge
 
-Recommended next executor: GPT-5.6 Luna Medium after human Phase 1.1 review.
-Phase 2 remains gated.
+Recommended next executor: GPT-5.6 Luna Medium after the human graphical
+review of the product slice and Phase 2 weapon foundation.
 
 ## Current truth
 
-- ACIDBLOOD is a deterministic 3D tower-defense game with roguelite drafts in
-  a late-1980s industrial-contamination setting.
-- Phase 1 Battle Foundation is implemented and human-reviewed.
-- Phase 1.1 Pressure & Placement is automated-complete and human-review
-  pending. Stage 1 remains the selected six-wave, 320-enemy calibration.
-- The active Stage 1 pool uses existing Guardian/Cannon content;
-  `build_cannon` is the NEW TURRET entry. Legacy Bolt/Frost content remains
-  outside that pool.
-- `Battle` owns placement state. `BattleHUD` runs with
-  `PROCESS_MODE_ALWAYS`, shows an in-world non-attacking ghost on eligible
-  T1–T4 slots, and handles arrows plus Space/Enter while paused. The old modal
-  slot picker is removed.
-- The placement cue is now two lines: `CHOOSE SLOT: T1 LEFT` followed by
-  `← / → MOVE • SPACE CONFIRM`, updated for the current slot.
-- The first horizontal product checkpoint is planned/gated in
-  `docs/ROADMAP.md`; it is not active. Phase 2 is not started.
-
-## Incident disposition
-
-The reported FRESH sequence was reproduced through `draft_open` with no later
-events when no placement input was supplied. That is the expected paused
-interruption, not evidence of a wave-director failure. A scene-runner
-integration test now drives the actual physical-key route: Space chooses the
-`build_cannon` draft card, Right moves the placement ghost, and Space
-confirms. It proves the queued draft, paused-state input, combat freeze, one
-install, and resume. Separate behavioral tests cover occupied-slot skipping
-and queued-draft ownership. The automated BENCHMARK smoke then records one
-`turret_install`, all six `wave_start` events, and victory.
+- Phase 1.1 Pressure & Placement is complete and human-approved. The selected
+  Stage 1 calibration remains six waves, 320 enemies, 690 available XP, and
+  the human completed it with 320 kills, 14 drafts, Impact Cannon installed,
+  victory, and 34/100 final Barricade HP. No rebalance was made here.
+- The current shell route is Home → Campaign stage entry → Battle → Draft /
+  placement → Result → Campaign. Campaign uses real StageData briefing,
+  intent, wave count, and salvage reward fields; it exposes no fake future
+  systems.
+- Draft presentation now uses reusable `game/draft_card.gd` units in a
+  three-column portrait layout. BattleHUD remains the paused input owner;
+  wave number/name stay internal and are hidden from the normal HUD.
+- Guardian Rifle and Impact Cannon now use the shared `WeaponDefinition`
+  resource boundary with explicit Physical family, engagement profile,
+  topology, and targeting policy. Guardian remains direct/straight; Cannon
+  remains heavy interval/group splash. Presentation is not damage authority.
+- Tesla Coil and Disruption Field mechanics, Phase 3 draft architecture, and
+  Phase 4 enemy/stage architecture are not started.
 
 ## Validation snapshot
 
-- Local canonical suite: 88 checks PASS.
-- GdUnit4 behavioral pilot: 33 cases PASS, including the physical-key
-  placement regression.
-- FRESH automated profile: isolated defeat before the first draft at 23.47
-  simulated seconds; this remains balance evidence, not approval.
-- BENCHMARK automated profile: isolated victory, 320 kills, 690 XP, 14 drafts,
-  164 simulated seconds, 22.29 average live enemies, 71 peak, 4/100 final
-  Barricade HP, and one turret installation.
-- Stage 2–30 resources remained bytewise unchanged across the Phase 1.1
-  history. `gen_stages.gd --only-stage=1` regenerated one identical Stage 1
-  file and did not touch later stages.
-- `bash tools/validate.sh` PASS; latest known CI before this session was
-  `32915290388` PASS at `cf48ad9`.
+- Official local suite: 89 checks PASS.
+- GdUnit4 behavioral pilot: 37 cases PASS, including shell controls,
+  portrait draft layout, weapon contracts, Cannon splash, and the physical-key
+  paused placement path.
+- `bash tools/validate.sh`: PASS, including import, official suite, GdUnit,
+  and smoke stages 1 and 2.
+- Stage 1 resources and Stage 2–30 resources remain unchanged by this slice.
+- Godot AI MCP had no connected editor session; local Godot 4.7.1 runtime was
+  used for validation.
 
-## Human graphical gate
+## Human graphical review
 
-Run both commands at normal speed:
+Start the project at its reference 720×1280 viewport:
+
+```bash
+GODOT=/Applications/Godot.app/Contents/MacOS/Godot
+"$GODOT" --path .
+```
+
+Then evaluate Home → Campaign stage entry → Deploy → Battle → first Draft →
+placement → Result → Return. Also run the automated profiles:
 
 ```bash
 GODOT=/Applications/Godot.app/Contents/MacOS/Godot tools/playtest_fresh.sh
 GODOT=/Applications/Godot.app/Contents/MacOS/Godot tools/playtest_benchmark.sh
 ```
 
-Evaluate opening pressure, first-draft timing, whether the placement ghost
-and cue are self-evident, arrows/Space input, gameplay resumption, later waves,
-density, Guardian relevance, normal-speed draft cadence, and portrait
-readability. Do not start Phase 2 until this review is complete.
+Judge whether the route feels connected, the Campaign entry is legible, three
+cards read immediately, the portrait layout fits, wave labels are safely out
+of the normal HUD, placement remains obvious, Result/Return is clear, and
+Guardian versus Cannon reads through cadence, travel, weight, impact, and
+splash without visual noise. Do not begin Phase 3 before this review.
 
-## Workspace note
+## Next decision
 
-The stabilization edits are present in the working tree but could not be
-committed or pushed in the current environment because `.git/index.lock`
-creation is denied. The next session must preserve those edits and create the
-validated checkpoints before treating origin as updated.
+If the weapon proof is readable and the route is coherent, choose whether to
+begin the bounded Phase 3 draft-architecture milestone. If Guardian/Cannon
+identity or the product route is not yet readable, deepen only that approved
+Phase 2 foundation before starting Phase 3.
+
+## Workspace state
+
+The implementation is locally validated but not committed in this executor:
+the managed macOS workspace denies creation of `.git/index.lock`. The next
+human terminal should commit the current tracked and untracked mission files
+as one checkpoint: `feat: connect product slice and weapon foundation`, then
+push `main` and inspect CI.

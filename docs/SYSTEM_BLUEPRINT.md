@@ -26,8 +26,8 @@ game/  battle runtime                 shell/  screens
 ├─ wave_director.gd wave lifecycle   ├─ campaign.tscn/.gd  30 stages + dev tools
 ├─ guardian, enemy, turret,          └─ result.tscn/.gd    report step
 │  projectile (.gd [+ .tscn])
-├─ battle_hud.gd    HUD + draft UI   tests/run_tests.gd    88 headless checks
-│                                      tests/gdunit/      33-case GdUnit4 behavioral pilot
+├─ battle_hud.gd    HUD + draft UI   tests/run_tests.gd    89 headless checks
+│                                      tests/gdunit/      37-case GdUnit4 behavioral pilot
 └─ visuals.gd       material cache   tools/  validate.sh, gen_stages.gd,
                                              balance_report.gd
 ```
@@ -47,11 +47,30 @@ receives `end_run(victory, stats)`.
   Spawn lane randomness comes only from `Battle.roll_spawn_x()`.
 - Enemies: one script; kamikaze vs stationary-attacker is data
   (`attack_interval`, `stop_range`). Slow status lives on the enemy.
-- Targeting rule (core): most-advanced alive enemy in range, ties by lowest
-  spawn index — deterministic and inspectable.
+- Targeting policy is explicit on each WeaponDefinition. The current policy is
+  `most_advanced` (most-advanced alive enemy in range, ties by lowest spawn
+  index) and remains deterministic and inspectable.
 - Hits resolve centrally in `Battle.apply_hit` (armor, splash, slow).
 - Kills → XP → `RunState.grant_xp` may return multiple level-ups; drafts
   queue, tree pauses, HUD shows 3 cards (overlay is `process_mode ALWAYS`).
+
+## Current weapon boundary
+
+`data/types/weapon_data.gd` defines the shared `WeaponDefinition` resource.
+Its current semantic axes are Damage Family, Engagement Profile, Attack
+Topology, and Targeting Policy, plus the real firing values and presentation
+identity needed by current combat. Guardian Rifle uses Physical / ROAMING /
+Direct / `most_advanced`; Impact Cannon uses Physical / FORTRESS / Splash /
+`most_advanced`. Guardian and all current turret resources consume this
+boundary, while existing modifier paths (`guardian.*` and `turret.<id>.*`)
+remain unchanged. Damage Family and Engagement Profile are currently
+validated identity metadata; they do not invent affinity or AI behavior.
+
+Guardian projectile presentation is a straight, light comet with visual
+tracers; Cannon uses a slower impact shell and presentation-only splash ring.
+Authoritative timing, targeting, damage, and splash resolution remain in the
+existing runtime paths. No Tesla Coil or Disruption Field mechanics are
+active.
 
 ## Determinism
 
@@ -104,8 +123,9 @@ queued interruptions sequentially. Task 5 adds a Stage 1 allowed-card context
 for the existing Guardian/Cannon content, makes `build_cannon` a NEW TURRET
 choice, and performs the domain/runtime empty-slot installation transaction.
 Duplicate active turret choices are rejected and `turret_install` telemetry
-records the occupied and remaining slots. Legacy Bolt/Frost resources remain
-current-state data outside the Stage 1 pool until later migration.
+records the occupied and remaining slots. Bolt/Frost remain current-state data
+outside the Stage 1 pool; their combat values now also use the shared weapon
+resource boundary without activating future Tesla/Disruption mechanics.
 Task 6 closes the current Phase 1 loop with the authored six-wave Stage 1:
 WaveDirector clears the finite wave list into the existing victory/defeat
 handoff, and the result shell remains the normal post-battle destination.
@@ -134,6 +154,14 @@ compression candidates caused early automated BENCHMARK defeat and were
 rejected.
 Telemetry exposes compact top-level draft-offer and selected-card summaries in
 addition to the full event stream.
+
+The current shell route is Home → Campaign stage-entry surface → Battle →
+Draft/placement interruptions → Result → Campaign. Campaign exposes only real
+StageData briefing, intent, wave count, and salvage reward information. The
+draft overlay uses a reusable `DraftCard` presentation unit in a three-column
+portrait layout; BattleHUD retains paused input ownership. Wave number/name
+remain internal to authoring, telemetry, debug, and WaveDirector state, and are
+hidden from the normal battle HUD.
 
 Any Godot-related edit, inspection, or validation must go through the Godot AI
 MCP tools when they are available. The engine is part of the editing workflow:

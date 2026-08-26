@@ -12,9 +12,10 @@ func _ready() -> void:
 	var victory: bool = r.get("victory", false)
 	title_label.text = "SECTOR SECURED" if victory else "CONTAINMENT LOST"
 	var stats: Dictionary = r.get("stats", {})
-	detail_label.text = "%s\nThreats: %d   Wave: %d   Level: %d" % [
+	detail_label.text = "%s\nThreats: %d   Cleared wave: %d\nLevel: %d   Barricade remaining: %.0f\nCards acquired: %d" % [
 		r.get("stage_name", "?"), stats.get("kills", 0),
-		stats.get("wave", 0), stats.get("level", 0)]
+		stats.get("wave", 0), stats.get("level", 0),
+		stats.get("fortress_hp", 0.0), stats.get("cards", 0)]
 	if victory:
 		reward_label.text = "+%d salvage (total %d)" % [r.get("awarded_cores", 0), Game.progression.cores]
 	else:
@@ -24,3 +25,4 @@ func _ready() -> void:
 		var stage := Catalog.stage_by_index(int(r.get("stage_index", 1)))
 		if stage != null:
 			Game.start_stage(stage))
+	continue_button.call_deferred("grab_focus")

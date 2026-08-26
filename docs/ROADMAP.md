@@ -21,7 +21,7 @@ are required.
 - Finite authored Stage 1 and result flow.
 - FRESH/BENCHMARK isolated playtest harness.
 
-### Phase 1.1 — Pressure & Placement Calibration — IMPLEMENTED, HUMAN REVIEW PENDING
+### Phase 1.1 — Pressure & Placement Calibration — COMPLETE + HUMAN-APPROVED
 
 The executable plan is now inactive because the automated slice is complete;
 the human graphical review gate remains. The scope completed or dispositioned
@@ -38,10 +38,14 @@ is:
 - normal-speed telemetry for population pressure, drafts, Guardian movement,
   and placement choices.
 
-Do not lock an exact enemy multiplier. Do not implement Phase 1.1 from this
-summary alone.
+The human graphical run completed all six waves and won with 320 kills, 690 XP,
+level 15, 14 drafts, Impact Cannon installed, and 34/100 final Barricade HP.
+The denser version was judged substantially better. Guardian movement was not
+needed and is not a local defect. Preserve this calibration while weapon
+identity, projectile readability, and later enemy composition remain future
+improvement surfaces.
 
-### Horizontal Product Checkpoint 1 — First Product Slice — PLANNED / GATED
+### Horizontal Product Checkpoint 1 — First Product Slice — IMPLEMENTED; HUMAN GRAPHICAL REVIEW PENDING
 
 This is the first bounded horizontal checkpoint in the single route. Its
 purpose is to make the current loop read as one product using only systems that
@@ -52,29 +56,38 @@ already exist:
 Strict scope is navigation and transition ownership, current draft
 presentation/readability, the Battle HUD information hierarchy, result clarity,
 return flow, and a minimal reusable card presentation foundation only where
-the repeated draft need justifies it. It does not authorize a card redesign in
-the current Phase 1.1 review build.
+the repeated draft need justifies it. The current card work is a functional
+portrait iteration, not final art direction.
 
 Explicit exclusions are Shop, currencies, monetization, packs, Mastery, final
 Arsenal/collection, duplicate economy, final rarity language, and fake locked
 feature tabs. Deep meta remains Phase 5 work.
 
-Timing is gated on the human Phase 1.1 graphical review and the next product
-decision. This checkpoint is planned direction, not active implementation.
+The current implementation provides a visible Campaign stage-entry surface,
+real Home → Campaign → Battle → Draft → Result → Campaign ownership, a
+reusable portrait draft card, current HUD hierarchy, and result/return clarity.
+Automated and runtime validation pass. Final visual/product judgment remains a
+human review gate; this checkpoint does not claim final art approval.
 
-### Phase 2 — Weapon Architecture — NOT STARTED
+### Phase 2 — Weapon Architecture — FOUNDATION COMPLETE; HUMAN PLAYTEST PENDING
 
-WeaponDefinition, DamageFamily, EngagementProfile, AttackTopology,
-TargetingPolicy, and the approved Guardian Rifle, Impact Cannon, Tesla Coil,
-and Disruption Field architecture.
+The current Guardian Rifle and Impact Cannon now use the shared
+WeaponDefinition boundary with explicit Damage Family, Engagement Profile,
+Attack Topology, and Targeting Policy. Guardian and Cannon presentation has a
+representative readability pass. Tesla Coil and Disruption Field remain data
+only legacy resources; their future mechanics are not started.
 
-### Phase 3 — Draft Architecture
+The next Phase 2 decision is gated on human playtest: deepen weapon identity if
+the current proof is not readable, or begin the bounded Phase 3 draft-architecture
+work if the foundation is healthy.
+
+### Phase 3 — Draft Architecture — NEXT AFTER HUMAN WEAPON PLAYTEST
 
 Full NEW TURRET, NORMAL, BREAKTHROUGH, CHAIN, and COMBO semantics with
 prerequisites, exclusions, context, dead-choice protection, and deterministic
 testing.
 
-### Phase 4 — Enemy and Stage Architecture
+### Phase 4 — Enemy and Stage Architecture — FUTURE
 
 Enemy Role + Affinity + Modifiers, soft counters, Stage Intel, and authored
 Stages 1–5 onboarding.
