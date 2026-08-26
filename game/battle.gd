@@ -29,6 +29,10 @@ var _pending_drafts := 0
 var _draft_open := false
 var _active_offer: Array[CardData] = []
 var _pending_build_turret_id: StringName = &""
+var _placement_open := false
+var _placement_turret_id: StringName = &""
+var _placement_slot_index := -1
+var _placement_ghost: Turret
 var _ended := false
 var _field_effects: Array[Dictionary] = []
 var _next_barricade_alert_msec := 0
@@ -681,7 +685,7 @@ func on_card_chosen(card: CardData) -> void:
 			hud.hide_overlay()
 			_open_next_draft()
 			return
-		hud.show_slot_picker(pending_turret, _slot_placement_options())
+		_begin_turret_placement(pending_turret)
 		return
 	hud.hide_overlay()
 	get_tree().paused = false
@@ -742,14 +746,83 @@ func _available_slot_count() -> int:
 			count += 1
 	return count
 
-func on_slot_chosen(slot_index: int) -> void:
-	if _pending_build_turret_id == &"":
-		return
-	if _build_turret_at_slot(_pending_build_turret_id, slot_index):
+func is_placement_open() -> bool:
+	return _placement_open
+
+func placement_slot_index() -> int:
+	return _placement_slot_index
+
+func _begin_turret_placement(turret: TurretData) -> void:
+	var first_slot := _first_empty_slot()
+	if first_slot < 0:
+		push_warning("Battle: no empty slot available for %s" % turret.id)
 		_pending_build_turret_id = &""
 		hud.hide_overlay()
 		get_tree().paused = false
 		_open_next_draft()
+		return
+	_placement_open = true
+	_placement_turret_id = turret.id
+	_placement_slot_index = first_slot
+	_placement_ghost = TURRET_SCENE.instantiate()
+	turrets_root.add_child(_placement_ghost)
+	_placement_ghost.setup(self, turret)
+	_placement_ghost.set_preview_visual()
+	_update_placement_ghost()
+	hud.show_placement(turret, _placement_slot_index)
+
+func _first_empty_slot() -> int:
+	for slot_index in ArenaLayout.slot_pick_order():
+		if slot_index >= 0 and slot_index < _slots.size() and _slots[slot_index].turret == null:
+			return slot_index
+	return -1
+
+func move_placement_selection(direction: int) -> bool:
+	if not _placement_open or direction == 0:
+		return false
+	var order: Array[int] = ArenaLayout.slot_pick_order()
+	var current_order := order.find(_placement_slot_index)
+	if current_order < 0:
+		return false
+	var step := 1 if direction > 0 else -1
+	for offset in range(1, order.size() + 1):
+		var candidate_order := posmod(current_order + step * offset, order.size())
+		var candidate_index := order[candidate_order]
+		if candidate_index < 0 or candidate_index >= _slots.size():
+			continue
+		if _slots[candidate_index].turret != null:
+			continue
+		_placement_slot_index = candidate_index
+		_update_placement_ghost()
+		hud.update_placement(_placement_slot_index)
+		return true
+	return false
+
+func confirm_turret_placement() -> bool:
+	if not _placement_open or _placement_turret_id == &"":
+		return false
+	if not _build_turret_at_slot(_placement_turret_id, _placement_slot_index):
+		return false
+	if is_instance_valid(_placement_ghost):
+		_placement_ghost.queue_free()
+	_placement_ghost = null
+	_placement_open = false
+	_placement_turret_id = &""
+	_placement_slot_index = -1
+	_pending_build_turret_id = &""
+	hud.hide_placement()
+	get_tree().paused = false
+	_open_next_draft()
+	return true
+
+func _update_placement_ghost() -> void:
+	if not is_instance_valid(_placement_ghost):
+		return
+	if _placement_slot_index < 0 or _placement_slot_index >= _slots.size():
+		return
+	var marker := _slots[_placement_slot_index].marker as Marker3D
+	if marker != null:
+		_placement_ghost.global_position = marker.global_position
 
 func _build_turret_at_slot(turret_id: StringName, slot_index: int) -> bool:
 	var data := Catalog.turret(turret_id)
@@ -778,27 +851,6 @@ func _build_turret_at_slot(turret_id: StringName, slot_index: int) -> bool:
 		"remaining_slots": run_state.available_slot_count(),
 	})
 	return true
-
-func _slot_placement_options() -> Array[Dictionary]:
-	var options: Array[Dictionary] = []
-	var pick_order: Array[int] = ArenaLayout.slot_pick_order()
-	for pick_index in range(pick_order.size()):
-		var slot_index: int = pick_order[pick_index]
-		if slot_index < 0 or slot_index >= _slots.size():
-			continue
-		var slot := _slots[slot_index]
-		var marker := slot.get("marker") as Marker3D
-		if marker == null:
-			continue
-		options.append({
-			"index": slot_index,
-			"label": "%d - %s" % [pick_index + 1, ArenaLayout.slot_display_name(slot_index)],
-			"occupied": slot.turret != null,
-		})
-	return options
-
-func slot_spatial_legend() -> String:
-	return "T1/T2 left • Guardian • T3/T4 right"
 
 func _spawn_status_burst(at: Vector3, color: Color, radius: float, duration: float) -> void:
 	if effects_root == null or not is_inside_tree():

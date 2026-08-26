@@ -106,15 +106,16 @@ Interfaces:
 
 Checks:
 
-- [ ] Measure baseline spawn-to-barricade distance and capture the existing
-  camera view if useful.
-- [ ] Test one conservative compression candidate and compare runtime metrics
-  and visual framing.
-- [ ] Keep the candidate only if enemy travel, barricade contact, Guardian
-  clamp, slot topology, and runtime checks remain valid; otherwise record no
-  geometry change and leave the baseline intact.
-- [ ] Commit a spatial change only when the evidence justifies it:
-  `feat: calibrate Stage 1 battlefield spacing`.
+- [x] Measure the baseline 22.8-unit spawn-to-barricade distance from the
+  shared layout constants; MCP was unavailable for a camera capture.
+- [x] Test conservative 20.0-unit and 21.5-unit compression candidates with
+  isolated BENCHMARK smokes. Both reached defeat before the selected baseline's
+  first full progression, so the candidates were rejected as too disruptive.
+- [x] Keep the baseline geometry intact: enemy travel, barricade contact,
+  Guardian clamp, and slot topology remain unchanged. No spatial commit was
+  made; visual spacing remains a human-review question.
+- [x] No `feat: calibrate Stage 1 battlefield spacing` commit: evidence did not
+  justify changing geometry in this slice.
 
 ## Task D — In-world ghost turret placement
 
@@ -138,13 +139,13 @@ Interfaces:
 
 Checks:
 
-- [ ] Write failing behavioral tests for placement ownership, ghost state,
+- [x] Write failing behavioral tests for placement ownership, ghost state,
   valid-slot cycling, occupied-slot skipping, confirm installation, and
   pause/resume sequencing.
-- [ ] Run the narrow tests and confirm the old modal path fails the new
+- [x] Run the narrow tests and confirm the old modal path fails the new
   contract.
-- [ ] Implement the smallest ghost material/presentation and keyboard path.
-- [ ] Run narrow tests, full GdUnit, FRESH/BENCHMARK automated smoke, and a
+- [x] Implement the smallest ghost material/presentation and keyboard path.
+- [x] Run narrow tests, full GdUnit, FRESH/BENCHMARK automated smoke, and a
   graphical-safe launch check.
 - [ ] Commit: `feat: replace modal turret placement with in-world ghost`
 
@@ -178,6 +179,8 @@ Checks:
 - Phase 1: implemented and human-reviewed.
 - Task A: complete; baseline reports are available under `/private/tmp`.
 - Task B: complete; candidate C selected, pending human graphical review.
-- Phase 1.1 automated gate: pending execution of Tasks C–E.
+- Task C: complete; conservative spacing candidates rejected, baseline retained.
+- Task D: implementation and automated verification complete; commit pending.
+- Phase 1.1 automated gate: pending integrated Task E review.
 - Human Phase 1.1 graphical playtest: required after the selected build.
 - Phase 2: not started and blocked until Phase 1.1 human review.

@@ -27,6 +27,24 @@ func setup(b: Battle, d: TurretData) -> void:
 	scale = Vector3.ONE * d.presentation_scale
 	refresh_branch_visual()
 
+func set_preview_visual() -> void:
+	## Preview turrets are presentation-only and never participate in combat.
+	set_physics_process(false)
+	_apply_preview_material(self)
+
+func _apply_preview_material(node: Node) -> void:
+	for child in node.get_children():
+		if child is MeshInstance3D:
+			var preview := StandardMaterial3D.new()
+			preview.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			preview.albedo_color = Color(0.35, 0.82, 1.0, 0.38)
+			preview.emission_enabled = true
+			preview.emission = Color(0.20, 0.55, 0.85, 1.0)
+			preview.emission_energy_multiplier = 0.65
+			preview.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+			(child as MeshInstance3D).material_override = preview
+		_apply_preview_material(child)
+
 func get_active_branch() -> TurretBranchData:
 	var branch_id = battle.run_state.branch_for(data.id)
 	if branch_id != "":

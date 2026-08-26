@@ -26,7 +26,7 @@ game/  battle runtime                 shell/  screens
 ├─ wave_director.gd wave lifecycle   ├─ campaign.tscn/.gd  30 stages + dev tools
 ├─ guardian, enemy, turret,          └─ result.tscn/.gd    report step
 │  projectile (.gd [+ .tscn])
-├─ battle_hud.gd    HUD + draft UI   tests/run_tests.gd    87 headless checks
+├─ battle_hud.gd    HUD + draft UI   tests/run_tests.gd    88 headless checks
 │                                      tests/gdunit/      GdUnit4 behavioral pilot
 └─ visuals.gd       material cache   tools/  validate.sh, gen_stages.gd,
                                              balance_report.gd
@@ -119,8 +119,13 @@ the temporary directory and does not touch the normal save; reports now include
 simulated time, active/dead-air pressure, average/peak population, and draft
 cadence. The selected automated benchmark reached 320 kills, 690 XP, level 15,
 14 drafts, victory, 71 peak live enemies, and 4/100 Barricade HP. The
-placement interaction is still the transitional modal slot picker; the
-approved in-world ghost flow is not implemented.
+placement interaction is now an in-world continuation of the paused draft:
+selecting `build_cannon` creates a non-attacking translucent ghost on the first
+empty T1–T4 slot, arrow keys cycle empty slots, and Space/Enter confirms the
+installation. The former modal slot-picker code path is removed. The baseline
+22.8-unit spawn-to-barricade geometry remains; tested 20.0-unit and 21.5-unit
+compression candidates caused early automated BENCHMARK defeat and were
+rejected.
 
 Any Godot-related edit, inspection, or validation must go through the Godot AI
 MCP tools when they are available. The engine is part of the editing workflow:

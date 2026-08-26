@@ -226,8 +226,14 @@ func run_slot_ordering(sink) -> void:
 		and ArenaLayout.slot_display_name(1) == "T2 Left"
 		and ArenaLayout.slot_display_name(2) == "T3 Right"
 		and ArenaLayout.slot_display_name(3) == "T4 Right")
-	sink.check("slot picker uses visual order 1,2,3,4",
+	sink.check("in-world placement uses visual order 1,2,3,4",
 		ArenaLayout.slot_pick_order() == [0, 1, 2, 3])
+	var hud_script := load("res://game/battle_hud.gd") as Script
+	var hud := hud_script.new() as BattleHUD
+	sink.check("HUD exposes ghost placement without a modal slot picker",
+		hud.has_method("show_placement") and hud.has_method("hide_placement")
+		and not hud.has_method("show_slot_picker"))
+	hud.free()
 	var scene := load("res://game/arena.tscn") as PackedScene
 	var root := scene.instantiate()
 	var slots := root.get_node("TowerSlots")

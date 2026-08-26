@@ -140,6 +140,66 @@ func test_phase1_new_turret_capacity_and_duplicate_occupancy() -> void:
 	assert_int(run.available_slot_count()).is_equal(0)
 	assert_bool(run.install_turret(&"cannon", 0)).is_false()
 
+func test_task11_new_turret_uses_paused_in_world_placement() -> void:
+	var boot := await _boot_battle()
+	var battle := boot["battle"] as Battle
+	var card := Catalog.card(&"build_cannon")
+	battle._active_offer = [card]
+	battle._draft_open = true
+	get_tree().paused = true
+	battle.on_card_chosen(card)
+	assert_bool(battle.has_method("is_placement_open")).is_true()
+	assert_bool(bool(battle.call("is_placement_open"))).is_true()
+	assert_bool(get_tree().paused).is_true()
+	assert_bool(battle.hud.has_method("show_placement")).is_true()
+	assert_bool(battle.hud.has_method("show_slot_picker")).is_false()
+	assert_bool(battle.hud.draft_layer.visible).is_false()
+	var ghost = battle.get("_placement_ghost")
+	assert_bool(is_instance_valid(ghost)).is_true()
+	assert_int(int(battle.call("placement_slot_index"))).is_equal(0)
+
+func test_task11_placement_skips_occupied_slots_and_confirm_resumes() -> void:
+	var boot := await _boot_battle()
+	var battle := boot["battle"] as Battle
+	assert_bool(battle._build_turret_at_slot(&"bolt", 0)).is_true()
+	var card := Catalog.card(&"build_cannon")
+	battle._active_offer = [card]
+	battle._draft_open = true
+	get_tree().paused = true
+	battle.on_card_chosen(card)
+	assert_int(int(battle.call("placement_slot_index"))).is_equal(1)
+	var right_key := InputEventKey.new()
+	right_key.keycode = KEY_RIGHT
+	right_key.pressed = true
+	battle.hud._unhandled_input(right_key)
+	assert_int(int(battle.call("placement_slot_index"))).is_equal(2)
+	assert_bool(bool(battle.call("move_placement_selection", -1))).is_true()
+	assert_int(int(battle.call("placement_slot_index"))).is_equal(1)
+	assert_bool(bool(battle.call("move_placement_selection", -1))).is_true()
+	assert_int(int(battle.call("placement_slot_index"))).is_equal(3)
+	assert_bool(bool(battle.call("move_placement_selection", 1))).is_true()
+	assert_int(int(battle.call("placement_slot_index"))).is_equal(1)
+	assert_bool(bool(battle.call("confirm_turret_placement"))).is_true()
+	assert_str(String(battle.run_state.turret_slots[1])).is_equal("cannon")
+	assert_bool(bool(battle.call("is_placement_open"))).is_false()
+	assert_bool(get_tree().paused).is_false()
+	assert_bool(is_instance_valid(battle.get("_placement_ghost"))).is_false()
+
+func test_task11_placement_keeps_queued_level_up_owned_by_next_draft() -> void:
+	var boot := await _boot_battle()
+	var battle := boot["battle"] as Battle
+	var card := Catalog.card(&"build_cannon")
+	battle._active_offer = [card]
+	battle._draft_open = true
+	battle._pending_drafts = 1
+	get_tree().paused = true
+	battle.on_card_chosen(card)
+	assert_bool(bool(battle.call("is_placement_open"))).is_true()
+	assert_bool(bool(battle.call("confirm_turret_placement"))).is_true()
+	assert_bool(bool(battle.call("is_placement_open"))).is_false()
+	assert_bool(battle._draft_open).is_true()
+	assert_bool(get_tree().paused).is_true()
+
 func test_phase1_offer_is_three_choices_and_seeded() -> void:
 	var catalog: Array[CardData] = []
 	for card_index in range(4):

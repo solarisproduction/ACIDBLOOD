@@ -25,11 +25,11 @@ integration, and review-quality evidence.
 
 ## Active Phase 1.1 plan
 
-`docs/ACTIVE_IMPLEMENTATION_PLAN.md` is now the executable authority for the
-approved Pressure & Placement Calibration slice. Tasks A–E cover simulated-time
-telemetry, controlled Stage 1 pressure experiments, conservative spacing
-calibration, in-world ghost placement, and integrated verification. Phase 2 is
-not started.
+`docs/ACTIVE_IMPLEMENTATION_PLAN.md` is the executable authority for the
+approved Pressure & Placement Calibration slice. Tasks A–D now cover
+simulated-time telemetry, selected Stage 1 pressure, rejected spacing
+compression candidates, and implemented in-world ghost placement. Task E is
+the remaining integrated review. Phase 2 is not started.
 
 Task A is complete. Reports now include simulated gameplay seconds, active and
 dead-air seconds, active-pressure ratio, average/peak live population, draft
@@ -54,10 +54,10 @@ calibration should investigate a several-fold increase in continuous visible
 throughput without locking an exact multiplier. Enemy volume, survivability,
 spawn cadence, overlap, XP supply, thresholds, and draft pacing are coupled.
 
-Approved future placement direction: selecting NEW TURRET returns to the
-battlefield, shows a translucent ghost on an eligible numbered slot, lets the
-player cycle T1–T4 with a minimal `Choose Slot` instruction, and confirms
-in-world. The current modal picker is transitional and remains implemented.
+Approved placement direction is now implemented: selecting NEW TURRET returns
+to the battlefield, shows a translucent non-attacking ghost on an eligible
+numbered slot, lets the player cycle T1–T4 with a minimal `Choose Slot`
+instruction, and confirms in-world while the same draft pause remains active.
 
 Future enemy movement variation may be small, role-driven, data-driven, and
 readable; random wandering is not approved. Stage 1 remains the grammar
@@ -65,10 +65,10 @@ tutorial, while later stages may become sophisticated quickly.
 
 ## Validation and playtest
 
-- Baseline commit: `3a7d640`; the active plan checkpoint is currently
-  uncommitted and must be committed before implementation continues.
+- Baseline for this slice: `3a7d640`; plan and implementation checkpoints are
+  committed sequentially as each validated task lands.
 - Latest CI: run `32876035890` PASS.
-- Local canonical validation: 87 official checks, 25 GdUnit cases, runtime
+- Local canonical validation: 88 official checks, 31 GdUnit cases, runtime
   smoke, and error-log inspection PASS.
 - FRESH launch:
   `GODOT=/Applications/Godot.app/Contents/MacOS/Godot tools/playtest_fresh.sh`
@@ -87,13 +87,17 @@ tutorial, while later stages may become sophisticated quickly.
   human pacing evidence.
 - Exact Galaxy slot coordinates, formation behavior, XP curve, and draft order
   remain `UNVERIFIED`.
-- In-world ghost placement is approved but not implemented.
+- The baseline 22.8-unit approach geometry is retained. Tested 20.0-unit and
+  21.5-unit compression candidates caused early BENCHMARK defeat, so spacing
+  remains a human visual-review question.
+- The new ghost placement flow is automated-test verified but still needs
+  human graphical feel review.
 - Legacy Bolt/Frost runtime and content remain outside the active Stage 1 pool.
-- Phase 1.1 Tasks A–B are implemented; Tasks C–E remain. Phase 2 is not
-  started.
+- Phase 1.1 Tasks A–D are implemented or dispositioned; Task E remains. Phase 2
+  is not started.
 
 ## Exact next milestone
 
-Execute **Task C — Conservative battlefield-space calibration** from
-`docs/ACTIVE_IMPLEMENTATION_PLAN.md`, then proceed through the approved task
-sequence only. Do not begin Phase 2.
+Execute **Task E — Integrated Phase 1.1 verification and handoff** from
+`docs/ACTIVE_IMPLEMENTATION_PLAN.md`. Then request the human graphical
+Phase 1.1 playtest; do not begin Phase 2.

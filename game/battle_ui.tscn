@@ -107,6 +107,29 @@ text = "THREAT"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="PlacementHint" type="Label" parent="BattleHUD" unique_id=972451138]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_top = 170.0
+offset_right = 300.0
+offset_bottom = 214.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.72, 0.92, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.7)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 24
+text = "Choose Slot"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="BottomBar" type="MarginContainer" parent="BattleHUD" unique_id=1892331616]
 layout_mode = 1
 anchors_preset = 12

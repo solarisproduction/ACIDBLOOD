@@ -9,7 +9,7 @@ const CATEGORY_BOLT := &"bolt"
 const CATEGORY_CANNON := &"cannon"
 const CATEGORY_FROST := &"frost"
 const OVERLAY_DRAFT := &"draft"
-const OVERLAY_SLOT_PICK := &"slot_pick"
+const OVERLAY_PLACEMENT := &"placement"
 
 const CATEGORY_META := {
 	CATEGORY_GUARDIAN: {
@@ -54,6 +54,7 @@ var battle: Battle
 @onready var draft_subtitle: Label = $DraftLayer/Center/Panel/Subtitle
 @onready var threat_layer: Control = %ThreatLayer
 @onready var threat_label: Label = %ThreatLabel
+@onready var placement_hint: Label = %PlacementHint
 @onready var draft_layer: Control = %DraftLayer
 @onready var draft_panel: VBoxContainer = %Panel
 @onready var cards_box: GridContainer = %CardsBox
@@ -73,6 +74,7 @@ func setup(b: Battle) -> void:
 	stage_label.text = "Act %d • %d. %s" % [b.stage.resolved_act_number(), b.stage.index, b.stage.display_name]
 	wave_label.text = "Wave -/%d" % b.stage.waves.size()
 	draft_layer.visible = false
+	placement_hint.visible = false
 	update_fortress()
 	update_xp()
 	update_ability()
@@ -87,6 +89,20 @@ func _process(_delta: float) -> void:
 		threat_layer.visible = false
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _overlay_mode == OVERLAY_PLACEMENT:
+		var placement_handled := false
+		if event.is_action_pressed("ui_accept"):
+			battle.confirm_turret_placement()
+			placement_handled = true
+		elif event.is_action_pressed("ui_left"):
+			battle.move_placement_selection(-1)
+			placement_handled = true
+		elif event.is_action_pressed("ui_right"):
+			battle.move_placement_selection(1)
+			placement_handled = true
+		if placement_handled:
+			get_viewport().set_input_as_handled()
+		return
 	if not draft_layer.visible:
 		return
 	var handled := false
@@ -178,6 +194,7 @@ func flash_fortress_hit(amount: float, max_hp: float) -> void:
 
 func show_draft(offer: Array[CardData]) -> void:
 	_overlay_mode = OVERLAY_DRAFT
+	placement_hint.visible = false
 	draft_title.text = "Choose Upgrade"
 	var emergency_available := false
 	for card in offer:
@@ -207,25 +224,20 @@ func show_draft(offer: Array[CardData]) -> void:
 			if draft_layer.visible and not sorted_offer.is_empty():
 				_on_card_pressed(sorted_offer[0]))
 
-func show_slot_picker(turret: TurretData, slots: Array[Dictionary]) -> void:
-	_overlay_mode = OVERLAY_SLOT_PICK
-	draft_title.text = "Deploy %s" % turret.display_name
-	draft_subtitle.text = "Choose slot • Arrows move • Space confirms • %s" % battle.slot_spatial_legend()
-	cards_box.columns = 2
-	_overlay_buttons.clear()
-	_overlay_selected_index = -1
-	for child in cards_box.get_children():
-		child.queue_free()
-	for slot in slots:
-		var btn := _build_slot_button(slot, turret)
-		cards_box.add_child(btn)
-		_overlay_buttons.append(btn)
-	draft_layer.visible = true
-	call_deferred("_focus_overlay_selection")
+func show_placement(turret: TurretData, slot_index: int) -> void:
+	_overlay_mode = OVERLAY_PLACEMENT
+	draft_layer.visible = false
+	placement_hint.text = "Choose Slot  •  %s  •  Arrows move  •  Space confirms" % ArenaLayout.slot_display_name(slot_index)
+	placement_hint.visible = true
 	if Game.autoplay:
 		get_tree().create_timer(0.05).timeout.connect(func() -> void:
-			if draft_layer.visible:
-				_auto_pick_first_slot())
+			if _overlay_mode == OVERLAY_PLACEMENT:
+				battle.confirm_turret_placement())
+
+func update_placement(slot_index: int) -> void:
+	if _overlay_mode != OVERLAY_PLACEMENT:
+		return
+	placement_hint.text = "Choose Slot  •  %s  •  Arrows move  •  Space confirms" % ArenaLayout.slot_display_name(slot_index)
 
 func hide_draft() -> void:
 	draft_layer.visible = false
@@ -237,18 +249,18 @@ func hide_draft() -> void:
 
 func hide_overlay() -> void:
 	hide_draft()
+	hide_placement()
+
+func hide_placement() -> void:
+	if _overlay_mode == OVERLAY_PLACEMENT:
+		_overlay_mode = &""
+	placement_hint.visible = false
 
 func _on_card_pressed(card: CardData) -> void:
 	if not draft_layer.visible:
 		return
 	draft_layer.visible = false
 	battle.on_card_chosen(card)
-
-func _on_slot_pressed(slot_index: int) -> void:
-	if not draft_layer.visible:
-		return
-	draft_layer.visible = false
-	battle.on_slot_chosen(slot_index)
 
 func _build_card_button(card: CardData) -> Button:
 	var category := _card_category(card)
@@ -316,54 +328,6 @@ func _build_card_button(card: CardData) -> Button:
 	root.add_child(footer)
 	for hint in _card_hints(card):
 		footer.add_child(_make_hint_row(hint, accent))
-	return button
-
-func _build_slot_button(slot: Dictionary, _turret: TurretData) -> Button:
-	var label := String(slot.get("label", "Slot"))
-	var occupied := bool(slot.get("occupied", false))
-	var button := Button.new()
-	button.flat = true
-	button.focus_mode = Control.FOCUS_ALL
-	button.disabled = occupied
-	button.clip_contents = true
-	button.custom_minimum_size = Vector2(0, 120)
-	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	var accent := Color(0.33, 0.74, 0.52, 1.0) if not occupied else Color(0.38, 0.38, 0.38, 1.0)
-	var surface := Color(0.08, 0.14, 0.11, 0.96) if not occupied else Color(0.13, 0.13, 0.13, 0.96)
-	button.add_theme_stylebox_override("normal", _card_style(surface, accent, 1.0, 2))
-	button.add_theme_stylebox_override("hover", _card_style(surface.lightened(0.08), accent.lightened(0.12), 1.0, 3))
-	button.add_theme_stylebox_override("pressed", _card_style(surface.darkened(0.08), accent, 1.0, 3))
-	button.add_theme_stylebox_override("focus", _card_style(surface.lightened(0.05), accent.lightened(0.18), 1.0, 4))
-	button.pressed.connect(_on_slot_pressed.bind(int(slot.get("index", -1))))
-
-	var margin := MarginContainer.new()
-	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	margin.add_theme_constant_override("margin_left", 14)
-	margin.add_theme_constant_override("margin_top", 12)
-	margin.add_theme_constant_override("margin_right", 14)
-	margin.add_theme_constant_override("margin_bottom", 12)
-	button.add_child(margin)
-
-	var root := VBoxContainer.new()
-	root.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	root.add_theme_constant_override("separation", 6)
-	margin.add_child(root)
-
-	var title := Label.new()
-	title.text = label
-	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	title.add_theme_font_size_override("font_size", 24)
-	title.add_theme_color_override("font_color", Color(0.97, 0.97, 0.95, 1) if not occupied else Color(0.72, 0.72, 0.72, 1))
-	root.add_child(title)
-
-	var body := Label.new()
-	body.text = "Open" if not occupied else "Occupied"
-	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	body.add_theme_font_size_override("font_size", 18)
-	body.add_theme_color_override("font_color", Color(0.82, 0.92, 0.85, 1) if not occupied else Color(0.62, 0.62, 0.62, 1))
-	root.add_child(body)
 	return button
 
 func _layout_draft_overlay() -> void:
@@ -543,24 +507,7 @@ func _move_overlay_selection(step: int) -> void:
 		if _overlay_selected_index < 0:
 			return
 	var next := _overlay_selected_index
-	if _overlay_mode == OVERLAY_SLOT_PICK:
-		var row := _overlay_selected_index / 2
-		var col := _overlay_selected_index % 2
-		if step == -1:
-			col -= 1
-		elif step == 1:
-			col += 1
-		elif step == -2:
-			row -= 1
-		elif step == 2:
-			row += 1
-		else:
-			return
-		if row < 0 or row > 1 or col < 0 or col > 1:
-			return
-		next = row * 2 + col
-	else:
-		next = (_overlay_selected_index + step + _overlay_buttons.size()) % _overlay_buttons.size()
+	next = (_overlay_selected_index + step + _overlay_buttons.size()) % _overlay_buttons.size()
 	if next < 0 or next >= _overlay_buttons.size():
 		return
 	if _overlay_buttons[next].disabled:
@@ -584,9 +531,3 @@ func _activate_overlay_selection() -> void:
 	if not is_instance_valid(button) or button.disabled:
 		return
 	button.emit_signal("pressed")
-
-func _auto_pick_first_slot() -> void:
-	for button in _overlay_buttons:
-		if is_instance_valid(button) and not button.disabled:
-			button.emit_signal("pressed")
-			return
