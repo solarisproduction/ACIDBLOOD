@@ -87,9 +87,33 @@ func finish(outcome: StringName, payload: Dictionary = {}) -> void:
 	_report["progression_events"] = _events.duplicate(true)
 	_report["xp_gained"] = _events.filter(func(event: Dictionary) -> bool: return event.get("event") == "xp_gain")
 	_report["level_ups"] = _events.filter(func(event: Dictionary) -> bool: return event.get("event") == "level_up")
-	_report["draft_offers"] = payload.get("draft_offers", [])
-	_report["selected_drafts"] = payload.get("selected_drafts", [])
+	_report["draft_offers"] = _draft_offer_summaries()
+	_report["selected_drafts"] = _draft_selection_summaries()
 	_write_report()
+
+func _draft_offer_summaries() -> Array[Dictionary]:
+	var summaries: Array[Dictionary] = []
+	for event in _events:
+		if event.get("event") != "draft_open":
+			continue
+		summaries.append({
+			"draft_index": int(event.get("draft_index", 0)),
+			"gameplay_seconds": float(event.get("gameplay_seconds", 0.0)),
+			"offer_ids": (event.get("offer_ids", []) as Array).duplicate(),
+		})
+	return summaries
+
+func _draft_selection_summaries() -> Array[Dictionary]:
+	var summaries: Array[Dictionary] = []
+	for event in _events:
+		if event.get("event") != "card_chosen":
+			continue
+		summaries.append({
+			"draft_index": int(event.get("draft_index", 0)),
+			"gameplay_seconds": float(event.get("gameplay_seconds", 0.0)),
+			"card_id": String(event.get("card_id", "")),
+		})
+	return summaries
 
 func _draft_intervals() -> Array[float]:
 	var intervals: Array[float] = []

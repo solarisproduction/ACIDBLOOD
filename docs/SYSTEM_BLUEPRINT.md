@@ -126,6 +126,8 @@ installation. The former modal slot-picker code path is removed. The baseline
 22.8-unit spawn-to-barricade geometry remains; tested 20.0-unit and 21.5-unit
 compression candidates caused early automated BENCHMARK defeat and were
 rejected.
+Telemetry exposes compact top-level draft-offer and selected-card summaries in
+addition to the full event stream.
 
 Any Godot-related edit, inspection, or validation must go through the Godot AI
 MCP tools when they are available. The engine is part of the editing workflow:

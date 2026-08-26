@@ -84,8 +84,9 @@ tutorial, while later stages may become sophisticated quickly.
   isolated profiles and write one JSON report under `${TMPDIR:-/tmp}`; they do
   not touch the normal persistent save.
 - Final isolated reports are available at
-  `/private/tmp/phase11-final-fresh.json` and
-  `/private/tmp/phase11-final-benchmark.json`.
+  `/private/tmp/phase11-observability-fresh.json` and
+  `/private/tmp/phase11-observability-benchmark.json`; draft offers and
+  selections are now also summarized at the report top level.
 
 ## Known limitations
 

@@ -401,6 +401,26 @@ func test_task11_telemetry_metrics_are_deterministic_for_same_samples() -> void:
 			"active_pressure_ratio", "average_live_enemy_population", "peak_simultaneous_enemies"]:
 		assert_bool(is_equal_approx(float(first_report[key]), float(second_report[key]))).is_true()
 
+func test_task11_telemetry_aggregates_draft_offers_and_selections() -> void:
+	var temp_root := OS.get_environment("TMPDIR")
+	if temp_root.is_empty():
+		temp_root = "/tmp"
+	var path := temp_root.path_join("acidblood-task11-draft-summary.json")
+	var profile: Dictionary = PlaytestProfileScript.build(&"BENCHMARK", 446)
+	var telemetry: PlaytestTelemetry = PlaytestTelemetryScript.new()
+	telemetry.begin(profile, &"stage_001", path)
+	telemetry.advance_simulation(1.0, 2)
+	telemetry.record_event("draft_open", {"draft_index": 1, "offer_ids": ["build_cannon", "sharp_rounds", "long_barrel"]})
+	telemetry.record_event("card_chosen", {"draft_index": 1, "card_id": "build_cannon"})
+	telemetry.finish(&"victory")
+	var report := JSON.parse_string(FileAccess.get_file_as_string(path)) as Dictionary
+	var offers := report["draft_offers"] as Array
+	var selections := report["selected_drafts"] as Array
+	assert_int(offers.size()).is_equal(1)
+	assert_int(selections.size()).is_equal(1)
+	assert_str(String((offers[0] as Dictionary)["offer_ids"][0])).is_equal("build_cannon")
+	assert_str(String((selections[0] as Dictionary)["card_id"])).is_equal("build_cannon")
+
 func test_frost_turret_freezes_target() -> void:
 	var boot := await _boot_battle()
 	var runner: GdUnitSceneRunner = boot["runner"]
