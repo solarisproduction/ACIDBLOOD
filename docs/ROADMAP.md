@@ -21,11 +21,11 @@ are required.
 - Finite authored Stage 1 and result flow.
 - FRESH/BENCHMARK isolated playtest harness.
 
-### Phase 1.1 — Pressure & Placement Calibration — ACTIVE PLAN
+### Phase 1.1 — Pressure & Placement Calibration — IMPLEMENTED, HUMAN REVIEW PENDING
 
-The approved executable plan is [`ACTIVE_IMPLEMENTATION_PLAN.md`](ACTIVE_IMPLEMENTATION_PLAN.md).
-Implementation must complete its tasks and preserve the human graphical review
-gate before Phase 2. The scope is:
+The executable plan is [`ACTIVE_IMPLEMENTATION_PLAN.md`](ACTIVE_IMPLEMENTATION_PLAN.md)
+and Tasks A–E are complete for the automated slice. The human graphical review
+gate remains before Phase 2. The scope completed or dispositioned is:
 
 - several-fold higher, more continuous Stage 1 throughput using existing enemy
   types and fragile common enemies;
