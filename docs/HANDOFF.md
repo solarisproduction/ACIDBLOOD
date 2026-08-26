@@ -1,116 +1,72 @@
 # Current Session Bridge
 
-Recommended executor: GPT-5.6 Luna Medium for the human Phase 1.1 review and
-next design decision; future mechanical maintenance can return to Luna Low.
-Reason: gameplay calibration and placement feel still require medium-level
-runtime/product judgment after the human run.
+Recommended next executor: GPT-5.6 Luna Medium after human Phase 1.1 review.
+Phase 2 remains gated.
 
-## Product and implementation state
+## Current truth
 
-- ACIDBLOOD is a 3D tower-defense game with deterministic roguelite drafts in
+- ACIDBLOOD is a deterministic 3D tower-defense game with roguelite drafts in
   a late-1980s industrial-contamination setting.
-- The target architecture is [`GALAXY_FOUNDATION_SPEC.md`](GALAXY_FOUNDATION_SPEC.md).
-  The current implementation is recorded in [`SYSTEM_BLUEPRINT.md`](SYSTEM_BLUEPRINT.md).
 - Phase 1 Battle Foundation is implemented and human-reviewed.
-- Stage 1 starts with an active Guardian and four empty slots in
-  `T1 – T2 – Guardian – T3 – T4`.
-- Kills award run XP exactly once; level-ups pause combat and present three
-  deterministic eligible choices; the run budget is 20 choices.
-- Stage 1 can offer `build_cannon` as NEW TURRET and install one Impact Cannon
-  into an empty slot. Bolt/Frost build cards remain legacy resources but are
-  excluded from the active Stage 1 pool.
-- Stage 1 is a finite six-wave authored encounter with the selected 320-enemy
-  calibration, existing victory/defeat/result flow, and unchanged Stage 2–30
-  data.
+- Phase 1.1 Pressure & Placement is automated-complete and human-review
+  pending. Stage 1 remains the selected six-wave, 320-enemy calibration.
+- The active Stage 1 pool uses existing Guardian/Cannon content;
+  `build_cannon` is the NEW TURRET entry. Legacy Bolt/Frost content remains
+  outside that pool.
+- `Battle` owns placement state. `BattleHUD` runs with
+  `PROCESS_MODE_ALWAYS`, shows an in-world non-attacking ghost on eligible
+  T1–T4 slots, and handles arrows plus Space/Enter while paused. The old modal
+  slot picker is removed.
+- The placement cue is now two lines: `CHOOSE SLOT: T1 LEFT` followed by
+  `← / → MOVE • SPACE CONFIRM`, updated for the current slot.
+- The first horizontal product checkpoint is planned/gated in
+  `docs/ROADMAP.md`; it is not active. Phase 2 is not started.
 
-## Active Phase 1.1 plan
+## Incident disposition
 
-`docs/ACTIVE_IMPLEMENTATION_PLAN.md` is the executable authority for the
-approved Pressure & Placement Calibration slice. Tasks A–D now cover
-simulated-time telemetry, selected Stage 1 pressure, rejected spacing
-compression candidates, and implemented in-world ghost placement. Task E is
-the remaining integrated review. Phase 2 is not started.
+The reported FRESH sequence was reproduced through `draft_open` with no later
+events when no placement input was supplied. That is the expected paused
+interruption, not evidence of a wave-director failure. A scene-runner
+integration test now drives the actual physical-key route: Space chooses the
+`build_cannon` draft card, Right moves the placement ghost, and Space
+confirms. It proves the queued draft, paused-state input, combat freeze, one
+install, and resume. Separate behavioral tests cover occupied-slot skipping
+and queued-draft ownership. The automated BENCHMARK smoke then records one
+`turret_install`, all six `wave_start` events, and victory.
 
-Task A is complete. Reports now include simulated gameplay seconds, active and
-dead-air seconds, active-pressure ratio, average/peak live population, draft
-times/intervals, and the existing XP/result fields. Baseline automated reports:
-`/private/tmp/phase11-baseline-fresh-1787702174.json` and
-`/private/tmp/phase11-baseline-benchmark-1787702178.json`.
+## Validation snapshot
 
-Task B selected the generated-source candidate with 320 enemies, 690 available
-XP, 14 automated drafts, 164 simulated seconds, average live population 22.29,
-peak 71, 93.8% active-pressure ratio, and 4/100 automated final Barricade HP.
-Candidate evidence remains in `/private/tmp/phase11-candidate-a-benchmark-3.json`,
-`/private/tmp/phase11-candidate-b-benchmark.json`, and
-`/private/tmp/phase11-candidate-c-benchmark.json`.
+- Local canonical suite: 88 checks PASS.
+- GdUnit4 behavioral pilot: 33 cases PASS, including the physical-key
+  placement regression.
+- FRESH automated profile: isolated defeat before the first draft at 23.47
+  simulated seconds; this remains balance evidence, not approval.
+- BENCHMARK automated profile: isolated victory, 320 kills, 690 XP, 14 drafts,
+  164 simulated seconds, 22.29 average live enemies, 71 peak, 4/100 final
+  Barricade HP, and one turret installation.
+- Stage 2–30 resources remained bytewise unchanged across the Phase 1.1
+  history. `gen_stages.gd --only-stage=1` regenerated one identical Stage 1
+  file and did not touch later stages.
+- `bash tools/validate.sh` PASS; latest known CI before this session was
+  `32915290388` PASS at `cf48ad9`.
 
-Task C tested 20.0-unit and 21.5-unit spawn-to-barricade candidates; both
-defeated the isolated BENCHMARK before the selected 22.8-unit baseline could
-complete, so no geometry change was retained. Task D is implemented in
-`1c80bbd`: NEW TURRET now continues into a paused in-world translucent ghost,
-empty T1–T4 cycling, and direct confirmation without a slot modal.
+## Human graphical gate
 
-## Human Phase 1 review
+Run both commands at normal speed:
 
-The human played the graphical BENCHMARK Stage 1: 124 kills, 260 XP, level 9,
-8 drafts, victory, and Barricade 100/100. One Cannon-focused build was enough;
-Guardian repositioning was not meaningfully required. The direction is
-approved, but current pressure is far below the Galaxy reference: the next
-calibration should investigate a several-fold increase in continuous visible
-throughput without locking an exact multiplier. Enemy volume, survivability,
-spawn cadence, overlap, XP supply, thresholds, and draft pacing are coupled.
+```bash
+GODOT=/Applications/Godot.app/Contents/MacOS/Godot tools/playtest_fresh.sh
+GODOT=/Applications/Godot.app/Contents/MacOS/Godot tools/playtest_benchmark.sh
+```
 
-Approved placement direction is now implemented: selecting NEW TURRET returns
-to the battlefield, shows a translucent non-attacking ghost on an eligible
-numbered slot, lets the player cycle T1–T4 with a minimal `Choose Slot`
-instruction, and confirms in-world while the same draft pause remains active.
+Evaluate opening pressure, first-draft timing, whether the placement ghost
+and cue are self-evident, arrows/Space input, gameplay resumption, later waves,
+density, Guardian relevance, normal-speed draft cadence, and portrait
+readability. Do not start Phase 2 until this review is complete.
 
-Future enemy movement variation may be small, role-driven, data-driven, and
-readable; random wandering is not approved. Stage 1 remains the grammar
-tutorial, while later stages may become sophisticated quickly.
+## Workspace note
 
-## Validation and playtest
-
-- Baseline for this slice: `3a7d640`; plan and implementation checkpoints are
-  committed sequentially as each validated task lands.
-- Latest CI: run `32914758909` PASS for `1c80bbd`.
-- Local canonical validation: 88 official checks, 31 GdUnit cases, runtime
-  smoke, and error-log inspection PASS.
-- FRESH launch:
-  `GODOT=/Applications/Godot.app/Contents/MacOS/Godot tools/playtest_fresh.sh`
-- BENCHMARK launch:
-  `GODOT=/Applications/Godot.app/Contents/MacOS/Godot tools/playtest_benchmark.sh`
-- These graphical commands require human interaction. Headless smoke runs use
-  isolated profiles and write one JSON report under `${TMPDIR:-/tmp}`; they do
-  not touch the normal persistent save.
-- Final isolated reports are available at
-  `/private/tmp/phase11-observability-fresh.json` and
-  `/private/tmp/phase11-observability-benchmark.json`; draft offers and
-  selections are now also summarized at the report top level.
-
-## Known limitations
-
-- The selected automated benchmark reaches 14 drafts, still below the
-  approximately 20-draft pacing ceiling; accelerated smoke duration is not real
-  human pacing evidence.
-- Exact Galaxy slot coordinates, formation behavior, XP curve, and draft order
-  remain `UNVERIFIED`.
-- The baseline 22.8-unit approach geometry is retained. Tested 20.0-unit and
-  21.5-unit compression candidates caused early BENCHMARK defeat, so spacing
-  remains a human visual-review question.
-- The new ghost placement flow is automated-test verified but still needs
-  human graphical feel review.
-- FRESH is intentionally a genuine new-player smoke and currently defeats at
-  23.47 simulated seconds before its first draft; BENCHMARK reaches victory at
-  164 simulated seconds and 14 drafts. These are calibration evidence, not
-  final balance approval.
-- Legacy Bolt/Frost runtime and content remain outside the active Stage 1 pool.
-- Phase 1.1 Tasks A–E are complete for the automated slice. Phase 2 is not
-  started and remains gated by human review.
-
-## Exact next milestone
-
-Run the graphical Phase 1.1 playtest using the FRESH and BENCHMARK commands
-above, specifically evaluating pressure continuity, readable density, Guardian
-movement relevance, and the ghost placement flow. Do not begin Phase 2 until
-that human review is complete.
+The stabilization edits are present in the working tree but could not be
+committed or pushed in the current environment because `.git/index.lock`
+creation is denied. The next session must preserve those edits and create the
+validated checkpoints before treating origin as updated.

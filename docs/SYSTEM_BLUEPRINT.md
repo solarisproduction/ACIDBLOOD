@@ -27,7 +27,7 @@ game/  battle runtime                 shell/  screens
 ├─ guardian, enemy, turret,          └─ result.tscn/.gd    report step
 │  projectile (.gd [+ .tscn])
 ├─ battle_hud.gd    HUD + draft UI   tests/run_tests.gd    88 headless checks
-│                                      tests/gdunit/      GdUnit4 behavioral pilot
+│                                      tests/gdunit/      33-case GdUnit4 behavioral pilot
 └─ visuals.gd       material cache   tools/  validate.sh, gen_stages.gd,
                                              balance_report.gd
 ```
@@ -122,7 +122,13 @@ cadence. The selected automated benchmark reached 320 kills, 690 XP, level 15,
 placement interaction is now an in-world continuation of the paused draft:
 selecting `build_cannon` creates a non-attacking translucent ghost on the first
 empty T1–T4 slot, arrow keys cycle empty slots, and Space/Enter confirms the
-installation. The former modal slot-picker code path is removed. The baseline
+installation. `Battle` owns placement state; `BattleHUD` is the
+`PROCESS_MODE_ALWAYS` presentation/input surface while the tree is paused. Its
+placement cue identifies the current slot on one line and the keyboard
+controls on the next. A GdUnit scene-runner test drives physical Space/Right/
+Space input through draft selection and placement rather than invoking
+placement methods directly. The former modal slot-picker code path is removed.
+The baseline
 22.8-unit spawn-to-barricade geometry remains; tested 20.0-unit and 21.5-unit
 compression candidates caused early automated BENCHMARK defeat and were
 rejected.

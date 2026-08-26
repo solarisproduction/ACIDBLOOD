@@ -1,189 +1,37 @@
-# Phase 1.1 Pressure & Placement Calibration Plan
+# Active Implementation Plan
 
-This is the executable plan for the approved Phase 1.1 calibration slice. It
-does not authorize Phase 2 systems. The implementation must preserve the
-current Phase 1 rules and use existing enemies, cards, slots, and runtime
-telemetry.
+Status: INACTIVE — the Phase 1.1 automated implementation slice and this
+stabilization mission are complete. The next implementation plan is gated on
+the human Phase 1.1 graphical review.
 
-## Product constraints
+## Current gate
 
-- Stage 1 remains the tutorial/grammar stage; Stage 2+ data is unchanged.
-- Pressure increases through throughput, overlap, cadence, and composition;
-  common-enemy HP is not globally inflated.
-- The approximately 20-draft / approximately 5-minute result remains a
-  coupled pacing target, not a hard timer or an exact XP curve.
-- T1 – T2 – Guardian – T3 – T4 remains the defensive topology.
-- The placement result is an in-world ghost flow; no modal slot picker remains
-  active after the implementation task is complete.
-- No WeaponDefinition, new damage-family, enemy-movement, mastery, Arsenal, or
-  other Phase 2 architecture is part of this plan.
+- Phase 1.1 automated behavior is implemented and validated.
+- Human review must evaluate pressure, first-draft timing, placement
+  legibility/input, later-wave continuation, density, Guardian relevance,
+  draft cadence, and portrait readability.
+- Phase 2 is not started.
+- The first horizontal product slice is planned in `docs/ROADMAP.md`, but is
+  not active and must not be implemented from this file.
 
-## Task A — Calibration telemetry and reproducible measurement
+## Stabilization disposition
 
-Purpose: make accelerated FRESH/BENCHMARK runs report simulated gameplay time,
-population pressure, dead air, draft cadence, and existing progression data in
-one compact JSON report.
+- The reported FRESH sequence was reproduced through the first draft. With no
+  input, the expected paused interruption produces no later wave or result
+  event.
+- A scene-level physical-key integration test now drives the actual draft
+  choice and paused placement path: Space chooses `build_cannon`, Right moves
+  the ghost, Space confirms, and the tree resumes after one install.
+- The placement state remains owned by `Battle`; `BattleHUD` is the paused
+  presentation/input surface and runs with `PROCESS_MODE_ALWAYS`.
+- The only runtime presentation change in this mission is a two-line,
+  uppercase `CHOOSE SLOT` cue with explicit controls. Stage 1 balance and
+  battlefield geometry were not retuned.
 
-Files:
+## Authoritative next action
 
-- Modify: `core/playtest_telemetry.gd`, `autoload/game.gd`, `game/battle.gd`
-- Modify: `tests/gdunit/acidblood_behavioral.gd`, `tests/acidblood_checks.gd`
-- Test: `tools/validate.sh` runtime and isolated playtest invocations
-
-Interfaces:
-
-- `PlaytestTelemetry.advance_simulation(delta: float, live_population: int)`
-  accumulates game-time and population integrals without writing per-frame
-  events.
-- `Game.record_playtest_simulation(delta: float, live_population: int)` forwards
-  the sample to the active recorder.
-- Playtest command-line options may enable autoplay/time scale for QA only;
-  graphical helpers remain normal-speed and non-autoplay.
-
-Checks:
-
-- [x] Write failing tests for simulated time, deterministic population metrics,
-  compact one-report output, and save isolation.
-- [x] Run the narrow GdUnit tests and confirm the new fields are absent or
-  incorrect before implementation.
-- [x] Implement the accumulator and QA-only launcher options.
-- [x] Run narrow tests, FRESH smoke, and BENCHMARK smoke; valid reports were
-  produced with simulated-time and pressure metrics.
-- [x] Run the full behavioral suite and `bash tools/validate.sh`.
-- [x] Commit: `test: add Phase 1.1 calibration telemetry`
-
-## Task B — Stage 1 throughput and pacing calibration
-
-Purpose: test controlled several-fold Stage 1 pressure candidates and keep the
-strongest evidence-backed authored encounter in the generator source.
-
-Files:
-
-- Modify: `tools/gen_stages.gd`
-- Regenerate: `data/stages/stage_001.tres` only; Stage 2–30 must remain bytewise
-  unchanged.
-- Modify: `tests/gdunit/acidblood_behavioral.gd`, `tests/acidblood_checks.gd`
-
-Interfaces:
-
-- Stage 1 remains a six-wave `StageData` composed of existing Grunt, Runner,
-  and Spitter `SpawnGroup` resources with authored lanes and overlap.
-- The selected candidate is judged by telemetry fields from Task A, not by an
-  exact multiplier encoded as a product rule.
-
-Checks:
-
-- [x] Record the current 124-enemy / 260-XP / 8-draft baseline from the new
-  report before changing stage data.
-- [x] Run three uncommitted candidate definitions and record enemy count,
-  simulated duration, average/peak population, dead air, XP, drafts,
-  Barricade, and outcome for each.
-- [x] Keep the selected candidate in `gen_stages.gd`, regenerate Stage 1 with
-  `--only-stage=1`, and verify Stage 2–30 remained unchanged.
-- [x] Add structural tests for valid references, authored lane coverage,
-  meaningful population, and the selected Stage 1 data contract without
-  encoding subjective human balance as a brittle exact assertion.
-- [x] Run narrow tests, full GdUnit, both isolated profiles, canonical
-  validation, and inspect runtime logs.
-- [x] Commit: `feat: calibrate Stage 1 pressure and pacing`
-
-## Task C — Conservative battlefield-space calibration
-
-Purpose: test whether a small approach-depth compression improves interaction
-continuity while preserving the defensive line and all combat boundaries.
-
-Files:
-
-- Modify only if evidence supports it: `core/arena_layout.gd`,
-  `game/arena.tscn`, `game/battle.gd`, and relevant behavioral tests
-- Test: runtime screenshot/smoke and defensive-line geometry assertions
-
-Interfaces:
-
-- `ArenaLayout` remains the single source for spawn, barricade, Guardian, and
-  lateral clamp coordinates used by runtime code.
-- Slot order and four-slot topology do not change.
-
-Checks:
-
-- [x] Measure the baseline 22.8-unit spawn-to-barricade distance from the
-  shared layout constants; MCP was unavailable for a camera capture.
-- [x] Test conservative 20.0-unit and 21.5-unit compression candidates with
-  isolated BENCHMARK smokes. Both reached defeat before the selected baseline's
-  first full progression, so the candidates were rejected as too disruptive.
-- [x] Keep the baseline geometry intact: enemy travel, barricade contact,
-  Guardian clamp, and slot topology remain unchanged. No spatial commit was
-  made; visual spacing remains a human-review question.
-- [x] No `feat: calibrate Stage 1 battlefield spacing` commit: evidence did not
-  justify changing geometry in this slice.
-
-## Task D — In-world ghost turret placement
-
-Purpose: replace the legacy modal slot picker with a paused battlefield
-placement continuation owned by the same draft interruption.
-
-Files:
-
-- Modify: `game/battle.gd`, `game/battle_hud.gd`, `game/turret.gd`
-- Modify: `game/battle_ui.tscn` only if a minimal instruction node is needed
-- Modify: `tests/gdunit/acidblood_behavioral.gd`, `tests/acidblood_checks.gd`
-
-Interfaces:
-
-- Battle owns `_placement_open`, `_placement_turret_id`, `_placement_slot_index`,
-  and a non-attacking ghost instance.
-- HUD exposes `show_placement(turret: TurretData, slot_index: int)` and
-  `hide_placement()`; it does not create a second slot-selection modal.
-- Keyboard arrows cycle the ordered empty T1–T4 slots, and Space/Enter calls
-  `Battle.confirm_turret_placement()`.
-
-Checks:
-
-- [x] Write failing behavioral tests for placement ownership, ghost state,
-  valid-slot cycling, occupied-slot skipping, confirm installation, and
-  pause/resume sequencing.
-- [x] Run the narrow tests and confirm the old modal path fails the new
-  contract.
-- [x] Implement the smallest ghost material/presentation and keyboard path.
-- [x] Run narrow tests, full GdUnit, FRESH/BENCHMARK automated smoke, and a
-  graphical-safe launch check.
-- [x] Commit: `feat: replace modal turret placement with in-world ghost`
-
-## Task E — Integrated Phase 1.1 verification and handoff
-
-Purpose: review the selected calibration and placement implementation against
-the approved scope, remove experiment artifacts, and package a human review
-build without starting Phase 2.
-
-Files:
-
-- Modify only as needed for factual truth: `docs/SYSTEM_BLUEPRINT.md`,
-  `docs/HANDOFF.md`, `docs/ROADMAP.md`
-- Test: all existing validation and both graphical launch helpers
-
-Checks:
-
-- [x] Confirm failed candidate data is absent from Git and Stage 2–30 are
-  unchanged.
-- [x] Run the full GdUnit suite, `bash tools/validate.sh`, FRESH/BENCHMARK
-  reports, save-isolation checks, `git diff --check`, and error-log scan.
-- [x] Review the final diff for Phase 2 leakage, duplicate state ownership,
-  nondeterministic draft behavior, and generated-file mistakes.
-- [x] Update current technical truth and handoff with automated evidence,
-  human-playtest pending status, and exact graphical commands.
-- [x] Commit: `docs: package Phase 1.1 calibration review`
-- [x] Push the validated documentation checkpoint and inspect its GitHub
-  Actions run.
-
-## Review status
-
-- Phase 1: implemented and human-reviewed.
-- Task A: complete; baseline reports are available under `/private/tmp`.
-- Task B: complete; candidate C selected, pending human graphical review.
-- Task C: complete; conservative spacing candidates rejected, baseline retained.
-- Task D: complete in `1c80bbd`; automated verification and CI passed.
-- Task E: complete; this documentation checkpoint packages the integrated
-  review evidence.
-- Phase 1.1 automated gate: PASS after Task E checkpoint validation.
-- Human Phase 1.1 graphical playtest: required after the selected build.
-- Phase 2: not started and blocked until Phase 1.1 human review.
+Run the graphical FRESH and BENCHMARK commands in `docs/HANDOFF.md`. After the
+human review, create a new concise executable plan for the approved next
+milestone. Completed implementation history belongs in Git; current runtime
+truth belongs in `docs/SYSTEM_BLUEPRINT.md`; sequencing belongs in
+`docs/ROADMAP.md`; the immediate bridge belongs in `docs/HANDOFF.md`.

@@ -185,6 +185,52 @@ func test_task11_placement_skips_occupied_slots_and_confirm_resumes() -> void:
 	assert_bool(get_tree().paused).is_false()
 	assert_bool(is_instance_valid(battle.get("_placement_ghost"))).is_false()
 
+func test_task11_real_input_path_reaches_placement_while_tree_paused() -> void:
+	var boot := await _boot_battle()
+	var runner := boot["runner"] as GdUnitSceneRunner
+	var battle := boot["battle"] as Battle
+	battle.on_wave_started(1, battle.stage.waves.size(), battle.stage.waves[0])
+	battle.run_state.run_xp_thresholds = [2]
+	battle.spawn_wave_enemy(&"grunt", 0.0)
+	var level_up_enemy := battle.enemies.back() as Enemy
+	battle.spawn_wave_enemy(&"grunt", 0.0)
+	var enemy := battle.enemies.back() as Enemy
+	var position_before_pause := enemy.global_position
+	battle.notify_enemy_died(level_up_enemy, true)
+	level_up_enemy.queue_free()
+	await runner.simulate_frames(1)
+	assert_int(battle.run_state.level).is_equal(2)
+	assert_int(battle.run_state.total_xp_earned).is_equal(2)
+	assert_bool(battle._draft_open).is_true()
+	assert_int(battle._active_offer.size()).is_equal(3)
+	assert_bool(_card_ids(battle._active_offer).has(&"build_cannon")).is_true()
+	assert_bool(get_tree().paused).is_true()
+	await runner.simulate_key_pressed(KEY_SPACE)
+	await runner.await_input_processed()
+	assert_bool(bool(battle.call("is_placement_open"))).is_true()
+	assert_str(battle.hud.placement_hint.text).is_equal("CHOOSE SLOT: T1 LEFT\n← / → MOVE • SPACE CONFIRM")
+	assert_int(int(battle.call("placement_slot_index"))).is_equal(0)
+	await runner.simulate_frames(4)
+	assert_bool(enemy.global_position.is_equal_approx(position_before_pause)).is_true()
+	assert_int(battle.run_state.wave_index).is_equal(1)
+	assert_int(battle.run_state.active_turrets.size()).is_equal(0)
+	assert_bool(get_tree().paused).is_true()
+	await runner.simulate_key_pressed(KEY_RIGHT)
+	await runner.await_input_processed()
+	assert_int(int(battle.call("placement_slot_index"))).is_equal(1)
+	await runner.simulate_key_pressed(KEY_SPACE)
+	await runner.await_input_processed()
+	await runner.simulate_frames(2)
+	assert_str(String(battle.run_state.turret_slots[1])).is_equal("cannon")
+	assert_array(battle.run_state.active_turrets).is_equal([&"cannon"])
+	assert_int(battle.get_node("Actors/Turrets").get_child_count()).is_equal(1)
+	assert_bool(bool(battle.call("is_placement_open"))).is_false()
+	assert_bool(battle._draft_open).is_false()
+	assert_bool(get_tree().paused).is_false()
+	await runner.simulate_key_pressed(KEY_SPACE)
+	await runner.await_input_processed()
+	assert_array(battle.run_state.active_turrets).is_equal([&"cannon"])
+
 func test_task11_placement_keeps_queued_level_up_owned_by_next_draft() -> void:
 	var boot := await _boot_battle()
 	var battle := boot["battle"] as Battle

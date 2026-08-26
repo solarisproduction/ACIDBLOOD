@@ -92,6 +92,30 @@ sits.
   `tools/gen_stages.gd` — edit that script and rerun it; do not hand-edit
   stage `.tres` files.
 
+## Product route invariants
+
+- ACIDBLOOD is being developed toward a recognizable final game, not only a
+  deeper gameplay prototype. Productization is a dimension of the same route,
+  not a separate megaphase or competing roadmap.
+- Apply `maximum connectivity before maximum depth`: at each major milestone,
+  choose the larger player-visible gain between essential subsystem depth and
+  a missing/disconnected part of the experience. Keep this as a lightweight
+  prioritization check, not approval bureaucracy.
+- Information architecture may precede deep meta implementation, but fake
+  shops, currencies, packs, rarity, or placeholder feature tabs are not valid
+  connectivity work. Build only from systems that actually exist.
+- Reusable UI should grow from repeated real needs. Cards are the first
+  obvious candidate because draft cards already repeat; their future anatomy
+  and exact portrait layout remain product direction, not a current contract.
+- Interaction choreography is runtime behavior: interruption ownership,
+  control focus, resolution, continuation, and resume must be legible as one
+  sequence. Keep player-facing information separate from authoring,
+  telemetry, and debugging information.
+- Before a major next milestone, ask whether the work is essential depth or
+  sufficient polish, whether a player will perceive it, whether a disconnected
+  product surface is the higher-value move, and whether the current subsystem
+  is stable enough to advance.
+
 ## Validation
 - Canonical local suite entry point: `tests/acidblood_suite_runner.tscn`.
 - Shared suite logic: `tests/run_tests.gd`.
@@ -99,12 +123,12 @@ sits.
 - GdUnit4 v6.2.1 is the pilot behavioral-testing layer. The canonical CLI
   command is the ACIDBLOOD-owned wrapper around GdUnit4's command tool:
   `./tools/run_gdunit.sh --godot_binary "$GODOT" --headless --ignoreHeadlessMode -a res://tests/gdunit/`
-- GdUnit4 behavioral tests complement the 87-check suite; they do not replace
+- GdUnit4 behavioral tests complement the 88-check suite; they do not replace
   it.
 - `res://reports/` is the standard GdUnit4 report destination and is ignored
   in git.
 - `./tools/validate.sh` is the project-wide validation entry point and the
-  final local authority for parse/import checks, the 87-check suite, GdUnit4,
+  final local authority for parse/import checks, the 88-check suite, GdUnit4,
   and the runtime smoke stages.
 - Before considering gameplay work done, validate the change in the live
   editor/runtime path through Godot AI MCP. Use `./tools/validate.sh` as the
@@ -128,7 +152,7 @@ sits.
 
 - Godot AI MCP is the local editor/runtime inspection and gameplay validation
   path.
-- The 87-check suite covers the shared headless project rules and data checks.
+- The 88-check suite covers the shared headless project rules and data checks.
 - GdUnit4 is the behavioral testing layer for stable scene/runtime assertions.
 - `tools/validate.sh` is the canonical local authority and runs the complete
   local validation sequence.

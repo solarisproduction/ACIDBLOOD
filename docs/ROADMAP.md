@@ -23,9 +23,9 @@ are required.
 
 ### Phase 1.1 — Pressure & Placement Calibration — IMPLEMENTED, HUMAN REVIEW PENDING
 
-The executable plan is [`ACTIVE_IMPLEMENTATION_PLAN.md`](ACTIVE_IMPLEMENTATION_PLAN.md)
-and Tasks A–E are complete for the automated slice. The human graphical review
-gate remains before Phase 2. The scope completed or dispositioned is:
+The executable plan is now inactive because the automated slice is complete;
+the human graphical review gate remains. The scope completed or dispositioned
+is:
 
 - several-fold higher, more continuous Stage 1 throughput using existing enemy
   types and fragile common enemies;
@@ -41,7 +41,28 @@ gate remains before Phase 2. The scope completed or dispositioned is:
 Do not lock an exact enemy multiplier. Do not implement Phase 1.1 from this
 summary alone.
 
-### Phase 2 — Weapon Architecture
+### Horizontal Product Checkpoint 1 — First Product Slice — PLANNED / GATED
+
+This is the first bounded horizontal checkpoint in the single route. Its
+purpose is to make the current loop read as one product using only systems that
+already exist:
+
+`Home / Campaign entry → Stage → Battle → Draft → Result → return`
+
+Strict scope is navigation and transition ownership, current draft
+presentation/readability, the Battle HUD information hierarchy, result clarity,
+return flow, and a minimal reusable card presentation foundation only where
+the repeated draft need justifies it. It does not authorize a card redesign in
+the current Phase 1.1 review build.
+
+Explicit exclusions are Shop, currencies, monetization, packs, Mastery, final
+Arsenal/collection, duplicate economy, final rarity language, and fake locked
+feature tabs. Deep meta remains Phase 5 work.
+
+Timing is gated on the human Phase 1.1 graphical review and the next product
+decision. This checkpoint is planned direction, not active implementation.
+
+### Phase 2 — Weapon Architecture — NOT STARTED
 
 WeaponDefinition, DamageFamily, EngagementProfile, AttackTopology,
 TargetingPolicy, and the approved Guardian Rifle, Impact Cannon, Tesla Coil,
@@ -75,3 +96,10 @@ after the core architecture proves itself through playtesting.
 - Mindustry remains reference material only.
 - State Charts, LimboAI, Phantom Camera, and Sentry remain deferred until a
   demonstrated need exists.
+- FUTURE RESEARCH: systematically decompose approximately 8–12 relevant
+  mobile / TD / roguelite products across Home, Battle HUD, Draft, Arsenal,
+  Upgrade, Stage Select, Result, Shop, Settings, rewards, and navigation.
+  Record patterns such as hierarchy, card anatomy, rarity language,
+  progression surfaces, gating, reward reveal, interaction choreography,
+  encounter pacing, and buildcraft cadence. This is research direction only;
+  no web research or template import is part of the current route.

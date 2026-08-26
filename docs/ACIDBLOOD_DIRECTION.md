@@ -58,6 +58,46 @@ here?"
 - Prefer proven tower-defense and game-development patterns over speculative
   abstraction.
 
+## Product Experience Direction
+
+ACIDBLOOD should gradually read as a recognizable final game, not only as an
+increasingly sophisticated battle prototype. Development should deliberately
+alternate essential vertical depth with horizontal connectivity across the
+player-visible route. The route remains one sequence; productization is not a
+new megaphase.
+
+Preserve the perceptual loop:
+
+`PRESSURE → KILLS → REWARD / XP → CHOICE → BUILD EVOLUTION → STRONGER PRESSURE`
+
+Battle interruptions are part of that loop's choreography. Draft availability,
+choice, placement when required, resolution, and battle resumption should read
+as one owned interaction rather than unrelated screen behavior.
+
+Portrait `720×1280` remains the reference surface. Readable type hierarchy,
+safe spacing, adequate controls, controlled copy, and immediate prioritization
+matter more than fitting more information by shrinking it. Semantic color
+should remain stable across the product; critical information must not depend
+on color alone, and one accent should not ambiguously mean rarity, damage
+family, selection, and positive state at the same time.
+
+Player-facing information is distinct from useful authoring, telemetry, and
+debugging information. Wave number/name remains valuable internally; the
+player-facing Battle HUD may eventually omit it after a deliberate design
+decision. No wave data or telemetry structure should be removed to anticipate
+that future direction.
+
+Reusable UI should emerge from repeated needs. Draft cards are the first
+high-value candidate because they already repeat in the core loop. A portrait
+vertical-card presentation and exact card anatomy are provisional directions,
+not an authorization to redesign the current draft in this slice.
+
+Home may eventually become a metagame hub for campaign entry, collection,
+progression, acquisition, gating, persistent resources, and return loops, but
+information architecture must not become fake feature surfaces. Deep Mastery,
+Arsenal, collection, duplicate, and economy systems remain later work in the
+approved route.
+
 ## World Rules
 
 - The world is industrial, analog, chemical, and physical.

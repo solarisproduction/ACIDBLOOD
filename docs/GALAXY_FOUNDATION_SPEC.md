@@ -47,7 +47,7 @@ XP supply, thresholds, and draft pacing must be tuned together.
 When a NEW TURRET is selected, the approved placement direction is an
 in-world, translucent ghost on an eligible T1–T4 slot. The player cycles among
 the numbered slots, sees a minimal `Choose Slot` instruction, and confirms in
-the battlefield. The current modal slot picker is transitional and is not the
+the battlefield. The former modal slot picker was transitional and is not the
 target flow; exact visual treatment remains tunable.
 
 Guardian movement must earn tactical value through pressure, weapon engagement,
@@ -209,6 +209,25 @@ ACIDBLOOD should become a real tower defense enriched by roguelite buildcraft,
 not roguelite stat upgrades inside a TD shell. Maintain three decision layers:
 build/run, battlefield/spatial, and temporal. Do not add quantity before
 quality.
+
+Productization is a dimension of this same development route, not a separate
+megaphase. Use maximum connectivity before maximum depth: when a milestone is
+stable enough to advance, choose the larger player-visible gain between deeper
+essential capability and connecting an absent or disconnected product surface.
+Keep one sequencing authority and use a lightweight milestone check rather
+than parallel roadmaps or process bureaucracy.
+
+The information architecture of Home/Campaign/Battle/Result may be connected
+before deep meta systems exist, but only through real current systems. Do not
+invent currencies, shops, packs, monetization, rarity, or empty feature tabs
+to simulate product breadth. Reusable UI should be extracted from repetition;
+cards are the first obvious candidate, while exact portrait card anatomy and
+visual treatment remain provisional until a real product slice needs them.
+
+Interaction choreography and mobile readability are architectural concerns:
+control ownership, interruption, choice, resolution, continuation, and resume
+must be legible at the reference portrait surface. Player-facing information
+must remain distinct from authoring, telemetry, and debugging data.
 
 ## 12. Implementation strategy
 

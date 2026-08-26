@@ -227,7 +227,7 @@ func show_draft(offer: Array[CardData]) -> void:
 func show_placement(turret: TurretData, slot_index: int) -> void:
 	_overlay_mode = OVERLAY_PLACEMENT
 	draft_layer.visible = false
-	placement_hint.text = "Choose Slot  •  %s  •  Arrows move  •  Space confirms" % ArenaLayout.slot_display_name(slot_index)
+	placement_hint.text = "CHOOSE SLOT: %s\n← / → MOVE • SPACE CONFIRM" % ArenaLayout.slot_display_name(slot_index).to_upper()
 	placement_hint.visible = true
 	if Game.autoplay:
 		get_tree().create_timer(0.05).timeout.connect(func() -> void:
@@ -237,7 +237,7 @@ func show_placement(turret: TurretData, slot_index: int) -> void:
 func update_placement(slot_index: int) -> void:
 	if _overlay_mode != OVERLAY_PLACEMENT:
 		return
-	placement_hint.text = "Choose Slot  •  %s  •  Arrows move  •  Space confirms" % ArenaLayout.slot_display_name(slot_index)
+	placement_hint.text = "CHOOSE SLOT: %s\n← / → MOVE • SPACE CONFIRM" % ArenaLayout.slot_display_name(slot_index).to_upper()
 
 func hide_draft() -> void:
 	draft_layer.visible = false
