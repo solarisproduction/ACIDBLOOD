@@ -147,7 +147,7 @@ Checks:
 - [x] Implement the smallest ghost material/presentation and keyboard path.
 - [x] Run narrow tests, full GdUnit, FRESH/BENCHMARK automated smoke, and a
   graphical-safe launch check.
-- [ ] Commit: `feat: replace modal turret placement with in-world ghost`
+- [x] Commit: `feat: replace modal turret placement with in-world ghost`
 
 ## Task E — Integrated Phase 1.1 verification and handoff
 
@@ -163,16 +163,17 @@ Files:
 
 Checks:
 
-- [ ] Confirm failed candidate data is absent from Git and Stage 2–30 are
+- [x] Confirm failed candidate data is absent from Git and Stage 2–30 are
   unchanged.
-- [ ] Run the full GdUnit suite, `bash tools/validate.sh`, FRESH/BENCHMARK
+- [x] Run the full GdUnit suite, `bash tools/validate.sh`, FRESH/BENCHMARK
   reports, save-isolation checks, `git diff --check`, and error-log scan.
-- [ ] Review the final diff for Phase 2 leakage, duplicate state ownership,
+- [x] Review the final diff for Phase 2 leakage, duplicate state ownership,
   nondeterministic draft behavior, and generated-file mistakes.
-- [ ] Update current technical truth and handoff with automated evidence,
+- [x] Update current technical truth and handoff with automated evidence,
   human-playtest pending status, and exact graphical commands.
-- [ ] Commit: `docs: package Phase 1.1 calibration review`
-- [ ] Push each validated checkpoint and inspect its GitHub Actions run.
+- [x] Commit: `docs: package Phase 1.1 calibration review`
+- [x] Push the validated documentation checkpoint and inspect its GitHub
+  Actions run.
 
 ## Review status
 
@@ -180,7 +181,9 @@ Checks:
 - Task A: complete; baseline reports are available under `/private/tmp`.
 - Task B: complete; candidate C selected, pending human graphical review.
 - Task C: complete; conservative spacing candidates rejected, baseline retained.
-- Task D: implementation and automated verification complete; commit pending.
-- Phase 1.1 automated gate: pending integrated Task E review.
+- Task D: complete in `1c80bbd`; automated verification and CI passed.
+- Task E: complete; this documentation checkpoint packages the integrated
+  review evidence.
+- Phase 1.1 automated gate: PASS after Task E checkpoint validation.
 - Human Phase 1.1 graphical playtest: required after the selected build.
 - Phase 2: not started and blocked until Phase 1.1 human review.

@@ -1,9 +1,9 @@
 # Current Session Bridge
 
-Recommended executor: GPT-5.6 Luna XHIGH / ULTRA HIGH for this autonomous
-calibration mission; future routine implementation can return to Luna Medium.
-Reason: Phase 1.1 requires controlled balance experiments, spatial/runtime
-integration, and review-quality evidence.
+Recommended executor: GPT-5.6 Luna Medium for the human Phase 1.1 review and
+next design decision; future mechanical maintenance can return to Luna Low.
+Reason: gameplay calibration and placement feel still require medium-level
+runtime/product judgment after the human run.
 
 ## Product and implementation state
 
@@ -44,6 +44,12 @@ Candidate evidence remains in `/private/tmp/phase11-candidate-a-benchmark-3.json
 `/private/tmp/phase11-candidate-b-benchmark.json`, and
 `/private/tmp/phase11-candidate-c-benchmark.json`.
 
+Task C tested 20.0-unit and 21.5-unit spawn-to-barricade candidates; both
+defeated the isolated BENCHMARK before the selected 22.8-unit baseline could
+complete, so no geometry change was retained. Task D is implemented in
+`1c80bbd`: NEW TURRET now continues into a paused in-world translucent ghost,
+empty T1–T4 cycling, and direct confirmation without a slot modal.
+
 ## Human Phase 1 review
 
 The human played the graphical BENCHMARK Stage 1: 124 kills, 260 XP, level 9,
@@ -67,7 +73,7 @@ tutorial, while later stages may become sophisticated quickly.
 
 - Baseline for this slice: `3a7d640`; plan and implementation checkpoints are
   committed sequentially as each validated task lands.
-- Latest CI: run `32876035890` PASS.
+- Latest CI: run `32914758909` PASS for `1c80bbd`.
 - Local canonical validation: 88 official checks, 31 GdUnit cases, runtime
   smoke, and error-log inspection PASS.
 - FRESH launch:
@@ -77,8 +83,9 @@ tutorial, while later stages may become sophisticated quickly.
 - These graphical commands require human interaction. Headless smoke runs use
   isolated profiles and write one JSON report under `${TMPDIR:-/tmp}`; they do
   not touch the normal persistent save.
-- Current benchmark telemetry is available at
-  `/private/tmp/phase1-final-benchmark.json`.
+- Final isolated reports are available at
+  `/private/tmp/phase11-final-fresh.json` and
+  `/private/tmp/phase11-final-benchmark.json`.
 
 ## Known limitations
 
@@ -92,12 +99,17 @@ tutorial, while later stages may become sophisticated quickly.
   remains a human visual-review question.
 - The new ghost placement flow is automated-test verified but still needs
   human graphical feel review.
+- FRESH is intentionally a genuine new-player smoke and currently defeats at
+  23.47 simulated seconds before its first draft; BENCHMARK reaches victory at
+  164 simulated seconds and 14 drafts. These are calibration evidence, not
+  final balance approval.
 - Legacy Bolt/Frost runtime and content remain outside the active Stage 1 pool.
-- Phase 1.1 Tasks A–D are implemented or dispositioned; Task E remains. Phase 2
-  is not started.
+- Phase 1.1 Tasks A–E are complete for the automated slice. Phase 2 is not
+  started and remains gated by human review.
 
 ## Exact next milestone
 
-Execute **Task E — Integrated Phase 1.1 verification and handoff** from
-`docs/ACTIVE_IMPLEMENTATION_PLAN.md`. Then request the human graphical
-Phase 1.1 playtest; do not begin Phase 2.
+Run the graphical Phase 1.1 playtest using the FRESH and BENCHMARK commands
+above, specifically evaluating pressure continuity, readable density, Guardian
+movement relevance, and the ghost placement flow. Do not begin Phase 2 until
+that human review is complete.
