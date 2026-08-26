@@ -16,6 +16,7 @@ id = &"long_barrel"
 title = "Long Barrel"
 description = "Guardian attack range +1.5."
 weight = 8.0
+category = &"NORMAL"
 tags = Array[StringName]([&"guardian", &"support"])
 max_stacks = 2
 effects = Array[ExtResource("2")]([SubResource("eff1")])

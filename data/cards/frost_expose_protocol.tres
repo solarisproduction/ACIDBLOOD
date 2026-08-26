@@ -14,6 +14,7 @@ id = &"frost_expose_protocol"
 title = "Branch: Crack Ice"
 description = "Frost hits expose targets for a short window, making all follow-up damage hit harder."
 weight = 6.0
+category = &"BREAKTHROUGH"
 tags = Array[StringName]([&"frost", &"support"])
 max_stacks = 1
 prerequisites = Array[StringName]([&"build_frost"])

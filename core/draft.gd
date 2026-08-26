@@ -16,14 +16,21 @@ extends RefCounted
 ##   draft_index: optional 1-based draft number in this run, used for light
 ##            early-run guardrails
 static func is_eligible(card: CardData, ctx: Dictionary) -> bool:
+	if card == null or not card.category_contract_valid():
+		return false
 	var acquired: Dictionary = ctx.get("acquired", {})
 	var unlocks: Dictionary = ctx.get("unlocks", {})
 	var blocked: Array = ctx.get("blocked", [])
 	var allowed_card_ids: Array = ctx.get("allowed_card_ids", [])
 	var active_turrets: Array = ctx.get("active_turrets", [])
+	var chosen_branches: Dictionary = ctx.get("chosen_branches", {})
+	var chosen_branch_cards: Array = ctx.get("chosen_branch_cards", [])
 	if not allowed_card_ids.is_empty() and card.id not in allowed_card_ids:
 		return false
 	if card_role(card) == &"build" and _build_target(card) in active_turrets:
+		return false
+	var branch_id := _branch_id(card)
+	if branch_id != &"" and branch_id in chosen_branches.values():
 		return false
 	if card.id in blocked:
 		return false
@@ -40,7 +47,7 @@ static func is_eligible(card: CardData, ctx: Dictionary) -> bool:
 		if int(acquired.get(pre, 0)) <= 0:
 			return false
 	for ex in card.excludes:
-		if int(acquired.get(ex, 0)) > 0:
+		if int(acquired.get(ex, 0)) > 0 or ex in chosen_branch_cards:
 			return false
 	return true
 
@@ -82,7 +89,7 @@ static func generate_offer(catalog: Array[CardData], ctx: Dictionary, rng: DetRN
 			offer.append(guaranteed_build)
 			pool.erase(guaranteed_build)
 	while offer.size() < count and not pool.is_empty():
-		var candidate_pool := _pool_with_category_guard(pool, offer)
+		var candidate_pool := _pool_with_family_guard(pool, offer)
 		var picked := _draw_weighted(candidate_pool, rng, ctx, acquired_tags, draft_index)
 		if picked == null:
 			break
@@ -103,20 +110,24 @@ static func runtime_blocked_cards(catalog: Array[CardData], slots_available: int
 	return blocked
 
 static func card_role(card: CardData) -> StringName:
-	if card.category == &"NEW_TURRET":
-		return &"build"
 	for eff in card.effects:
 		if eff.op == CardEffect.Op.UNLOCK_TURRET:
 			return &"build"
-		if eff.op == CardEffect.Op.APPLY_BRANCH:
-			return &"choice"
 	if _has_fortress_recovery(card):
 		return &"emergency"
+	for eff in card.effects:
+		if eff.op == CardEffect.Op.APPLY_BRANCH:
+			return &"choice"
 	if not card.prerequisites.is_empty():
 		return &"upgrade"
 	return &"passive"
 
-static func card_category(card: CardData) -> StringName:
+static func semantic_category(card: CardData) -> StringName:
+	return card.category
+
+## Weapon/family identity is separate from the draft semantic category. It is
+## used only for current family weighting and secondary UI labeling.
+static func weapon_family(card: CardData) -> StringName:
 	if _has_card_marker(card, &"bolt"):
 		return &"bolt"
 	if _has_card_marker(card, &"cannon"):
@@ -153,10 +164,10 @@ static func _effective_weight(card: CardData, ctx: Dictionary, acquired_tags: Di
 		overlap += int(acquired_tags.get(tag, 0))
 	if overlap > 0:
 		weight *= 1.0 + minf(0.85, float(overlap) * 0.18)
-	var preferred_categories: Array = ctx.get("preferred_categories", [])
-	if not preferred_categories.is_empty():
-		var category := card_category(card)
-		if category in preferred_categories:
+	var preferred_families: Array = ctx.get("preferred_families", [])
+	if not preferred_families.is_empty():
+		var family := weapon_family(card)
+		if family in preferred_families:
 			weight *= 1.14
 	var role := card_role(card)
 	if role == &"build":
@@ -219,16 +230,16 @@ static func _find_card(catalog: Array[CardData], id: StringName) -> CardData:
 			return card
 	return null
 
-static func _pool_with_category_guard(pool: Array[CardData], offer: Array[CardData]) -> Array[CardData]:
+static func _pool_with_family_guard(pool: Array[CardData], offer: Array[CardData]) -> Array[CardData]:
 	if offer.size() < 2:
 		return pool
-	var category_counts := {}
+	var family_counts := {}
 	for card in offer:
-		var category := card_category(card)
-		category_counts[category] = int(category_counts.get(category, 0)) + 1
+		var family := weapon_family(card)
+		family_counts[family] = int(family_counts.get(family, 0)) + 1
 	var restricted: Array[CardData] = []
 	for card in pool:
-		if int(category_counts.get(card_category(card), 0)) >= 2:
+		if int(family_counts.get(weapon_family(card), 0)) >= 2:
 			continue
 		restricted.append(card)
 	return restricted if not restricted.is_empty() else pool
@@ -251,5 +262,11 @@ static func _has_card_marker(card: CardData, marker: StringName) -> bool:
 static func _build_target(card: CardData) -> StringName:
 	for eff in card.effects:
 		if eff.op == CardEffect.Op.UNLOCK_TURRET:
+			return eff.target
+	return &""
+
+static func _branch_id(card: CardData) -> StringName:
+	for eff in card.effects:
+		if eff.op == CardEffect.Op.APPLY_BRANCH:
 			return eff.target
 	return &""

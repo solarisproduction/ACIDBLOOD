@@ -16,6 +16,7 @@ id = &"overload_core"
 title = "Overload"
 description = "Guardian damage +50%."
 weight = 5.0
+category = &"NORMAL"
 tags = Array[StringName]([&"guardian"])
 max_stacks = 1
 excludes = Array[StringName]([&"acidblood_core"])

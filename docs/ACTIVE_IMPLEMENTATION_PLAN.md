@@ -1,37 +1,38 @@
 # Active Implementation Plan
 
-Status: COMPLETE — Horizontal Product Checkpoint 1 and the bounded Phase 2
-weapon-foundation slice are implemented and locally validated.
+Status: INACTIVE — Phase 3 automated implementation complete; human review pending.
 
-## Gates and boundaries
+## Gates
 
-- Phase 1.1 human review is approved: six waves, victory, 320 kills, 690 XP,
-  level 15, 14 drafts, Impact Cannon installed, and 34/100 final Barricade HP.
-- Preserve the selected 320-enemy Stage 1 calibration; do not retune pressure.
-- Phase 3 draft architecture and Phase 4 enemy/stage architecture are not
-  part of this plan.
-- No fake Home features, economy, monetization, final rarity, or meta systems.
+- Phase 1.1 is human-approved; preserve Stage 1's six-wave, 320-enemy
+  calibration.
+- Phase 2 Weapon Foundation is implemented; preserve Guardian Rifle and
+  Impact Cannon behavior.
+- Phase 4 runtime implementation is out of scope.
+- No economy, rerolls, rarity, new weapons, new enemies, or speculative card
+  mechanics.
 
-## Completed tasks
+## Tasks
 
-1. Phase 1.1 closure — record the approved human verdict and verify the
-   current Stage 1 balance remains unchanged.
-2. Horizontal Product Checkpoint 1 — connect the real Home/Campaign stage
-   entry, Battle, Draft, Result, and return route; improve only current
-   player-facing ownership, result clarity, and portrait readability.
-3. Phase 2 weapon foundation — promote the current Guardian weapon boundary
-   into a shared WeaponDefinition contract and migrate Guardian Rifle plus
-   Impact Cannon while preserving stat paths, cards, branches, and targeting
-   determinism.
-4. Weapon/projectile readability — give Guardian and Cannon distinct current
-   projectile/impact presentation without making presentation authoritative or
-   changing damage timing.
-5. Integrated validation and handoff — run narrow tests, full GdUnit, the
-   canonical validator, FRESH/BENCHMARK smoke, shell/combat checks, portrait
-   startup checks, log scans, diff checks, and prepare the human playtest.
+- **3A — Draft domain foundation — COMPLETE:** make NEW TURRET, NORMAL, BREAKTHROUGH,
+   CHAIN, and COMBO explicit in card data; classify current content honestly.
+- **3B — Eligibility and choice quality — COMPLETE:** keep one core eligibility
+   authority, add context/dead-choice protection, and prove deterministic
+   offers under identical and changed run state.
+- **3C — Build paths and synergy — COMPLETE:** make the existing Cannon branch a tested
+   BREAKTHROUGH path, use honest prerequisite-driven CHAIN content, and keep
+   COMBO structurally supported without speculative Stage 1 content.
+- **3D — Card semantic language — COMPLETE:** show stable category identity separately
+   from focus/selection in the existing DraftCard at 720×1280.
+- **3E — Run-level validation — COMPLETE:** add compact category/build-path telemetry
+   and deterministic Guardian/Cannon scenarios without changing Stage 1 data.
+- **3F — Integrated review — COMPLETE:** inspect for duplicate authorities and Phase 4
+   leakage, perform a read-only Phase 4 readiness audit, update authorities,
+   and run the complete validation suite.
 
-## Next gate
+## Completion gate
 
-Phase 1.1 human review is complete. The next human decision is graphical
-review of the connected shell and weapon readability. Phase 2 is foundation
-complete, not fully complete; Phase 3 and Phase 4 remain unstarted.
+Automated Phase 3 is green. Human Phase 3 graphical review remains pending.
+Completed detail belongs in Git history; current runtime
+truth belongs in `docs/SYSTEM_BLUEPRINT.md`, sequencing in `docs/ROADMAP.md`,
+and the immediate bridge in `docs/HANDOFF.md`.

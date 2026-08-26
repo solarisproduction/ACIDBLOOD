@@ -19,6 +19,7 @@ id = &"acidblood_core"
 title = "Barricade Plating"
 description = "Barricade max HP +30. Restore 30 HP."
 weight = 5.0
+category = &"NORMAL"
 tags = Array[StringName]([&"fortress", &"support"])
 excludes = Array[StringName]([&"overload_core"])
 effects = Array[ExtResource("2")]([SubResource("eff1"), SubResource("eff2")])

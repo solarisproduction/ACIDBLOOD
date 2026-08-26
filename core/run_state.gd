@@ -24,6 +24,7 @@ var max_draft_choices: int = 20
 var run_xp_thresholds: Array[int] = []
 var _awarded_kills: Dictionary = {}
 var chosen_branches: Dictionary = {}  # turret id (StringName) -> branch id (StringName)
+var chosen_branch_cards: Array[StringName] = []
 var mods := ModifierSet.new()
 var draft_count: int = 0           # increments per draft, salts the draft RNG stream
 
@@ -71,6 +72,10 @@ func acquire_card(id: StringName) -> void:
 
 func set_branch(turret_id: StringName, branch_id: StringName) -> void:
 	chosen_branches[turret_id] = branch_id
+
+func record_branch_card(card_id: StringName) -> void:
+	if card_id != &"" and card_id not in chosen_branch_cards:
+		chosen_branch_cards.append(card_id)
 
 func branch_for(turret_id: StringName) -> StringName:
 	return chosen_branches.get(turret_id, &"")

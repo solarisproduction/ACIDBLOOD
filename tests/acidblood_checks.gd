@@ -130,10 +130,10 @@ func run_draft_rules(sink) -> void:
 	sink.check("draft weights prefer active turret family",
 		Draft._effective_weight(Catalog.card(&"bolt_chain_protocol"), {
 			"acquired": {}, "unlocks": {}, "blocked": [],
-			"preferred_categories": [&"bolt"],
+			"preferred_families": [&"bolt"],
 		}, {}, 1) > Draft._effective_weight(Catalog.card(&"cannon_blast_protocol"), {
 			"acquired": {}, "unlocks": {}, "blocked": [],
-			"preferred_categories": [&"bolt"],
+			"preferred_families": [&"bolt"],
 		}, {}, 1))
 	sink.check("pure heal card blocked at full fortress hp",
 		not Draft.is_eligible(Catalog.card(&"field_repairs"), {
@@ -194,7 +194,7 @@ func run_draft_rules(sink) -> void:
 			continue
 		var categories := {}
 		for card in offer:
-			categories[Draft.card_category(card)] = true
+			categories[Draft.weapon_family(card)] = true
 		if categories.size() <= 1:
 			variety_ok = false
 			break
@@ -404,13 +404,21 @@ func run_data_references(sink) -> void:
 		if up.stat != &"" and not StatRegistry.is_valid(up.stat):
 			bad.append("%s invalid permanent stat %s" % [up.id, up.stat])
 	var cards_missing_tags := []
+	var cards_with_invalid_categories := []
+	var cards_with_invalid_category_contracts := []
 	for card in Catalog.cards():
+		if not card.category_valid():
+			cards_with_invalid_categories.append(String(card.id))
+		elif not card.category_contract_valid():
+			cards_with_invalid_category_contracts.append(String(card.id))
 		if card.tags.is_empty():
 			cards_missing_tags.append(String(card.id))
 		for tag in card.tags:
 			if tag == &"":
 				bad.append("%s has empty tag" % card.id)
 	sink.check("card + permanent stat graph valid (%s)" % [",".join(bad) if bad else "ok"], bad.is_empty())
+	sink.check("all cards use a valid draft category (%s)" % [",".join(cards_with_invalid_categories) if cards_with_invalid_categories else "ok"], cards_with_invalid_categories.is_empty())
+	sink.check("card category contracts match their current behavior (%s)" % [",".join(cards_with_invalid_category_contracts) if cards_with_invalid_category_contracts else "ok"], cards_with_invalid_category_contracts.is_empty())
 	sink.check("all cards have at least one build tag (%s)" % [",".join(cards_missing_tags) if cards_missing_tags else "ok"], cards_missing_tags.is_empty())
 	bad = []
 	for branch in Catalog.turret_branches().values():

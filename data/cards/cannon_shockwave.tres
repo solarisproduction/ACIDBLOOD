@@ -23,6 +23,7 @@ id = &"cannon_shockwave"
 title = "Cannon Burst"
 description = "Cannon Turret blast radius +0.8 and damage +25%."
 weight = 8.0
+category = &"CHAIN"
 tags = Array[StringName]([&"impact"])
 max_stacks = 1
 prerequisites = Array[StringName]([&"build_cannon"])

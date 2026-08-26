@@ -16,6 +16,7 @@ id = &"field_repairs"
 title = "Field Repairs"
 description = "Restore 20 Barricade HP."
 weight = 7.0
+category = &"NORMAL"
 tags = Array[StringName]([&"fortress", &"support"])
 max_stacks = 3
 effects = Array[ExtResource("2")]([SubResource("eff1")])

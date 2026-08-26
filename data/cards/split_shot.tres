@@ -16,6 +16,7 @@ id = &"split_shot"
 title = "Split Feed"
 description = "Guardian fires +1 projectile per attack."
 weight = 6.0
+category = &"NORMAL"
 tags = Array[StringName]([&"guardian"])
 max_stacks = 2
 effects = Array[ExtResource("2")]([SubResource("eff1")])

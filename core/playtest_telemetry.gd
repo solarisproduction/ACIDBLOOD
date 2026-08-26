@@ -88,7 +88,11 @@ func finish(outcome: StringName, payload: Dictionary = {}) -> void:
 	_report["xp_gained"] = _events.filter(func(event: Dictionary) -> bool: return event.get("event") == "xp_gain")
 	_report["level_ups"] = _events.filter(func(event: Dictionary) -> bool: return event.get("event") == "level_up")
 	_report["draft_offers"] = _draft_offer_summaries()
-	_report["selected_drafts"] = _draft_selection_summaries()
+	var selected_drafts := _draft_selection_summaries()
+	_report["selected_drafts"] = selected_drafts
+	_report["build_path"] = selected_drafts.duplicate(true)
+	_report["category_offer_counts"] = _category_offer_counts()
+	_report["category_selection_counts"] = _category_selection_counts()
 	_write_report()
 
 func _draft_offer_summaries() -> Array[Dictionary]:
@@ -100,6 +104,7 @@ func _draft_offer_summaries() -> Array[Dictionary]:
 			"draft_index": int(event.get("draft_index", 0)),
 			"gameplay_seconds": float(event.get("gameplay_seconds", 0.0)),
 			"offer_ids": (event.get("offer_ids", []) as Array).duplicate(),
+			"categories": (event.get("offer_categories", []) as Array).duplicate(),
 		})
 	return summaries
 
@@ -112,8 +117,31 @@ func _draft_selection_summaries() -> Array[Dictionary]:
 			"draft_index": int(event.get("draft_index", 0)),
 			"gameplay_seconds": float(event.get("gameplay_seconds", 0.0)),
 			"card_id": String(event.get("card_id", "")),
+			"category": String(event.get("category", "")),
+			"weapon_family": String(event.get("weapon_family", "")),
 		})
 	return summaries
+
+func _category_offer_counts() -> Dictionary:
+	var counts := {}
+	for event in _events:
+		if event.get("event") != "draft_open":
+			continue
+		for category in event.get("offer_categories", []):
+			var key := String(category)
+			counts[key] = int(counts.get(key, 0)) + 1
+	return counts
+
+func _category_selection_counts() -> Dictionary:
+	var counts := {}
+	for event in _events:
+		if event.get("event") != "card_chosen":
+			continue
+		var category := String(event.get("category", ""))
+		if category.is_empty():
+			continue
+		counts[category] = int(counts.get(category, 0)) + 1
+	return counts
 
 func _draft_intervals() -> Array[float]:
 	var intervals: Array[float] = []

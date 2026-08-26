@@ -585,15 +585,18 @@ func _open_next_draft() -> void:
 			continue
 		var offer_ids: Array[String] = []
 		var offer_titles: Array[String] = []
+		var offer_categories: Array[String] = []
 		for card in offer:
 			offer_ids.append(String(card.id))
 			offer_titles.append(card.title)
+			offer_categories.append(String(Draft.semantic_category(card)))
 		_telemetry("draft_open", {
 			"draft_index": run_state.draft_count,
 			"level": run_state.level,
 			"wave": run_state.wave_index,
 			"offer_ids": offer_ids,
 			"offer_titles": offer_titles,
+			"offer_categories": offer_categories,
 			"pending_level_ups": _pending_drafts,
 		})
 		_draft_open = true
@@ -638,7 +641,9 @@ func draft_context() -> Dictionary:
 		"blocked": blocked,
 		"slots_available": _available_slot_count(),
 		"active_turrets": run_state.active_turrets,
-		"preferred_categories": _draft_preferred_categories(),
+		"chosen_branches": run_state.chosen_branches,
+		"chosen_branch_cards": run_state.chosen_branch_cards,
+		"preferred_families": _draft_preferred_families(),
 		"fortress_hp": run_state.fortress_hp,
 		"fortress_max_hp": run_state.fortress_max_hp(),
 		"under_pressure": _barricade_under_pressure(),
@@ -657,8 +662,8 @@ func _stage_allowed_card_ids() -> Array[StringName]:
 		&"cannon_blast_protocol", &"cannon_impact_protocol", &"cannon_shockwave",
 	]
 
-func _draft_preferred_categories() -> Array[StringName]:
-	var categories: Array[StringName] = []
+func _draft_preferred_families() -> Array[StringName]:
+	var families: Array[StringName] = []
 	var has_front := false
 	var has_rear := false
 	for slot in _slots:
@@ -672,14 +677,14 @@ func _draft_preferred_categories() -> Array[StringName]:
 		else:
 			has_rear = true
 	if has_rear:
-		categories.append(&"bolt")
-		categories.append(&"frost")
+		families.append(&"bolt")
+		families.append(&"frost")
 	if has_front:
-		categories.append(&"cannon")
-	if categories.is_empty():
-		categories.append(&"bolt")
-		categories.append(&"cannon")
-	return categories
+		families.append(&"cannon")
+	if families.is_empty():
+		families.append(&"bolt")
+		families.append(&"cannon")
+	return families
 
 func on_card_chosen(card: CardData) -> void:
 	if not _draft_open or not _active_offer.has(card):
@@ -690,6 +695,8 @@ func on_card_chosen(card: CardData) -> void:
 		"draft_index": run_state.draft_count,
 		"card_id": String(card.id),
 		"card_title": card.title,
+		"category": String(Draft.semantic_category(card)),
+		"weapon_family": String(Draft.weapon_family(card)),
 		"wave": run_state.wave_index,
 		"level": run_state.level,
 		"acquired_count": int(run_state.acquired.get(card.id, 0)),
@@ -725,9 +732,9 @@ func apply_card(card: CardData) -> void:
 			CardEffect.Op.HEAL_FORTRESS:
 				heal_fortress(eff.value)
 			CardEffect.Op.APPLY_BRANCH:
-				_apply_branch(eff.target)
+				_apply_branch(eff.target, card.id)
 
-func _apply_branch(branch_id: StringName) -> void:
+func _apply_branch(branch_id: StringName, card_id: StringName = &"") -> void:
 	var branch = Catalog.turret_branch(branch_id)
 	if branch == null:
 		push_warning("Battle: cannot apply unknown branch %s" % branch_id)
@@ -742,6 +749,7 @@ func _apply_branch(branch_id: StringName) -> void:
 			push_warning("Battle: branch %s blocked by %s" % [branch.id, blocked])
 			return
 	run_state.set_branch(branch.turret_id, branch.id)
+	run_state.record_branch_card(card_id)
 	for eff in branch.effects:
 		match eff.op:
 			CardEffect.Op.ADD_STAT:

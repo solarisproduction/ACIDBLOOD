@@ -45,7 +45,7 @@ needed and is not a local defect. Preserve this calibration while weapon
 identity, projectile readability, and later enemy composition remain future
 improvement surfaces.
 
-### Horizontal Product Checkpoint 1 — First Product Slice — IMPLEMENTED; HUMAN GRAPHICAL REVIEW PENDING
+### Horizontal Product Checkpoint 1 — First Product Slice — IMPLEMENTED + HUMAN-REVIEWED
 
 This is the first bounded horizontal checkpoint in the single route. Its
 purpose is to make the current loop read as one product using only systems that
@@ -66,10 +66,12 @@ feature tabs. Deep meta remains Phase 5 work.
 The current implementation provides a visible Campaign stage-entry surface,
 real Home → Campaign → Battle → Draft → Result → Campaign ownership, a
 reusable portrait draft card, current HUD hierarchy, and result/return clarity.
-Automated and runtime validation pass. Final visual/product judgment remains a
-human review gate; this checkpoint does not claim final art approval.
+Automated and runtime validation pass. Human review found the current shell
+and three-column draft structure useful; Home remains visibly prototype-like
+and is deliberately deferred rather than redesigned here. This checkpoint does
+not claim final art approval.
 
-### Phase 2 — Weapon Architecture — FOUNDATION COMPLETE; HUMAN PLAYTEST PENDING
+### Phase 2 — Weapon Architecture — FOUNDATION COMPLETE + HUMAN-REVIEWED
 
 The current Guardian Rifle and Impact Cannon now use the shared
 WeaponDefinition boundary with explicit Damage Family, Engagement Profile,
@@ -77,20 +79,31 @@ Attack Topology, and Targeting Policy. Guardian and Cannon presentation has a
 representative readability pass. Tesla Coil and Disruption Field remain data
 only legacy resources; their future mechanics are not started.
 
-The next Phase 2 decision is gated on human playtest: deepen weapon identity if
-the current proof is not readable, or begin the bounded Phase 3 draft-architecture
-work if the foundation is healthy.
+The human review judged the current direction healthy and identified draft /
+buildcraft, projectile readability, and later enemy composition as the next
+value surfaces. No Tesla Coil or Disruption Field gameplay was activated.
 
-### Phase 3 — Draft Architecture — NEXT AFTER HUMAN WEAPON PLAYTEST
+### Phase 3 — Draft Architecture — AUTOMATED FOUNDATION COMPLETE; HUMAN REVIEW PENDING
 
-Full NEW TURRET, NORMAL, BREAKTHROUGH, CHAIN, and COMBO semantics with
-prerequisites, exclusions, context, dead-choice protection, and deterministic
-testing.
+The current implementation makes NEW TURRET, NORMAL, BREAKTHROUGH, CHAIN, and
+COMBO valid data categories. Current cards are honestly classified; existing
+Cannon branches are BREAKTHROUGH, prerequisite-driven upgrades are CHAIN, and
+COMBO support is structural with no speculative Stage 1 content. Eligibility
+now includes branch context and category-contract validation while preserving
+seeded offers, max stacks, prerequisites, excludes, finite budget, and dead-
+choice protection. Semantic card identity is stable and focus is a separate
+selection treatment. Automated Phase 3 is complete pending the human graphical
+buildcraft review.
 
-### Phase 4 — Enemy and Stage Architecture — FUTURE
+### Phase 4 — Enemy and Stage Architecture — NEXT AFTER HUMAN PHASE 3 REVIEW
 
 Enemy Role + Affinity + Modifiers, soft counters, Stage Intel, and authored
 Stages 1–5 onboarding.
+
+The Phase 4 readiness audit is read-only. Likely sequencing remains 4A Enemy
+Roles, 4B Damage Affinity + Modifiers, 4C Movement Grammar, 4D Stage
+Composition, 4E Stage Intel, and 4F Stage 2–5 Teach → Test → Combine. No Phase
+4 runtime implementation has started.
 
 ### Phase 5 — Meta / Home / Arsenal
 

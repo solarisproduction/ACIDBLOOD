@@ -26,8 +26,8 @@ game/  battle runtime                 shell/  screens
 ├─ wave_director.gd wave lifecycle   ├─ campaign.tscn/.gd  30 stages + dev tools
 ├─ guardian, enemy, turret,          └─ result.tscn/.gd    report step
 │  projectile (.gd [+ .tscn])
-├─ battle_hud.gd    HUD + draft UI   tests/run_tests.gd    89 headless checks
-│                                      tests/gdunit/      37-case GdUnit4 behavioral pilot
+├─ battle_hud.gd    HUD + draft UI   tests/run_tests.gd    91 headless checks
+│                                      tests/gdunit/      43-case GdUnit4 behavioral pilot
 └─ visuals.gd       material cache   tools/  validate.sh, gen_stages.gd,
                                              balance_report.gd
 ```
@@ -78,14 +78,33 @@ Run seed → `DetRNG.derive(seed, "waves")` for spawn X positions and
 `DetRNG.derive(seed, "draft", draft_index)` per draft. Same seed + state =
 same offers/spawns (covered by tests). Physics at fixed 60 Hz.
 
-## Draft eligibility
+## Draft domain and eligibility
 
-`Draft.is_eligible`: max_stacks, `requires_unlock` (permanent flags from
-progression), prerequisites, excludes, full-HP heal suppression, and a runtime
-`blocked` list (build cards when all 4 slots are full). Offer generation also
-applies light early-run quality guardrails: guarantee a `Build` option in the
-first drafts when available and avoid single-category collapses when valid
-alternatives exist. Weighted sample without replacement.
+`CardData.category` is an explicit semantic contract with five valid values:
+`NEW_TURRET`, `NORMAL`, `BREAKTHROUGH`, `CHAIN`, and `COMBO`. Current content is
+classified as 3 NEW TURRET cards, 8 NORMAL cards, 6 BREAKTHROUGH branch cards,
+and 3 prerequisite-driven CHAIN cards. There are currently no Stage 1 COMBO
+cards; `CardData.category_contract_valid()` requires a COMBO to name at least
+two prerequisites, so future content cannot use the label without a real
+coexistence condition. NEW TURRET and BREAKTHROUGH categories also validate
+their current unlock/branch operations, while CHAIN validates a prerequisite.
+
+`Draft.is_eligible` is the single runtime eligibility authority. It checks
+category validity, max_stacks, `requires_unlock` (permanent flags from
+progression), prerequisites, excludes, active turret capacity, chosen branch
+context, full-HP heal suppression, and the runtime `blocked` list. Offer
+generation applies light early-run quality guardrails: guarantee a build option
+in the first drafts when available and avoid single weapon-family collapses
+when valid alternatives exist. Weighted sample without replacement remains
+seeded by `DetRNG.derive(run_seed, "draft", draft_index)`. Category metadata is
+not used as an RNG input or weighting channel.
+
+Current build semantics are ordinary card relationships rather than a separate
+graph engine: Cannon branch cards are BREAKTHROUGH,
+`cannon_shockwave`, `bolt_overcharge`, and `frost_deep_chill` are CHAIN, and
+branch choice is stored in `RunState.chosen_branches` with the selected branch
+card ids retained in `RunState.chosen_branch_cards` for context-only exclusion
+checks. UI presents the domain outcome but does not duplicate eligibility.
 
 ## Persistence
 
@@ -155,11 +174,17 @@ rejected.
 Telemetry exposes compact top-level draft-offer and selected-card summaries in
 addition to the full event stream.
 
+Phase 3 also records semantic category and weapon-family fields on compact
+draft telemetry. Reports include aggregate category offer/selection counts;
+there is no per-projectile or per-evaluation event stream.
+
 The current shell route is Home → Campaign stage-entry surface → Battle →
 Draft/placement interruptions → Result → Campaign. Campaign exposes only real
 StageData briefing, intent, wave count, and salvage reward information. The
 draft overlay uses a reusable `DraftCard` presentation unit in a three-column
-portrait layout; BattleHUD retains paused input ownership. Wave number/name
+portrait layout; BattleHUD retains paused input ownership. Card category
+identity is the stable accent/badge channel; focus uses a thicker border and a
+neutral selection glow without replacing that identity. Wave number/name
 remain internal to authoring, telemetry, debug, and WaveDirector state, and are
 hidden from the normal battle HUD.
 

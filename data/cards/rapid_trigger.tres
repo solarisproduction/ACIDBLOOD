@@ -16,6 +16,7 @@ id = &"rapid_trigger"
 title = "Rapid Trigger"
 description = "Guardian fires 15% faster."
 weight = 10.0
+category = &"NORMAL"
 tags = Array[StringName]([&"guardian"])
 max_stacks = 3
 effects = Array[ExtResource("2")]([SubResource("eff1")])

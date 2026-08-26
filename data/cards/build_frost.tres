@@ -16,6 +16,7 @@ id = &"build_frost"
 title = "Deploy: Frost Turret"
 description = "Deploy a coolant sprayer that slows targets."
 weight = 10.0
+category = &"NEW_TURRET"
 tags = Array[StringName]([&"frost", &"support"])
 max_stacks = 1
 requires_unlock = &"frost_turret"

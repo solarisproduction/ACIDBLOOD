@@ -16,6 +16,7 @@ id = &"bolt_overcharge"
 title = "Bolt Output"
 description = "Bolt Turrets deal 60% more damage."
 weight = 8.0
+category = &"CHAIN"
 tags = Array[StringName]([&"shock"])
 max_stacks = 2
 prerequisites = Array[StringName]([&"build_bolt"])

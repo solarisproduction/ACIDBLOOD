@@ -38,12 +38,12 @@ func _initialize() -> void:
 			bits.append("%s %s %s%.2f" % [CardEffect.Op.keys()[eff.op], eff.stat if eff.stat else eff.target,
 				"x" if eff.op == CardEffect.Op.MULTIPLY_STAT else "+", eff.value])
 		print("  %-18s cat=%-9s role=%-8s w=%-4.0f stacks=%d pre=%s excl=%s lock=%s :: %s" %
-			[c.id, Draft.card_category(c), Draft.card_role(c), c.weight, c.max_stacks, c.prerequisites, c.excludes, c.requires_unlock, ", ".join(bits)])
+			[c.id, Draft.semantic_category(c), Draft.card_role(c), c.weight, c.max_stacks, c.prerequisites, c.excludes, c.requires_unlock, ", ".join(bits)])
 	print("=== CARD SUMMARY ===")
 	var categories := {}
 	var roles := {}
 	for c in Catalog.cards():
-		var category := String(Draft.card_category(c))
+		var category := String(Draft.semantic_category(c))
 		var role := String(Draft.card_role(c))
 		categories[category] = int(categories.get(category, 0)) + 1
 		roles[role] = int(roles.get(role, 0)) + 1

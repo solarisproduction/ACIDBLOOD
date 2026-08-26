@@ -13,10 +13,10 @@ func setup(card: CardData, category_label: String, role_label: String, accent: C
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	alignment = HORIZONTAL_ALIGNMENT_LEFT
-	add_theme_stylebox_override("normal", _card_style(surface, accent, 1.0, 2))
-	add_theme_stylebox_override("hover", _card_style(surface.lightened(0.08), accent.lightened(0.12), 1.0, 3))
+	add_theme_stylebox_override("normal", _card_style(surface, accent, 1.0, 2, false))
+	add_theme_stylebox_override("hover", _card_style(surface.lightened(0.08), accent, 1.0, 2, false))
 	add_theme_stylebox_override("pressed", _card_style(surface.darkened(0.08), accent, 1.0, 3))
-	add_theme_stylebox_override("focus", _card_style(surface.lightened(0.05), accent.lightened(0.18), 1.0, 4))
+	add_theme_stylebox_override("focus", _card_style(surface.lightened(0.05), accent, 1.0, 4, true))
 
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -63,14 +63,14 @@ func setup(card: CardData, category_label: String, role_label: String, accent: C
 	for hint in _card_hints(card):
 		footer.add_child(_make_hint_row(hint, accent))
 
-func _card_style(bg: Color, border: Color, shadow_alpha: float, border_width: int) -> StyleBoxFlat:
+func _card_style(bg: Color, border: Color, shadow_alpha: float, border_width: int, selected: bool = false) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = bg
 	style.border_color = border
 	style.set_border_width_all(border_width)
 	style.set_corner_radius_all(16)
-	style.shadow_color = Color(0, 0, 0, 0.24 * shadow_alpha)
-	style.shadow_size = 10
+	style.shadow_color = Color(1.0, 0.88, 0.56, 0.62) if selected else Color(0, 0, 0, 0.24 * shadow_alpha)
+	style.shadow_size = 16 if selected else 10
 	return style
 
 func _make_badge(text_value: String, bg: Color, fg: Color, outlined: bool = false) -> Control:

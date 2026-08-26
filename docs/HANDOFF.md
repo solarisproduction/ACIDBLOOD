@@ -1,7 +1,7 @@
 # Current Session Bridge
 
 Recommended next executor: GPT-5.6 Luna Medium after the human graphical
-review of the product slice and Phase 2 weapon foundation.
+review of the Phase 3 draft/buildcraft slice.
 
 ## Current truth
 
@@ -20,13 +20,23 @@ review of the product slice and Phase 2 weapon foundation.
   resource boundary with explicit Physical family, engagement profile,
   topology, and targeting policy. Guardian remains direct/straight; Cannon
   remains heavy interval/group splash. Presentation is not damage authority.
-- Tesla Coil and Disruption Field mechanics, Phase 3 draft architecture, and
-  Phase 4 enemy/stage architecture are not started.
+- Phase 3 draft domain is implemented: 3 NEW TURRET, 8 NORMAL, 6
+  BREAKTHROUGH, and 3 CHAIN cards are classified explicitly. COMBO is
+  structurally supported but has no current content because no honest
+  Guardian/Cannon coexistence card exists yet.
+- `Draft.is_eligible` remains the single eligibility authority and now checks
+  category validity, branch context, prerequisites, excludes, max stacks,
+  unlocks, active-turret context, and runtime dead-choice blocks. Seeded
+  offers remain deterministic.
+- Draft cards use stable semantic identity accents/badges; focus adds a
+  thicker border and neutral glow without changing the base category identity.
+- Tesla Coil and Disruption Field mechanics and Phase 4 enemy/stage runtime
+  architecture are not started. Phase 4 was audited read-only only.
 
 ## Validation snapshot
 
-- Official local suite: 89 checks PASS.
-- GdUnit4 behavioral pilot: 37 cases PASS, including shell controls,
+- Official local suite: 91 checks PASS.
+- GdUnit4 behavioral pilot: 43 cases PASS, including shell controls,
   portrait draft layout, weapon contracts, Cannon splash, and the physical-key
   paused placement path.
 - `bash tools/validate.sh`: PASS, including import, official suite, GdUnit,
@@ -44,31 +54,53 @@ GODOT=/Applications/Godot.app/Contents/MacOS/Godot
 "$GODOT" --path .
 ```
 
-Then evaluate Home → Campaign stage entry → Deploy → Battle → first Draft →
-placement → Result → Return. Also run the automated profiles:
+Then evaluate Home → Campaign stage entry → Deploy → Battle → several Draft
+choices (including a Cannon branch when offered) → placement → Result →
+Return. Also run the automated profiles:
 
 ```bash
 GODOT=/Applications/Godot.app/Contents/MacOS/Godot tools/playtest_fresh.sh
 GODOT=/Applications/Godot.app/Contents/MacOS/Godot tools/playtest_benchmark.sh
 ```
 
-Judge whether the route feels connected, the Campaign entry is legible, three
-cards read immediately, the portrait layout fits, wave labels are safely out
-of the normal HUD, placement remains obvious, Result/Return is clear, and
-Guardian versus Cannon reads through cadence, travel, weight, impact, and
-splash without visual noise. Do not begin Phase 3 before this review.
+Judge only player-facing behavior: whether choices now feel like a build;
+whether category labels/identity are readable; whether earlier choices affect
+later choices; whether a BREAKTHROUGH feels important; whether CHAIN reads as
+specialization; whether selection remains obvious without changing category
+identity; and whether Stage 1 still feels good. Do not begin Phase 4 before
+this review.
 
 ## Next decision
 
-If the weapon proof is readable and the route is coherent, choose whether to
-begin the bounded Phase 3 draft-architecture milestone. If Guardian/Cannon
-identity or the product route is not yet readable, deepen only that approved
-Phase 2 foundation before starting Phase 3.
+If buildcraft is legible and the Stage 1 run remains healthy, recommend
+beginning Phase 4A Enemy Roles after the human review. If the human cannot
+perceive meaningful build paths or category language, deepen/fix only Phase 3;
+do not add Phase 4 content to compensate.
+
+## Phase 4 readiness audit (read-only)
+
+- `EnemyData` already exposes threat profile, speed, armor, contact/ranged
+  attack timing, and presentation fields, but not a role/affinity/modifier
+  composition contract. `Enemy` is still one runtime script; contact versus
+  ranged behavior is implicit in `attack_interval` and `stop_range`, while
+  slow, stun, armor-break, and expose are direct runtime methods.
+- `StageData`, `WaveData`, and `SpawnGroup` already provide authored intent,
+  wave timing, enemy ids, counts, and lanes. `WaveDirector` owns the finite
+  wave state machine. Stage Intel and richer composition semantics do not exist.
+- The likely future migration is 4A roles → 4B affinity/modifiers → 4C
+  movement grammar → 4D composition → 4E Stage Intel → 4F Stage 2–5 teaching.
+  Human design is still required for role vocabulary, counter readability,
+  movement patterns, and stage-teaching rules. No Phase 4 runtime was added.
 
 ## Workspace state
 
-The implementation is locally validated but not committed in this executor:
-the managed macOS workspace denies creation of `.git/index.lock`. The next
-human terminal should commit the current tracked and untracked mission files
-as one checkpoint: `feat: connect product slice and weapon foundation`, then
-push `main` and inspect CI.
+The Phase 3 implementation is locally validated but remains uncommitted because
+this managed executor cannot create `.git/index.lock` (`Operation not
+permitted`). No lock file or staged changes remain. From the repository root,
+the human can create the checkpoint and push it with:
+
+```bash
+git add -A && git commit -m "feat: establish Phase 3 draft architecture" && git push origin HEAD:main
+```
+
+No destructive cleanup or Stage 1 retune is authorized.

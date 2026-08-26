@@ -14,6 +14,7 @@ id = &"cannon_blast_protocol"
 title = "Branch: Wide Blast"
 description = "Cannon Turrets hit a larger area, trading some direct damage for safer lane control."
 weight = 6.0
+category = &"BREAKTHROUGH"
 tags = Array[StringName]([&"impact"])
 max_stacks = 1
 prerequisites = Array[StringName]([&"build_cannon"])

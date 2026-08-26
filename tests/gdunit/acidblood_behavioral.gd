@@ -314,6 +314,127 @@ func test_phase2_cannon_weapon_splash_preserves_group_hit_behavior() -> void:
 	assert_float(neighbor.hp).is_less(neighbor_hp)
 	assert_float(outside.hp).is_equal_approx(outside_hp, 0.001)
 
+func test_phase3_active_cards_have_explicit_honest_categories() -> void:
+	var expected := {
+		&"build_cannon": &"NEW_TURRET",
+		&"build_bolt": &"NEW_TURRET",
+		&"build_frost": &"NEW_TURRET",
+		&"sharp_rounds": &"NORMAL",
+		&"rapid_trigger": &"NORMAL",
+		&"split_shot": &"NORMAL",
+		&"long_barrel": &"NORMAL",
+		&"overload_core": &"NORMAL",
+		&"piercing_rounds": &"NORMAL",
+		&"field_repairs": &"NORMAL",
+		&"acidblood_core": &"NORMAL",
+		&"cannon_shockwave": &"CHAIN",
+		&"bolt_overcharge": &"CHAIN",
+		&"frost_deep_chill": &"CHAIN",
+		&"cannon_blast_protocol": &"BREAKTHROUGH",
+		&"cannon_impact_protocol": &"BREAKTHROUGH",
+		&"bolt_chain_protocol": &"BREAKTHROUGH",
+		&"bolt_field_protocol": &"BREAKTHROUGH",
+		&"frost_control_protocol": &"BREAKTHROUGH",
+		&"frost_expose_protocol": &"BREAKTHROUGH",
+	}
+	assert_int(Catalog.cards().size()).is_equal(expected.size())
+	for card_id in expected:
+		var card := Catalog.card(card_id)
+		assert_object(card).is_valid()
+		assert_bool(card.category_valid()).is_true()
+		assert_str(String(card.category)).is_equal(String(expected[card_id]))
+
+func test_phase3_invalid_category_and_combo_prerequisites_are_rejected() -> void:
+	var invalid := CardData.new()
+	invalid.id = &"invalid_phase3_category"
+	invalid.category = &"NOT_A_DRAFT_CATEGORY"
+	assert_bool(invalid.category_valid()).is_false()
+	assert_bool(Draft.is_eligible(invalid, {"acquired": {}, "unlocks": {}, "blocked": []})).is_false()
+	var malformed_breakthrough := CardData.new()
+	malformed_breakthrough.id = &"malformed_breakthrough"
+	malformed_breakthrough.category = &"BREAKTHROUGH"
+	assert_bool(malformed_breakthrough.category_valid()).is_true()
+	assert_bool(malformed_breakthrough.category_contract_valid()).is_false()
+	assert_bool(Draft.is_eligible(malformed_breakthrough, {"acquired": {}, "unlocks": {}, "blocked": []})).is_false()
+
+	var combo := CardData.new()
+	combo.id = &"synthetic_guardian_cannon_combo"
+	combo.category = &"COMBO"
+	combo.prerequisites = [&"build_cannon", &"overload_core"]
+	assert_bool(Draft.is_eligible(combo, {
+		"acquired": {&"build_cannon": 1}, "unlocks": {}, "blocked": [],
+	})).is_false()
+	assert_bool(Draft.is_eligible(combo, {
+		"acquired": {&"build_cannon": 1, &"overload_core": 1},
+		"unlocks": {}, "blocked": [],
+	})).is_true()
+
+func test_phase3_breakthrough_and_chain_paths_respect_branch_context() -> void:
+	var base_context := {
+		"acquired": {&"build_cannon": 1},
+		"unlocks": {}, "blocked": [], "active_turrets": [&"cannon"],
+	}
+	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_blast_protocol"), base_context)).is_true()
+	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_impact_protocol"), base_context)).is_true()
+	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_shockwave"), base_context)).is_true()
+	var blast_context := base_context.duplicate(true)
+	blast_context["chosen_branches"] = {&"cannon": &"cannon_blast"}
+	blast_context["chosen_branch_cards"] = [&"cannon_blast_protocol"]
+	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_blast_protocol"), blast_context)).is_false()
+	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_impact_protocol"), blast_context)).is_false()
+	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_shockwave"), blast_context)).is_true()
+
+func test_phase3_cannon_breakthrough_chain_offer_is_deterministic() -> void:
+	var path_context := {
+		"acquired": {&"build_cannon": 1},
+		"unlocks": {}, "blocked": [], "active_turrets": [&"cannon"],
+		"draft_index": 3,
+	}
+	var first := Draft.generate_offer(Catalog.cards(), path_context, DetRNG.new(9137), 3)
+	var second := Draft.generate_offer(Catalog.cards(), path_context, DetRNG.new(9137), 3)
+	assert_array(_card_ids(first)).is_equal(_card_ids(second))
+	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_blast_protocol"), path_context)).is_true()
+	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_shockwave"), path_context)).is_true()
+	var after_breakthrough := path_context.duplicate(true)
+	after_breakthrough["acquired"] = {&"build_cannon": 1, &"cannon_blast_protocol": 1}
+	after_breakthrough["chosen_branches"] = {&"cannon": &"cannon_blast"}
+	after_breakthrough["chosen_branch_cards"] = [&"cannon_blast_protocol"]
+	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_blast_protocol"), after_breakthrough)).is_false()
+	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_impact_protocol"), after_breakthrough)).is_false()
+	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_shockwave"), after_breakthrough)).is_true()
+
+func test_phase3_category_metadata_does_not_change_seeded_offer_order() -> void:
+	var first: Array[CardData] = []
+	var second: Array[CardData] = []
+	for i in range(5):
+		var a := CardData.new()
+		a.id = StringName("metadata_card_%d" % i)
+		a.weight = 10.0 + i
+		a.category = &"NORMAL"
+		first.append(a)
+		var b := CardData.new()
+		b.id = a.id
+		b.weight = a.weight
+		b.category = &"COMBO" if i == 0 else &"NORMAL"
+		second.append(b)
+	var first_offer := Draft.generate_offer(first, {}, DetRNG.new(7331), 3)
+	var second_offer := Draft.generate_offer(second, {}, DetRNG.new(7331), 3)
+	assert_array(_card_ids(first_offer)).is_equal(_card_ids(second_offer))
+
+func test_phase3_card_focus_preserves_category_identity_channel() -> void:
+	var card := DraftCard.new()
+	card.setup(Catalog.card(&"cannon_blast_protocol"), "BREAKTHROUGH", "CANNON", Color("b65742"), Color(0.2, 0.12, 0.08, 0.96), 210.0)
+	var normal := card.get_theme_stylebox("normal") as StyleBoxFlat
+	var focus := card.get_theme_stylebox("focus") as StyleBoxFlat
+	assert_float(normal.border_color.r).is_equal_approx(Color("b65742").r, 0.001)
+	assert_float(normal.border_color.g).is_equal_approx(Color("b65742").g, 0.001)
+	assert_float(normal.border_color.b).is_equal_approx(Color("b65742").b, 0.001)
+	assert_float(focus.border_color.r).is_equal_approx(normal.border_color.r, 0.001)
+	assert_float(focus.border_color.g).is_equal_approx(normal.border_color.g, 0.001)
+	assert_float(focus.border_color.b).is_equal_approx(normal.border_color.b, 0.001)
+	assert_int(focus.get_border_width(SIDE_TOP)).is_greater(normal.get_border_width(SIDE_TOP))
+	card.free()
+
 func test_task11_placement_keeps_queued_level_up_owned_by_next_draft() -> void:
 	var boot := await _boot_battle()
 	var battle := boot["battle"] as Battle
@@ -539,8 +660,12 @@ func test_task11_telemetry_aggregates_draft_offers_and_selections() -> void:
 	var telemetry: PlaytestTelemetry = PlaytestTelemetryScript.new()
 	telemetry.begin(profile, &"stage_001", path)
 	telemetry.advance_simulation(1.0, 2)
-	telemetry.record_event("draft_open", {"draft_index": 1, "offer_ids": ["build_cannon", "sharp_rounds", "long_barrel"]})
-	telemetry.record_event("card_chosen", {"draft_index": 1, "card_id": "build_cannon"})
+	telemetry.record_event("draft_open", {
+		"draft_index": 1,
+		"offer_ids": ["build_cannon", "sharp_rounds", "long_barrel"],
+		"offer_categories": ["NEW_TURRET", "NORMAL", "NORMAL"],
+	})
+	telemetry.record_event("card_chosen", {"draft_index": 1, "card_id": "build_cannon", "category": "NEW_TURRET"})
 	telemetry.finish(&"victory")
 	var report := JSON.parse_string(FileAccess.get_file_as_string(path)) as Dictionary
 	var offers := report["draft_offers"] as Array
@@ -549,6 +674,14 @@ func test_task11_telemetry_aggregates_draft_offers_and_selections() -> void:
 	assert_int(selections.size()).is_equal(1)
 	assert_str(String((offers[0] as Dictionary)["offer_ids"][0])).is_equal("build_cannon")
 	assert_str(String((selections[0] as Dictionary)["card_id"])).is_equal("build_cannon")
+	var build_path := report["build_path"] as Array
+	assert_int(build_path.size()).is_equal(1)
+	assert_str(String((build_path[0] as Dictionary)["category"])).is_equal("NEW_TURRET")
+	var offer_counts := report["category_offer_counts"] as Dictionary
+	var selection_counts := report["category_selection_counts"] as Dictionary
+	assert_int(int(offer_counts["NEW_TURRET"])).is_equal(1)
+	assert_int(int(offer_counts["NORMAL"])).is_equal(2)
+	assert_int(int(selection_counts["NEW_TURRET"])).is_equal(1)
 
 func test_frost_turret_freezes_target() -> void:
 	var boot := await _boot_battle()

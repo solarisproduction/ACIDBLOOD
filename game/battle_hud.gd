@@ -3,39 +3,69 @@ extends Control
 ## Battle HUD + level-up draft overlay. The overlay's subtree has
 ## process_mode ALWAYS so card buttons work while the tree is paused.
 
-const CATEGORY_GUARDIAN := &"guardian"
-const CATEGORY_FORTRESS := &"fortress"
-const CATEGORY_BOLT := &"bolt"
-const CATEGORY_CANNON := &"cannon"
-const CATEGORY_FROST := &"frost"
+const FAMILY_GUARDIAN := &"guardian"
+const FAMILY_FORTRESS := &"fortress"
+const FAMILY_BOLT := &"bolt"
+const FAMILY_CANNON := &"cannon"
+const FAMILY_FROST := &"frost"
 const OVERLAY_DRAFT := &"draft"
 const OVERLAY_PLACEMENT := &"placement"
 
-const CATEGORY_META := {
-	CATEGORY_GUARDIAN: {
+const FAMILY_META := {
+	FAMILY_GUARDIAN: {
 		"label": "GUARDIAN",
 		"accent": Color("a64b3c"),
 		"surface": Color(0.18, 0.11, 0.10, 0.96),
 	},
-	CATEGORY_FORTRESS: {
+	FAMILY_FORTRESS: {
 		"label": "BARRICADE",
 		"accent": Color("b08a45"),
 		"surface": Color(0.19, 0.15, 0.10, 0.96),
 	},
-	CATEGORY_BOLT: {
+	FAMILY_BOLT: {
 		"label": "BOLT",
 		"accent": Color("3d7fe3"),
 		"surface": Color(0.09, 0.13, 0.21, 0.96),
 	},
-	CATEGORY_CANNON: {
+	FAMILY_CANNON: {
 		"label": "CANNON",
 		"accent": Color("c96a2b"),
 		"surface": Color(0.20, 0.12, 0.08, 0.96),
 	},
-	CATEGORY_FROST: {
+	FAMILY_FROST: {
 		"label": "FROST",
 		"accent": Color("56a7b8"),
 		"surface": Color(0.08, 0.16, 0.18, 0.96),
+	},
+}
+
+# Semantic category is the card's stable identity. Focus/selection is applied
+# by DraftCard as an additional neutral treatment and never swaps this accent.
+const SEMANTIC_META := {
+	CardData.CATEGORY_NEW_TURRET: {
+		"label": "NEW TURRET",
+		"accent": Color("d6a84e"),
+		"surface": Color(0.20, 0.16, 0.08, 0.96),
+	},
+	CardData.CATEGORY_NORMAL: {
+		"label": "NORMAL",
+		"accent": Color("82909a"),
+		"surface": Color(0.13, 0.15, 0.16, 0.96),
+	},
+	CardData.CATEGORY_BREAKTHROUGH: {
+		"label": "BREAKTHROUGH",
+		"accent": Color("c65a43"),
+		"surface": Color(0.20, 0.10, 0.08, 0.96),
+	},
+	CardData.CATEGORY_CHAIN: {
+		"label": "CHAIN",
+		"accent": Color("58a7a8"),
+		"surface": Color(0.08, 0.16, 0.17, 0.96),
+	},
+	CardData.CATEGORY_COMBO: {
+		"label": "COMBO",
+		"accent": Color("9a69bd"),
+		"surface": Color(0.15, 0.10, 0.19, 0.96),
 	},
 }
 
@@ -218,10 +248,13 @@ func show_draft(offer: Array[CardData]) -> void:
 	cards_box.columns = mini(3, maxi(1, sorted_offer.size()))
 	var card_width := _draft_card_width(cards_box.columns)
 	for card in sorted_offer:
-		var category := _card_category(card)
-		var meta: Dictionary = CATEGORY_META.get(category, CATEGORY_META[CATEGORY_GUARDIAN])
+		var semantic := Draft.semantic_category(card)
+		var semantic_meta: Dictionary = SEMANTIC_META.get(semantic, SEMANTIC_META[CardData.CATEGORY_NORMAL])
+		var family := Draft.weapon_family(card)
+		var family_meta: Dictionary = FAMILY_META.get(family, FAMILY_META[FAMILY_GUARDIAN])
 		var btn := DraftCard.new()
-		btn.setup(card, str(meta["label"]), _card_role_label(card), meta["accent"], meta["surface"], card_width)
+		var role_text := "%s • %s" % [str(family_meta["label"]), _card_role_label(card)]
+		btn.setup(card, str(semantic_meta["label"]), role_text, semantic_meta["accent"], semantic_meta["surface"], card_width)
 		btn.pressed.connect(_on_card_pressed.bind(card))
 		cards_box.add_child(btn)
 		_overlay_buttons.append(btn)
@@ -283,24 +316,25 @@ func _layout_draft_overlay() -> void:
 	draft_panel.custom_minimum_size = Vector2(panel_width, 0)
 
 func _card_role_label(card: CardData) -> String:
-	for eff in card.effects:
-		if eff.op == CardEffect.Op.UNLOCK_TURRET:
+	match Draft.card_role(card):
+		&"build":
 			return "BUILD"
-		if eff.op == CardEffect.Op.APPLY_BRANCH:
-			return "CHOICE"
-		if eff.op == CardEffect.Op.HEAL_FORTRESS:
+		&"emergency":
 			return "EMERGENCY"
-	if not card.prerequisites.is_empty():
-		return "UPGRADE"
-	return "PASSIVE"
+		&"choice":
+			return "CHOICE"
+		&"upgrade":
+			return "UPGRADE"
+		_:
+			return "PASSIVE"
 
 func _sort_offer_cards(a: CardData, b: CardData) -> bool:
 	var a_role := _role_priority(a)
 	var b_role := _role_priority(b)
 	if a_role != b_role:
 		return a_role < b_role
-	var a_cat := _category_priority(_card_category(a))
-	var b_cat := _category_priority(_card_category(b))
+	var a_cat := _category_priority(Draft.semantic_category(a))
+	var b_cat := _category_priority(Draft.semantic_category(b))
 	if a_cat != b_cat:
 		return a_cat < b_cat
 	return a.title.naturalnocasecmp_to(b.title) < 0
@@ -320,45 +354,18 @@ func _role_priority(card: CardData) -> int:
 
 func _category_priority(category: StringName) -> int:
 	match category:
-		CATEGORY_BOLT:
+		CardData.CATEGORY_NEW_TURRET:
 			return 0
-		CATEGORY_CANNON:
+		CardData.CATEGORY_BREAKTHROUGH:
 			return 1
-		CATEGORY_FROST:
+		CardData.CATEGORY_CHAIN:
 			return 2
-		CATEGORY_GUARDIAN:
+		CardData.CATEGORY_COMBO:
 			return 3
-		CATEGORY_FORTRESS:
+		CardData.CATEGORY_NORMAL:
 			return 4
 		_:
 			return 5
-
-func _card_category(card: CardData) -> StringName:
-	if _is_category(card, CATEGORY_BOLT):
-		return CATEGORY_BOLT
-	if _is_category(card, CATEGORY_CANNON):
-		return CATEGORY_CANNON
-	if _is_category(card, CATEGORY_FROST):
-		return CATEGORY_FROST
-	for eff in card.effects:
-		if eff.stat == &"fortress.max_hp" or eff.op == CardEffect.Op.HEAL_FORTRESS:
-			return CATEGORY_FORTRESS
-	return CATEGORY_GUARDIAN
-
-func _is_category(card: CardData, category: StringName) -> bool:
-	if category in card.tags:
-		return true
-	if str(card.id).contains(str(category)):
-		return true
-	if str(card.requires_unlock).contains(str(category)):
-		return true
-	for pre in card.prerequisites:
-		if str(pre).contains(str(category)):
-			return true
-	for eff in card.effects:
-		if str(eff.target).contains(str(category)) or str(eff.stat).contains(".%s." % category):
-			return true
-	return false
 
 func _focus_overlay_selection() -> void:
 	if _overlay_buttons.is_empty():
