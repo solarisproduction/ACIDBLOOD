@@ -169,13 +169,31 @@ func test_task6_stage1_is_finite_and_result_shell_is_available() -> void:
 	for wave in stage.waves:
 		for group in wave.groups:
 			enemy_count += group.count
-	assert_int(enemy_count).is_equal(124)
+	assert_int(enemy_count).is_greater_equal(300)
 	var result_scene := load("res://shell/result.tscn") as PackedScene
 	assert_object(result_scene).is_valid()
 	var result := result_scene.instantiate()
 	assert_object(result.get_node("Center/Panel/Margin/VBox/ContinueButton")).is_valid()
 	assert_object(result.get_node("Center/Panel/Margin/VBox/RetryButton")).is_valid()
 	result.free()
+
+func test_task11_stage1_calibration_has_continuous_multilane_pressure() -> void:
+	var stage := Catalog.stage_by_index(1)
+	var enemy_count := 0
+	var multi_group_waves := 0
+	var authored_lanes: Dictionary = {}
+	for wave in stage.waves:
+		if wave.groups.size() >= 2:
+			multi_group_waves += 1
+		for group in wave.groups:
+			enemy_count += group.count
+			authored_lanes[String(group.lane)] = true
+	assert_int(stage.waves.size()).is_equal(6)
+	assert_int(enemy_count).is_greater_equal(300)
+	assert_int(multi_group_waves).is_greater_equal(4)
+	assert_bool(authored_lanes.has("left")).is_true()
+	assert_bool(authored_lanes.has("center")).is_true()
+	assert_bool(authored_lanes.has("right")).is_true()
 
 func test_task2_defensive_line_is_ordered_around_guardian() -> void:
 	var boot := await _boot_battle()

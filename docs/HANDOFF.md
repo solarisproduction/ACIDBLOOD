@@ -19,8 +19,9 @@ integration, and review-quality evidence.
 - Stage 1 can offer `build_cannon` as NEW TURRET and install one Impact Cannon
   into an empty slot. Bolt/Frost build cards remain legacy resources but are
   excluded from the active Stage 1 pool.
-- Stage 1 is a finite six-wave authored encounter with 124 current enemies and
-  the existing victory/defeat/result flow.
+- Stage 1 is a finite six-wave authored encounter with the selected 320-enemy
+  calibration, existing victory/defeat/result flow, and unchanged Stage 2–30
+  data.
 
 ## Active Phase 1.1 plan
 
@@ -35,6 +36,13 @@ dead-air seconds, active-pressure ratio, average/peak live population, draft
 times/intervals, and the existing XP/result fields. Baseline automated reports:
 `/private/tmp/phase11-baseline-fresh-1787702174.json` and
 `/private/tmp/phase11-baseline-benchmark-1787702178.json`.
+
+Task B selected the generated-source candidate with 320 enemies, 690 available
+XP, 14 automated drafts, 164 simulated seconds, average live population 22.29,
+peak 71, 93.8% active-pressure ratio, and 4/100 automated final Barricade HP.
+Candidate evidence remains in `/private/tmp/phase11-candidate-a-benchmark-3.json`,
+`/private/tmp/phase11-candidate-b-benchmark.json`, and
+`/private/tmp/phase11-candidate-c-benchmark.json`.
 
 ## Human Phase 1 review
 
@@ -74,17 +82,18 @@ tutorial, while later stages may become sophisticated quickly.
 
 ## Known limitations
 
-- Current benchmark reached 8 drafts, not the approximately 20-draft pacing
-  ceiling; accelerated smoke duration is not real pacing evidence.
+- The selected automated benchmark reaches 14 drafts, still below the
+  approximately 20-draft pacing ceiling; accelerated smoke duration is not real
+  human pacing evidence.
 - Exact Galaxy slot coordinates, formation behavior, XP curve, and draft order
   remain `UNVERIFIED`.
 - In-world ghost placement is approved but not implemented.
 - Legacy Bolt/Frost runtime and content remain outside the active Stage 1 pool.
-- Phase 1.1 plan is active; implementation is not started. Phase 2 is not
+- Phase 1.1 Tasks A–B are implemented; Tasks C–E remain. Phase 2 is not
   started.
 
 ## Exact next milestone
 
-Execute **Task A — Calibration telemetry and reproducible measurement** from
+Execute **Task C — Conservative battlefield-space calibration** from
 `docs/ACTIVE_IMPLEMENTATION_PLAN.md`, then proceed through the approved task
 sequence only. Do not begin Phase 2.

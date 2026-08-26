@@ -9,8 +9,11 @@ const STAGE_DIR := "res://data/stages"
 
 func _initialize() -> void:
 	var defs := _stage_definitions()
+	var only_stage := _only_stage()
 	var count := 0
 	for d in defs:
+		if only_stage > 0 and int(d.index) != only_stage:
+			continue
 		var stage := _build_stage(d)
 		var path := "%s/stage_%03d.tres" % [STAGE_DIR, stage.index]
 		var err := ResourceSaver.save(stage, path)
@@ -22,17 +25,29 @@ func _initialize() -> void:
 	print("gen_stages: wrote %d stages" % count)
 	quit(0)
 
+func _only_stage() -> int:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--only-stage="):
+			return int(argument.get_slice("=", 1))
+	return 0
+
 func _build_stage(d: Dictionary) -> StageData:
 	var stage := StageData.new()
 	stage.id = StringName("stage_%03d" % int(d.index))
 	stage.index = int(d.index)
 	stage.display_name = String(d.name)
+	stage.act_number = int(d.get("act_number", 0))
+	stage.intent = StringName(d.get("intent", ""))
+	stage.briefing = String(d.get("briefing", ""))
 	stage.reward_cores = int(d.reward)
 	stage.hp_scale = float(d.get("hp_scale", 1.0))
 	stage.speed_scale = float(d.get("speed_scale", 1.0))
 	for wave_def in d.waves:
 		var wave := WaveData.new()
+		wave.pre_wave_delay = float(wave_def.get("pre_wave_delay", 2.0))
 		wave.post_delay = float(wave_def.get("post_delay", 2.0))
+		wave.intent = StringName(wave_def.get("intent", ""))
+		wave.label = String(wave_def.get("label", ""))
 		for g in wave_def.groups:
 			var group := SpawnGroup.new()
 			group.enemy_id = StringName(g[0])
@@ -46,16 +61,22 @@ func _build_stage(d: Dictionary) -> StageData:
 
 func _stage_definitions() -> Array[Dictionary]:
 	var defs: Array[Dictionary] = []
-	# --- Stage 1: hand-authored horde tutorial pacing (grunt / runner / spitter).
+	# --- Stage 1: hand-authored pressure calibration (grunt / runner / spitter).
 	defs.append({
-		"index": 1, "name": "Processing Yard", "reward": 6,
+		"index": 1, "name": "Processing Yard", "reward": 6, "intent": "introduce",
 		"waves": [
-			{"post_delay": 2.0, "groups": [["grunt", 10, 0.85, 0.0, "center"]]},
-			{"post_delay": 2.0, "groups": [["grunt", 12, 0.75, 0.0, "left"], ["runner", 5, 0.75, 3.5, "right"]]},
-			{"post_delay": 2.5, "groups": [["grunt", 8, 0.9, 0.0, "center"], ["runner", 4, 0.7, 4.0, "left"], ["spitter", 2, 3.0, 2.0, "center"]]},
-			{"post_delay": 2.5, "groups": [["grunt", 14, 0.7, 0.0, "right"], ["runner", 7, 0.65, 3.0, "left"], ["spitter", 2, 2.5, 5.0, "center"]]},
-			{"post_delay": 3.0, "groups": [["grunt", 18, 0.65, 0.0, "left"], ["grunt", 10, 0.65, 4.0, "right"], ["runner", 8, 0.6, 2.5, "center"]]},
-			{"post_delay": 3.0, "groups": [["grunt", 20, 0.6, 0.0, "right"], ["runner", 10, 0.55, 2.0, "left"], ["spitter", 4, 2.2, 4.0, "center"]]},
+			{"pre_wave_delay": 2.0, "post_delay": 2.0, "intent": "introduce", "label": "Opening",
+				"groups": [["grunt", 10, 0.85, 0.0, "center"]]},
+			{"pre_wave_delay": 2.0, "post_delay": 2.0, "intent": "reinforce", "label": "Reinforcement",
+				"groups": [["grunt", 6, 0.75, 0.0, "left"], ["runner", 3, 0.8, 3.0, "right"]]},
+			{"pre_wave_delay": 2.0, "post_delay": 1.0, "intent": "test", "label": "First Test",
+				"groups": [["grunt", 8, 0.9, 0.0, "center"], ["runner", 4, 0.7, 4.0, "left"], ["spitter", 2, 3.0, 2.0, "center"]]},
+			{"pre_wave_delay": 0.0, "post_delay": 0.7, "intent": "pressure", "label": "Directional Pressure",
+				"groups": [["grunt", 36, 0.45, 0.0, "right"], ["runner", 24, 0.40, 1.0, "left"], ["spitter", 8, 1.5, 1.5, "center"]]},
+			{"pre_wave_delay": 0.0, "post_delay": 0.8, "intent": "pressure", "label": "Population Surge",
+				"groups": [["grunt", 48, 0.38, 0.0, "left"], ["grunt", 32, 0.38, 1.2, "right"], ["runner", 24, 0.35, 0.8, "center"]]},
+			{"pre_wave_delay": 0.0, "post_delay": 0.8, "intent": "test", "label": "Yard Climax",
+				"groups": [["grunt", 60, 0.34, 0.0, "right"], ["runner", 40, 0.30, 0.8, "left"], ["spitter", 15, 1.1, 1.2, "center"]]},
 		],
 	})
 	# --- Stage 2: hand-authored; introduces the brute and the boss.

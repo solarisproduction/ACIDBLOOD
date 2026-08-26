@@ -110,13 +110,16 @@ Task 6 closes the current Phase 1 loop with the authored six-wave Stage 1:
 WaveDirector clears the finite wave list into the existing victory/defeat
 handoff, and the result shell remains the normal post-battle destination.
 
-Current Phase 1 truth: the active Stage 1 draft pool contains existing
+Current Phase 1.1 truth: the active Stage 1 draft pool contains existing
 Guardian/Cannon-related cards and `build_cannon` is the NEW TURRET entry;
-legacy Bolt/Frost resources remain outside that active pool. The development
-FRESH/BENCHMARK harness writes isolated JSON telemetry under the temporary
-directory and does not touch the normal save. The current benchmark reached
-124 kills, 260 XP, level 9, eight drafts, victory, and 100/100 Barricade HP.
-The placement interaction is still the transitional modal slot picker; the
+legacy Bolt/Frost resources remain outside that active pool. Stage 1 now uses
+the generated-source calibration with 320 existing enemies across six waves.
+The development FRESH/BENCHMARK harness writes isolated JSON telemetry under
+the temporary directory and does not touch the normal save; reports now include
+simulated time, active/dead-air pressure, average/peak population, and draft
+cadence. The selected automated benchmark reached 320 kills, 690 XP, level 15,
+14 drafts, victory, 71 peak live enemies, and 4/100 Barricade HP. The
+placement interaction is still the transitional modal slot picker; the
 approved in-world ghost flow is not implemented.
 
 Any Godot-related edit, inspection, or validation must go through the Godot AI

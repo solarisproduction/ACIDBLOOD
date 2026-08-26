@@ -349,8 +349,8 @@ func run_data_references(sink) -> void:
 				stage_one_lanes_ok = false
 	sink.check("stage 1 horde structure stays authored and laterally distributed",
 			stage_one.waves.size() == 6 and stage_one_count >= 100 and stage_one_lanes_ok)
-	sink.check("stage 1 has finite Phase 1 pacing and draft budget",
-			stage_one.max_draft_choices == 20 and stage_one_count == 124)
+	sink.check("stage 1 has finite calibrated pacing and draft budget",
+			stage_one.max_draft_choices == 20 and stage_one_count >= 300)
 	bad = []
 	var card_ids := []
 	for card in Catalog.cards():

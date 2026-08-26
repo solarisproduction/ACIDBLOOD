@@ -73,19 +73,19 @@ Interfaces:
 
 Checks:
 
-- [ ] Record the current 124-enemy / 260-XP / 8-draft baseline from the new
+- [x] Record the current 124-enemy / 260-XP / 8-draft baseline from the new
   report before changing stage data.
-- [ ] Run two or three uncommitted candidate definitions and record enemy
-  count, simulated duration, average/peak population, dead air, XP, drafts,
+- [x] Run three uncommitted candidate definitions and record enemy count,
+  simulated duration, average/peak population, dead air, XP, drafts,
   Barricade, and outcome for each.
-- [ ] Keep one selected candidate in `gen_stages.gd`, regenerate Stage 1, and
-  verify generated-source ownership plus unchanged Stage 2–30 resources.
-- [ ] Add structural tests for valid references, authored lane coverage,
+- [x] Keep the selected candidate in `gen_stages.gd`, regenerate Stage 1 with
+  `--only-stage=1`, and verify Stage 2–30 remained unchanged.
+- [x] Add structural tests for valid references, authored lane coverage,
   meaningful population, and the selected Stage 1 data contract without
   encoding subjective human balance as a brittle exact assertion.
-- [ ] Run narrow tests, full GdUnit, both isolated profiles, canonical
+- [x] Run narrow tests, full GdUnit, both isolated profiles, canonical
   validation, and inspect runtime logs.
-- [ ] Commit: `feat: calibrate Stage 1 pressure and pacing`
+- [x] Commit: `feat: calibrate Stage 1 pressure and pacing`
 
 ## Task C — Conservative battlefield-space calibration
 
@@ -177,6 +177,7 @@ Checks:
 
 - Phase 1: implemented and human-reviewed.
 - Task A: complete; baseline reports are available under `/private/tmp`.
-- Phase 1.1 automated gate: pending execution of Tasks B–E.
+- Task B: complete; candidate C selected, pending human graphical review.
+- Phase 1.1 automated gate: pending execution of Tasks C–E.
 - Human Phase 1.1 graphical playtest: required after the selected build.
 - Phase 2: not started and blocked until Phase 1.1 human review.
