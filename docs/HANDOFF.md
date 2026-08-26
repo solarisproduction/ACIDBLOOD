@@ -25,9 +25,9 @@ review of the Phase 3 draft/buildcraft slice.
   structurally supported but has no current content because no honest
   Guardian/Cannon coexistence card exists yet.
 - `Draft.is_eligible` remains the single eligibility authority and now checks
-  category validity, branch context, prerequisites, excludes, max stacks,
-  unlocks, active-turret context, and runtime dead-choice blocks. Seeded
-  offers remain deterministic.
+  category validity, branch context, base prerequisites, qualifying path
+  prerequisites, excludes, max stacks, unlocks, active-turret context, and
+  runtime dead-choice blocks. Seeded offers remain deterministic.
 - Draft cards use stable semantic identity accents/badges; focus adds a
   thicker border and neutral glow without changing the base category identity.
 - Tesla Coil and Disruption Field mechanics and Phase 4 enemy/stage runtime
@@ -35,8 +35,8 @@ review of the Phase 3 draft/buildcraft slice.
 
 ## Validation snapshot
 
-- Official local suite: 91 checks PASS.
-- GdUnit4 behavioral pilot: 43 cases PASS, including shell controls,
+- Official local suite: 94 checks PASS.
+- GdUnit4 behavioral pilot: 44 cases PASS, including shell controls,
   portrait draft layout, weapon contracts, Cannon splash, and the physical-key
   paused placement path.
 - `bash tools/validate.sh`: PASS, including import, official suite, GdUnit,
@@ -94,13 +94,13 @@ do not add Phase 4 content to compensate.
 
 ## Workspace state
 
-The Phase 3 implementation is locally validated but remains uncommitted because
-this managed executor cannot create `.git/index.lock` (`Operation not
-permitted`). No lock file or staged changes remain. From the repository root,
-the human can create the checkpoint and push it with:
+The Phase 3 implementation is committed at `c94af0f`. This correction is
+validated locally and is the next checkpoint; no lock file or staged changes
+remain. From the repository root, the human can create and push the correction
+with:
 
 ```bash
-git add -A && git commit -m "feat: establish Phase 3 draft architecture" && git push origin HEAD:main
+git add -A && git commit -m "fix: require breakthrough paths for chain cards" && git push origin HEAD:main
 ```
 
 No destructive cleanup or Stage 1 retune is authorized.

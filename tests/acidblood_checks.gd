@@ -103,8 +103,12 @@ func run_draft_rules(sink) -> void:
 			prereq_ok = false
 	sink.check("prerequisite card never offered before its chain parent", prereq_ok)
 	var ctx_with := {"acquired": {&"build_bolt": 1}, "unlocks": {}, "blocked": []}
-	sink.check("prerequisite card eligible after parent acquired",
-		Draft.is_eligible(Catalog.card(&"bolt_overcharge"), ctx_with))
+	sink.check("CHAIN card stays unavailable before a qualifying breakthrough",
+		not Draft.is_eligible(Catalog.card(&"bolt_overcharge"), ctx_with))
+	var bolt_path_ctx := {"acquired": {&"build_bolt": 1, &"bolt_chain_protocol": 1}, "unlocks": {}, "blocked": [],
+		"chosen_branches": {&"bolt": &"bolt_chain"}, "chosen_branch_cards": [&"bolt_chain_protocol"]}
+	sink.check("CHAIN card becomes eligible after its breakthrough path",
+		Draft.is_eligible(Catalog.card(&"bolt_overcharge"), bolt_path_ctx))
 	sink.check("exclusion blocks branched card",
 		not Draft.is_eligible(Catalog.card(&"acidblood_core"), {"acquired": {&"overload_core": 1}, "unlocks": {}, "blocked": []}))
 	sink.check("max_stacks blocks exhausted card",
@@ -123,6 +127,10 @@ func run_draft_rules(sink) -> void:
 		not Draft.is_eligible(Catalog.card(&"build_bolt"), {"acquired": {}, "unlocks": {}, "blocked": [&"build_bolt"]}))
 	sink.check("branch card eligible after bolt turret is built",
 		Draft.is_eligible(Catalog.card(&"bolt_chain_protocol"), {"acquired": {&"build_bolt": 1}, "unlocks": {}, "blocked": []}))
+	sink.check("Cannon CHAIN waits for a Cannon breakthrough",
+		not Draft.is_eligible(Catalog.card(&"cannon_shockwave"), {"acquired": {&"build_cannon": 1}, "unlocks": {}, "blocked": []}))
+	sink.check("Frost CHAIN waits for a Frost breakthrough",
+		not Draft.is_eligible(Catalog.card(&"frost_deep_chill"), {"acquired": {&"build_frost": 1}, "unlocks": {}, "blocked": []}))
 	sink.check("cannon branch card eligible after cannon turret is built",
 		Draft.is_eligible(Catalog.card(&"cannon_blast_protocol"), {"acquired": {&"build_cannon": 1}, "unlocks": {}, "blocked": []}))
 	sink.check("frost branch card eligible after frost turret is built",
@@ -374,6 +382,15 @@ func run_data_references(sink) -> void:
 		for pre in card.prerequisites:
 			if not card_ids.has(pre):
 				bad.append("%s prereq %s missing" % [card.id, pre])
+		for path_pre in card.path_prerequisites:
+			if not card_ids.has(path_pre):
+				bad.append("%s path prereq %s missing" % [card.id, path_pre])
+			else:
+				var path_card := Catalog.card(path_pre)
+				if path_card == null or path_card.category != CardData.CATEGORY_BREAKTHROUGH:
+					bad.append("%s path prereq %s is not a BREAKTHROUGH" % [card.id, path_pre])
+		if card.category == CardData.CATEGORY_CHAIN and card.path_prerequisites.is_empty():
+			bad.append("%s CHAIN has no qualifying path prerequisite" % card.id)
 		for ex in card.excludes:
 			if not card_ids.has(ex):
 				bad.append("%s exclude %s missing" % [card.id, ex])

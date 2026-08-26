@@ -20,4 +20,5 @@ category = &"CHAIN"
 tags = Array[StringName]([&"shock"])
 max_stacks = 2
 prerequisites = Array[StringName]([&"build_bolt"])
+path_prerequisites = Array[StringName]([&"bolt_chain_protocol", &"bolt_field_protocol"])
 effects = Array[ExtResource("2")]([SubResource("eff1")])

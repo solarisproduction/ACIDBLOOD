@@ -26,6 +26,9 @@ const VALID_CATEGORIES := [
 @export var max_stacks: int = 1
 ## Card ids that must be acquired before this card can appear.
 @export var prerequisites: Array[StringName] = []
+## At least one of these prior path cards must be acquired before this card
+## can appear. Used by CHAIN cards to deepen an established breakthrough.
+@export var path_prerequisites: Array[StringName] = []
 ## Card ids that make this card ineligible once acquired (branching choices).
 @export var excludes: Array[StringName] = []
 ## Permanent unlock flag required for this card to enter the run pool
@@ -45,7 +48,7 @@ func category_contract_valid() -> bool:
 		CATEGORY_BREAKTHROUGH:
 			return _has_operation(CardEffect.Op.APPLY_BRANCH)
 		CATEGORY_CHAIN:
-			return not prerequisites.is_empty()
+			return not path_prerequisites.is_empty()
 		CATEGORY_COMBO:
 			return prerequisites.size() >= 2
 		_:

@@ -26,8 +26,8 @@ game/  battle runtime                 shell/  screens
 ├─ wave_director.gd wave lifecycle   ├─ campaign.tscn/.gd  30 stages + dev tools
 ├─ guardian, enemy, turret,          └─ result.tscn/.gd    report step
 │  projectile (.gd [+ .tscn])
-├─ battle_hud.gd    HUD + draft UI   tests/run_tests.gd    91 headless checks
-│                                      tests/gdunit/      43-case GdUnit4 behavioral pilot
+├─ battle_hud.gd    HUD + draft UI   tests/run_tests.gd    94 headless checks
+│                                      tests/gdunit/      44-case GdUnit4 behavioral pilot
 └─ visuals.gd       material cache   tools/  validate.sh, gen_stages.gd,
                                              balance_report.gd
 ```
@@ -101,10 +101,13 @@ not used as an RNG input or weighting channel.
 
 Current build semantics are ordinary card relationships rather than a separate
 graph engine: Cannon branch cards are BREAKTHROUGH,
-`cannon_shockwave`, `bolt_overcharge`, and `frost_deep_chill` are CHAIN, and
-branch choice is stored in `RunState.chosen_branches` with the selected branch
+`cannon_shockwave`, `bolt_overcharge`, and `frost_deep_chill` are CHAIN. Each
+retains its turret-build prerequisite and now names the mutually exclusive
+BREAKTHROUGH cards that qualify its path; one qualifying path card is enough.
+Branch choice is stored in `RunState.chosen_branches` with the selected branch
 card ids retained in `RunState.chosen_branch_cards` for context-only exclusion
-checks. UI presents the domain outcome but does not duplicate eligibility.
+and path checks. UI presents the domain outcome but does not duplicate
+eligibility.
 
 ## Persistence
 

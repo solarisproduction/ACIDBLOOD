@@ -27,4 +27,5 @@ category = &"CHAIN"
 tags = Array[StringName]([&"impact"])
 max_stacks = 1
 prerequisites = Array[StringName]([&"build_cannon"])
+path_prerequisites = Array[StringName]([&"cannon_blast_protocol", &"cannon_impact_protocol"])
 effects = Array[ExtResource("2")]([SubResource("eff1"), SubResource("eff2")])

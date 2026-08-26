@@ -87,13 +87,15 @@ value surfaces. No Tesla Coil or Disruption Field gameplay was activated.
 
 The current implementation makes NEW TURRET, NORMAL, BREAKTHROUGH, CHAIN, and
 COMBO valid data categories. Current cards are honestly classified; existing
-Cannon branches are BREAKTHROUGH, prerequisite-driven upgrades are CHAIN, and
-COMBO support is structural with no speculative Stage 1 content. Eligibility
-now includes branch context and category-contract validation while preserving
-seeded offers, max stacks, prerequisites, excludes, finite budget, and dead-
-choice protection. Semantic card identity is stable and focus is a separate
-selection treatment. Automated Phase 3 is complete pending the human graphical
-buildcraft review.
+Cannon branches are BREAKTHROUGH, while the three current CHAIN cards each
+require the relevant turret build plus one of that turret's mutually exclusive
+BREAKTHROUGH paths. COMBO support is structural with no speculative Stage 1
+content. Eligibility now includes branch context, path prerequisites, and
+category-contract validation while preserving seeded offers, max stacks,
+prerequisites, excludes, finite budget, and dead-choice protection. Semantic
+card identity is stable and focus is a separate selection treatment.
+Automated Phase 3 remains complete pending the human graphical buildcraft
+review, with this path-gating correction included.
 
 ### Phase 4 — Enemy and Stage Architecture — NEXT AFTER HUMAN PHASE 3 REVIEW
 

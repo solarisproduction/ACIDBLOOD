@@ -46,6 +46,8 @@ static func is_eligible(card: CardData, ctx: Dictionary) -> bool:
 	for pre in card.prerequisites:
 		if int(acquired.get(pre, 0)) <= 0:
 			return false
+	if not card.path_prerequisites.is_empty() and not _has_acquired_path(card.path_prerequisites, acquired, chosen_branch_cards):
+		return false
 	for ex in card.excludes:
 		if int(acquired.get(ex, 0)) > 0 or ex in chosen_branch_cards:
 			return false
@@ -254,8 +256,17 @@ static func _has_card_marker(card: CardData, marker: StringName) -> bool:
 	for pre in card.prerequisites:
 		if String(pre).contains(String(marker)):
 			return true
+	for path_pre in card.path_prerequisites:
+		if String(path_pre).contains(String(marker)):
+			return true
 	for eff in card.effects:
 		if String(eff.target).contains(String(marker)) or String(eff.stat).contains(".%s." % String(marker)):
+			return true
+	return false
+
+static func _has_acquired_path(path_prerequisites: Array[StringName], acquired: Dictionary, chosen_branch_cards: Array) -> bool:
+	for path_pre in path_prerequisites:
+		if int(acquired.get(path_pre, 0)) > 0 or path_pre in chosen_branch_cards:
 			return true
 	return false
 

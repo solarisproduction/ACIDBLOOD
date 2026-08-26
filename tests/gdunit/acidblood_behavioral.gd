@@ -376,13 +376,44 @@ func test_phase3_breakthrough_and_chain_paths_respect_branch_context() -> void:
 	}
 	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_blast_protocol"), base_context)).is_true()
 	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_impact_protocol"), base_context)).is_true()
-	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_shockwave"), base_context)).is_true()
+	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_shockwave"), base_context)).is_false()
 	var blast_context := base_context.duplicate(true)
+	blast_context["acquired"] = {&"build_cannon": 1, &"cannon_blast_protocol": 1}
 	blast_context["chosen_branches"] = {&"cannon": &"cannon_blast"}
 	blast_context["chosen_branch_cards"] = [&"cannon_blast_protocol"]
 	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_blast_protocol"), blast_context)).is_false()
 	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_impact_protocol"), blast_context)).is_false()
 	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_shockwave"), blast_context)).is_true()
+	var impact_context := base_context.duplicate(true)
+	impact_context["acquired"] = {&"build_cannon": 1, &"cannon_impact_protocol": 1}
+	impact_context["chosen_branches"] = {&"cannon": &"cannon_impact"}
+	impact_context["chosen_branch_cards"] = [&"cannon_impact_protocol"]
+	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_blast_protocol"), impact_context)).is_false()
+	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_impact_protocol"), impact_context)).is_false()
+	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_shockwave"), impact_context)).is_true()
+
+func test_phase3_all_chain_cards_require_a_qualifying_breakthrough_path() -> void:
+	var cases := [
+		[&"bolt_overcharge", &"build_bolt", &"bolt_chain_protocol", &"bolt_chain"],
+		[&"frost_deep_chill", &"build_frost", &"frost_control_protocol", &"frost_control"],
+	]
+	for item in cases:
+		var chain_id: StringName = item[0]
+		var build_id: StringName = item[1]
+		var branch_card_id: StringName = item[2]
+		var branch_id: StringName = item[3]
+		var before := {
+			"acquired": {build_id: 1},
+			"unlocks": {}, "blocked": [],
+		}
+		assert_bool(Draft.is_eligible(Catalog.card(chain_id), before)).is_false()
+		var after := {
+			"acquired": {build_id: 1, branch_card_id: 1},
+			"unlocks": {}, "blocked": [],
+			"chosen_branches": {String(build_id).trim_prefix("build_"): branch_id},
+			"chosen_branch_cards": [branch_card_id],
+		}
+		assert_bool(Draft.is_eligible(Catalog.card(chain_id), after)).is_true()
 
 func test_phase3_cannon_breakthrough_chain_offer_is_deterministic() -> void:
 	var path_context := {
@@ -394,7 +425,7 @@ func test_phase3_cannon_breakthrough_chain_offer_is_deterministic() -> void:
 	var second := Draft.generate_offer(Catalog.cards(), path_context, DetRNG.new(9137), 3)
 	assert_array(_card_ids(first)).is_equal(_card_ids(second))
 	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_blast_protocol"), path_context)).is_true()
-	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_shockwave"), path_context)).is_true()
+	assert_bool(Draft.is_eligible(Catalog.card(&"cannon_shockwave"), path_context)).is_false()
 	var after_breakthrough := path_context.duplicate(true)
 	after_breakthrough["acquired"] = {&"build_cannon": 1, &"cannon_blast_protocol": 1}
 	after_breakthrough["chosen_branches"] = {&"cannon": &"cannon_blast"}
