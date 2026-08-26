@@ -150,6 +150,7 @@ func _fire(target: Enemy, w: WeaponDefinition, deals_damage: bool) -> void:
 	var count := int(battle.stat(&"guardian.projectiles", float(w.projectile_count)))
 	var cfg := {
 		"damage": battle.stat(&"guardian.damage", w.damage) if deals_damage else 0.0,
+		"damage_family": w.damage_family,
 		"speed": w.projectile_speed,
 		"pierce": int(battle.stat(&"guardian.pierce", float(w.pierce))) if deals_damage else 0,
 		"color": w.projectile_color,

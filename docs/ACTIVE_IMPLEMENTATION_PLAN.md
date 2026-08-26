@@ -1,38 +1,31 @@
 # Active Implementation Plan
 
-Status: INACTIVE — Phase 3 automated implementation complete; human review pending.
+Status: INACTIVE — Phase 4 enemy foundation automated scope complete; human
+playtest pending.
 
 ## Gates
 
-- Phase 1.1 is human-approved; preserve Stage 1's six-wave, 320-enemy
-  calibration.
-- Phase 2 Weapon Foundation is implemented; preserve Guardian Rifle and
-  Impact Cannon behavior.
-- Phase 4 runtime implementation is out of scope.
-- No economy, rerolls, rarity, new weapons, new enemies, or speculative card
-  mechanics.
+- Phase 1.1, Horizontal Product Checkpoint 1, Phase 2, and Phase 3 are
+  complete and human-reviewed; preserve their current behavior.
+- Preserve Stage 1's six authored waves, 320 enemies, XP supply, and current
+  progression cadence.
+- Do not implement Stage Intel, Stage 2–5 redesign, new enemy archetypes,
+  bosses, economy, or speculative status frameworks.
 
 ## Tasks
 
-- **3A — Draft domain foundation — COMPLETE:** make NEW TURRET, NORMAL, BREAKTHROUGH,
-   CHAIN, and COMBO explicit in card data; classify current content honestly.
-- **3B — Eligibility and choice quality — COMPLETE:** keep one core eligibility
-   authority, add context/dead-choice protection, and prove deterministic
-   offers under identical and changed run state.
-- **3C — Build paths and synergy — COMPLETE:** make the existing Cannon branch a tested
-   BREAKTHROUGH path, use honest prerequisite-driven CHAIN content, and keep
-   COMBO structurally supported without speculative Stage 1 content.
-- **3D — Card semantic language — COMPLETE:** show stable category identity separately
-   from focus/selection in the existing DraftCard at 720×1280.
-- **3E — Run-level validation — COMPLETE:** add compact category/build-path telemetry
-   and deterministic Guardian/Cannon scenarios without changing Stage 1 data.
-- **3F — Integrated review — COMPLETE:** inspect for duplicate authorities and Phase 4
-   leakage, perform a read-only Phase 4 readiness audit, update authorities,
-   and run the complete validation suite.
+- **4A — Enemy Roles — COMPLETE:** explicit role data now covers the current
+  roster and runtime presentation no longer infers the model from stats.
+- **4B — Affinity / Modifier Foundation — COMPLETE:** weapon Damage Family
+  reaches one neutral-by-default soft-affinity boundary; existing armor is
+  formalized as ARMORED without a second mitigation system.
+- **4C — Movement Grammar Foundation — COMPLETE:** direct movement remains the
+  baseline and Runner uses bounded deterministic WEAVE movement.
+- **4D — Integrated Validation — COMPLETE:** Stage 1 and prior phases are
+  preserved, full local gates pass, and this bridge packages human review.
 
 ## Completion gate
 
-Automated Phase 3 is green. Human Phase 3 graphical review remains pending.
-Completed detail belongs in Git history; current runtime
-truth belongs in `docs/SYSTEM_BLUEPRINT.md`, sequencing in `docs/ROADMAP.md`,
-and the immediate bridge in `docs/HANDOFF.md`.
+Automated Phase 4 scope is complete after 4A–4D passed. Human Phase 4
+playtest remains required before Stage 2–5 composition work or Stage Intel
+implementation.

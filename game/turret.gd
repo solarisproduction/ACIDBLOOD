@@ -82,6 +82,7 @@ func _physics_process(delta: float) -> void:
 	_trigger_visual_fire()
 	var shot_cfg := {
 		"damage": _stat("damage", weapon.damage),
+		"damage_family": weapon.damage_family,
 		"speed": _stat("projectile_speed", weapon.projectile_speed),
 		"projectile_radius": _stat("projectile_radius", weapon.projectile_radius),
 		"splash_radius": _stat("splash_radius", weapon.splash_radius),

@@ -36,8 +36,10 @@ const VALID_CATEGORIES := [
 @export var requires_unlock: StringName
 @export var effects: Array[CardEffect] = []
 
+
 func category_valid() -> bool:
 	return category in VALID_CATEGORIES
+
 
 func category_contract_valid() -> bool:
 	if not category_valid():
@@ -53,6 +55,7 @@ func category_contract_valid() -> bool:
 			return prerequisites.size() >= 2
 		_:
 			return true
+
 
 func _has_operation(operation: CardEffect.Op) -> bool:
 	for effect in effects:

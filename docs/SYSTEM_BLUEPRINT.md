@@ -26,8 +26,8 @@ game/  battle runtime                 shell/  screens
 ├─ wave_director.gd wave lifecycle   ├─ campaign.tscn/.gd  30 stages + dev tools
 ├─ guardian, enemy, turret,          └─ result.tscn/.gd    report step
 │  projectile (.gd [+ .tscn])
-├─ battle_hud.gd    HUD + draft UI   tests/run_tests.gd    94 headless checks
-│                                      tests/gdunit/      44-case GdUnit4 behavioral pilot
+├─ battle_hud.gd    HUD + draft UI   tests/run_tests.gd    98 headless checks
+│                                      tests/gdunit/      49-case GdUnit4 behavioral pilot
 └─ visuals.gd       material cache   tools/  validate.sh, gen_stages.gd,
                                              balance_report.gd
 ```
@@ -45,12 +45,18 @@ receives `end_run(victory, stats)`.
 - `WaveDirector` consumes `StageData.waves` with accumulated physics delta;
   wave N+1 starts `post_delay` after wave N clears; last clear → victory.
   Spawn lane randomness comes only from `Battle.roll_spawn_x()`.
-- Enemies: one script; kamikaze vs stationary-attacker is data
-  (`attack_interval`, `stop_range`). Slow status lives on the enemy.
+- Enemies: one script; tactical role, family affinity, validated modifiers,
+  and movement pattern are explicit `EnemyData` fields. Contact versus ranged
+  attack remains data (`attack_interval`, `stop_range`), and slow/status state
+  lives on the enemy. Current roles are Grunt=FRONTLINE, Runner=IMPACT,
+  Spitter=RANGED, Brute=SIEGE, and Tyrant=BOSS. Runner uses a small bounded
+  deterministic WEAVE; the other current roster entries remain DIRECT.
 - Targeting policy is explicit on each WeaponDefinition. The current policy is
   `most_advanced` (most-advanced alive enemy in range, ties by lowest spawn
   index) and remains deterministic and inspectable.
-- Hits resolve centrally in `Battle.apply_hit` (armor, splash, slow).
+- Hits resolve centrally in `Battle.apply_hit` (family affinity, armor, splash,
+  slow). Missing enemy affinity is neutral; current Stage 1 enemies have no
+  non-neutral entries, so this foundation does not rebalance the stage.
 - Kills → XP → `RunState.grant_xp` may return multiple level-ups; drafts
   queue, tree pauses, HUD shows 3 cards (overlay is `process_mode ALWAYS`).
 
@@ -63,8 +69,10 @@ identity needed by current combat. Guardian Rifle uses Physical / ROAMING /
 Direct / `most_advanced`; Impact Cannon uses Physical / FORTRESS / Splash /
 `most_advanced`. Guardian and all current turret resources consume this
 boundary, while existing modifier paths (`guardian.*` and `turret.<id>.*`)
-remain unchanged. Damage Family and Engagement Profile are currently
-validated identity metadata; they do not invent affinity or AI behavior.
+remain unchanged. Damage Family is passed through the central hit resolver to
+the target's neutral-by-default `EnemyData.damage_affinity` map; no
+non-neutral affinity is active in current Stage 1 content. Engagement Profile
+remains validated identity metadata and does not invent AI behavior.
 
 Guardian projectile presentation is a straight, light comet with visual
 tracers; Cannon uses a slower impact shell and presentation-only splash ring.
@@ -103,11 +111,24 @@ Current build semantics are ordinary card relationships rather than a separate
 graph engine: Cannon branch cards are BREAKTHROUGH,
 `cannon_shockwave`, `bolt_overcharge`, and `frost_deep_chill` are CHAIN. Each
 retains its turret-build prerequisite and now names the mutually exclusive
-BREAKTHROUGH cards that qualify its path; one qualifying path card is enough.
+BREAKTHROUGH cards that qualify its path; one qualifying path card is enough,
+but it must be both acquired and present in the selected branch-card context.
 Branch choice is stored in `RunState.chosen_branches` with the selected branch
 card ids retained in `RunState.chosen_branch_cards` for context-only exclusion
 and path checks. UI presents the domain outcome but does not duplicate
 eligibility.
+
+## Phase 4 enemy foundation
+
+`EnemyData` now carries the explicit tactical role, a neutral-by-default
+damage-family multiplier map, a validated modifier list, and a controlled
+movement pattern. The active roster uses FRONTLINE/IMPACT/RANGED/SIEGE/BOSS;
+only Runner uses the new bounded WEAVE pattern, while Grunt, Spitter, Brute,
+and Tyrant remain DIRECT. Existing armor remains the sole armor mitigation
+authority and is identified as ARMORED on Brute and Tyrant. `Battle.apply_hit`
+reads the weapon's Damage Family and resolves affinity before the existing
+armor floor. No non-neutral affinity, future role-specific combat behavior,
+Stage Intel, or Stage 2–5 composition runtime is active.
 
 ## Persistence
 

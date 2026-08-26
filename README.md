@@ -3,8 +3,10 @@
 **3D Tower Defense + Roguelite Card Draft Foundation**
 *Godot 4.7.1 • GDScript • Vendored GdUnit4 behavioral pilot*
 
-**ACIDBLOOD** is a playable Phase 1 foundation validating a tower-defense loop
-enhanced by deterministic roguelite card drafts.
+**ACIDBLOOD** is a playable tower-defense foundation with deterministic
+roguelite card drafts and the first explicit enemy-role/affinity/movement
+boundaries. The current Phase 4 enemy foundation remains pending graphical
+human review.
 
 ACIDBLOOD is an alternate late-1980s industrial contamination game: analog
 machines, chemical infrastructure, CRT-era systems, biological corruption, and
@@ -24,6 +26,8 @@ player-facing work should follow
 - **Deterministic Waves**: Enemy spawns follow pre-authored `StageData` with reproducible timing
 - **Card Draft**: On level-up, pause and choose 1 of 3 deterministic eligible
   cards, within a 20-choice run budget
+- **Enemy Roles**: Current Grunt, Runner, Spitter, Brute, and Tyrant data carry
+  explicit tactical roles; Runner has bounded deterministic lateral movement
 - **Persistent Progression**: Earn salvage to buy persistent upgrades between runs
 
 ---
@@ -46,14 +50,14 @@ godot --path .
 
 ## ✅ Tests (Headless)
 
-Canonical local validation runs the 94-check suite, the 44-case GdUnit4
+Canonical local validation runs the 98-check suite, the 49-case GdUnit4
 behavioral pilot, and runtime smoke stages:
 
 ```bash
 bash tools/validate.sh
 ```
 
-The shared 94-check suite lives in [`tests/run_tests.gd`](tests/run_tests.gd) and
+The shared 98-check suite lives in [`tests/run_tests.gd`](tests/run_tests.gd) and
 [`tests/acidblood_suite_runner.tscn`](tests/acidblood_suite_runner.tscn).
 
 ---
@@ -83,7 +87,7 @@ godot --headless --path . --script res://tools/balance_report.gd
 | **Data Types** | `data/types/*.gd` | Resource classes (`EnemyData`, `TurretData`, `CardData`, `StageData`, etc.) |
 | **Runtime** | `game/*.gd` | `Node3D` actors (`battle.gd`, `enemy.gd`, `turret.gd`, `guardian.gd`) |
 | **Shell UI** | `shell/*.gd` | Screens (`home.gd`, `campaign.gd`, `result.gd`) |
-| **Tests** | `tests/acidblood_suite_runner.tscn`, `tests/run_tests.gd`, `tests/gdunit/` | 94-check core suite + 44-case GdUnit4 behavioral pilot |
+| **Tests** | `tests/acidblood_suite_runner.tscn`, `tests/run_tests.gd`, `tests/gdunit/` | 98-check core suite + 49-case GdUnit4 behavioral pilot |
 | **Tools** | `tools/*.gd` | Data pipeline scripts |
 
 **Data-Driven Content:** 72 `.tres` files managed via [`core/catalog.gd`](core/catalog.gd):

@@ -6,6 +6,9 @@
 script = ExtResource("1")
 id = &"brute"
 display_name = "Hazmat Brute"
+role = &"SIEGE"
+modifiers = Array[StringName]([&"ARMORED"])
+movement_pattern = &"DIRECT"
 max_hp = 45.0
 speed = 0.9
 armor = 2.0

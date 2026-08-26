@@ -258,6 +258,9 @@ func run_combat(sink) -> void:
 	sink.section("combat")
 	sink.check("armor reduces damage", Combat.damage_after_armor(10.0, 3.0) == 7.0)
 	sink.check("damage floor holds", Combat.damage_after_armor(2.0, 50.0) == Combat.MIN_DAMAGE)
+	sink.check("neutral affinity preserves damage", Combat.damage_after_armor(10.0, 0.0, 1.0) == 10.0)
+	sink.check("soft resistance reduces family damage", is_equal_approx(Combat.damage_after_armor(10.0, 0.0, 0.75), 7.5))
+	sink.check("soft vulnerability increases family damage", is_equal_approx(Combat.damage_after_armor(10.0, 0.0, 1.25), 12.5))
 	sink.check("minimum attack interval constant is sane", is_equal_approx(Combat.MIN_ATTACK_INTERVAL, 0.05))
 	sink.check("projectile segment hit catches stationary targets crossed between frames",
 		Projectile._segment_hits_enemy(Vector3(0, 0, 4), Vector3(0, 0, -1), Vector3(0, 0, 1.8)))
@@ -353,6 +356,12 @@ func run_data_references(sink) -> void:
 				if g.count <= 0:
 					bad.append("%s group with count<=0" % stage.id)
 	sink.check("all stage/wave/enemy references resolve (%s)" % [",".join(bad) if bad else "ok"], bad.is_empty())
+	var invalid_enemy_contracts := []
+	for enemy_value in Catalog.enemies().values():
+		var enemy := enemy_value as EnemyData
+		if enemy == null or not enemy.contract_valid():
+			invalid_enemy_contracts.append(String(enemy.id) if enemy != null else "null")
+	sink.check("all enemy tactical contracts are valid (%s)" % [",".join(invalid_enemy_contracts) if invalid_enemy_contracts else "ok"], invalid_enemy_contracts.is_empty())
 	var stage_one := Catalog.stage_by_index(1)
 	var stage_one_count := 0
 	var stage_one_lanes_ok := true

@@ -266,7 +266,7 @@ static func _has_card_marker(card: CardData, marker: StringName) -> bool:
 
 static func _has_acquired_path(path_prerequisites: Array[StringName], acquired: Dictionary, chosen_branch_cards: Array) -> bool:
 	for path_pre in path_prerequisites:
-		if int(acquired.get(path_pre, 0)) > 0 or path_pre in chosen_branch_cards:
+		if int(acquired.get(path_pre, 0)) > 0 and path_pre in chosen_branch_cards:
 			return true
 	return false
 

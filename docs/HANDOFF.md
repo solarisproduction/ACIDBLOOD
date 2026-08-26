@@ -1,106 +1,73 @@
 # Current Session Bridge
 
 Recommended next executor: GPT-5.6 Luna Medium after the human graphical
-review of the Phase 3 draft/buildcraft slice.
+review of the Phase 4 enemy foundation.
 
 ## Current truth
 
-- Phase 1.1 Pressure & Placement is complete and human-approved. The selected
-  Stage 1 calibration remains six waves, 320 enemies, 690 available XP, and
-  the human completed it with 320 kills, 14 drafts, Impact Cannon installed,
-  victory, and 34/100 final Barricade HP. No rebalance was made here.
-- The current shell route is Home → Campaign stage entry → Battle → Draft /
-  placement → Result → Campaign. Campaign uses real StageData briefing,
-  intent, wave count, and salvage reward fields; it exposes no fake future
-  systems.
-- Draft presentation now uses reusable `game/draft_card.gd` units in a
-  three-column portrait layout. BattleHUD remains the paused input owner;
-  wave number/name stay internal and are hidden from the normal HUD.
-- Guardian Rifle and Impact Cannon now use the shared `WeaponDefinition`
-  resource boundary with explicit Physical family, engagement profile,
-  topology, and targeting policy. Guardian remains direct/straight; Cannon
-  remains heavy interval/group splash. Presentation is not damage authority.
-- Phase 3 draft domain is implemented: 3 NEW TURRET, 8 NORMAL, 6
-  BREAKTHROUGH, and 3 CHAIN cards are classified explicitly. COMBO is
-  structurally supported but has no current content because no honest
-  Guardian/Cannon coexistence card exists yet.
-- `Draft.is_eligible` remains the single eligibility authority and now checks
-  category validity, branch context, base prerequisites, qualifying path
-  prerequisites, excludes, max stacks, unlocks, active-turret context, and
-  runtime dead-choice blocks. Seeded offers remain deterministic.
-- Draft cards use stable semantic identity accents/badges; focus adds a
-  thicker border and neutral glow without changing the base category identity.
-- Tesla Coil and Disruption Field mechanics and Phase 4 enemy/stage runtime
-  architecture are not started. Phase 4 was audited read-only only.
+- Phase 1.1 Pressure & Placement, Horizontal Product Checkpoint 1, Phase 2
+  Weapon Foundation, and Phase 3 Draft Architecture are complete and human
+  reviewed. Stage 1 remains six authored waves, 320 enemies, 690 available XP,
+  and a 20-draft run budget; no pressure rebalance was made here.
+- The current route remains Home → Campaign → Battle → Draft/placement →
+  Result → Campaign. The draft still has one eligibility authority,
+  deterministic offers, explicit categories, and CHAIN cards that require
+  both their qualifying BREAKTHROUGH card and selected branch context.
+- Phase 4A–4C are implemented for the current roster. EnemyData now owns
+  explicit role, neutral-by-default family affinity, validated modifiers, and
+  movement pattern. Current roles are Grunt=FRONTLINE, Runner=IMPACT,
+  Spitter=RANGED, Brute=SIEGE, and Tyrant=BOSS. Runner uses bounded
+  deterministic WEAVE; the other current roster entries remain DIRECT.
+- Existing Brute/Tyrant armor remains the only armor mitigation system and is
+  identified as ARMORED. Weapon Damage Family reaches the central hit resolver,
+  but no non-neutral affinity is active in Stage 1. No Stage Intel or Stage
+  2–5 redesign is implemented.
 
 ## Validation snapshot
 
-- Official local suite: 94 checks PASS.
-- GdUnit4 behavioral pilot: 44 cases PASS, including shell controls,
-  portrait draft layout, weapon contracts, Cannon splash, and the physical-key
-  paused placement path.
+- Official local suite: 98 checks PASS.
+- GdUnit4 behavioral pilot: 49 cases PASS, including enemy contracts,
+  neutral/soft affinity resolution, deterministic bounded movement, ranged
+  stop behavior, Phase 3 path gating, weapons, Cannon splash, and paused
+  placement input.
 - `bash tools/validate.sh`: PASS, including import, official suite, GdUnit,
-  and smoke stages 1 and 2.
-- Stage 1 resources and Stage 2–30 resources remain unchanged by this slice.
+  and Stage 1/2 runtime smoke.
+- Isolated FRESH seed 11001 and BENCHMARK seed 22001 both completed Stage 1
+  with 320 kills, 690 XP, level 15, 14 drafts, and victory. FRESH ended at
+  6/100 Barricade HP; BENCHMARK ended at 100/100. Both runs emitted all six
+  `wave_start` events and no runtime error signatures.
+- Stage 1 resources and Stage 2–30 resources remain unchanged. FRESH and
+  BENCHMARK profile runs must remain isolated from the normal save.
 - Godot AI MCP had no connected editor session; local Godot 4.7.1 runtime was
-  used for validation.
+  used with explicit writable log files for isolated headless runs.
 
 ## Human graphical review
 
-Start the project at its reference 720×1280 viewport:
+Start the project at the reference 720×1280 viewport:
 
 ```bash
 GODOT=/Applications/Godot.app/Contents/MacOS/Godot
 "$GODOT" --path .
 ```
 
-Then evaluate Home → Campaign stage entry → Deploy → Battle → several Draft
-choices (including a Cannon branch when offered) → placement → Result →
-Return. Also run the automated profiles:
+Judge only player-facing behavior: whether Grunt, Runner, and Spitter have
+distinct readable jobs without labels; whether Runner creates a different
+urgency than Grunt; whether Spitter creates a different spatial/timing
+problem; whether movement looks intentional; whether dense combat remains
+legible; whether Cannon and Guardian targeting remain understandable; whether
+Stage 1 is more interesting without becoming arbitrary; and whether Guardian
+movement begins to have a natural reason to exist.
 
-```bash
-GODOT=/Applications/Godot.app/Contents/MacOS/Godot tools/playtest_fresh.sh
-GODOT=/Applications/Godot.app/Contents/MacOS/Godot tools/playtest_benchmark.sh
-```
-
-Judge only player-facing behavior: whether choices now feel like a build;
-whether category labels/identity are readable; whether earlier choices affect
-later choices; whether a BREAKTHROUGH feels important; whether CHAIN reads as
-specialization; whether selection remains obvious without changing category
-identity; and whether Stage 1 still feels good. Do not begin Phase 4 before
-this review.
+Do not redesign Stage 2–5 or add Stage Intel before this review.
 
 ## Next decision
 
-If buildcraft is legible and the Stage 1 run remains healthy, recommend
-beginning Phase 4A Enemy Roles after the human review. If the human cannot
-perceive meaningful build paths or category language, deepen/fix only Phase 3;
-do not add Phase 4 content to compensate.
-
-## Phase 4 readiness audit (read-only)
-
-- `EnemyData` already exposes threat profile, speed, armor, contact/ranged
-  attack timing, and presentation fields, but not a role/affinity/modifier
-  composition contract. `Enemy` is still one runtime script; contact versus
-  ranged behavior is implicit in `attack_interval` and `stop_range`, while
-  slow, stun, armor-break, and expose are direct runtime methods.
-- `StageData`, `WaveData`, and `SpawnGroup` already provide authored intent,
-  wave timing, enemy ids, counts, and lanes. `WaveDirector` owns the finite
-  wave state machine. Stage Intel and richer composition semantics do not exist.
-- The likely future migration is 4A roles → 4B affinity/modifiers → 4C
-  movement grammar → 4D composition → 4E Stage Intel → 4F Stage 2–5 teaching.
-  Human design is still required for role vocabulary, counter readability,
-  movement patterns, and stage-teaching rules. No Phase 4 runtime was added.
+If roles, movement, targeting, and Stage 1 readability are healthy, proceed to
+the next bounded Phase 4 stage-architecture decision (4E/4F planning after
+human review). If a player-facing distinction is unclear, refine only the
+specific Phase 4 behavior identified by the review.
 
 ## Workspace state
 
-The Phase 3 implementation is committed at `c94af0f`. This correction is
-validated locally and is the next checkpoint; no lock file or staged changes
-remain. From the repository root, the human can create and push the correction
-with:
-
-```bash
-git add -A && git commit -m "fix: require breakthrough paths for chain cards" && git push origin HEAD:main
-```
-
-No destructive cleanup or Stage 1 retune is authorized.
+Phase 4 automated scope is complete pending the human graphical gate. No Phase
+4E Stage Intel runtime, Stage 2–5 redesign, or Phase 5 work is started.

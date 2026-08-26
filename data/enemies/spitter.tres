@@ -6,6 +6,8 @@
 script = ExtResource("1")
 id = &"spitter"
 display_name = "Pressure Spitter"
+role = &"RANGED"
+movement_pattern = &"DIRECT"
 max_hp = 14.0
 speed = 1.4
 armor = 0.0

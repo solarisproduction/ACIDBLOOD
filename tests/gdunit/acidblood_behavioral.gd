@@ -3,6 +3,7 @@ class_name AcidbloodBehavioralSuite
 extends GdUnitTestSuite
 
 const BattleScene := preload("res://game/battle.tscn")
+const EnemyScene := preload("res://game/enemy.tscn")
 const TurretScene := preload("res://game/turret.tscn")
 const HomeScene := preload("res://shell/home.tscn")
 const CampaignScene := preload("res://shell/campaign.tscn")
@@ -314,6 +315,103 @@ func test_phase2_cannon_weapon_splash_preserves_group_hit_behavior() -> void:
 	assert_float(neighbor.hp).is_less(neighbor_hp)
 	assert_float(outside.hp).is_equal_approx(outside_hp, 0.001)
 
+func test_phase4_current_enemies_have_explicit_roles_affinities_and_movement() -> void:
+	var expected_roles := {
+		&"grunt": &"FRONTLINE",
+		&"runner": &"IMPACT",
+		&"spitter": &"RANGED",
+		&"brute": &"SIEGE",
+		&"boss_tyrant": &"BOSS",
+	}
+	for enemy_id in expected_roles:
+		var data := Catalog.enemy(enemy_id)
+		assert_object(data).is_valid()
+		assert_str(str(data.get("role"))).is_equal(str(expected_roles[enemy_id]))
+		assert_bool(data.get("damage_affinity") is Dictionary).is_true()
+		assert_bool(data.get("modifiers") is Array).is_true()
+		assert_bool(data.get("movement_pattern") != null).is_true()
+		assert_float(data.affinity_multiplier(WeaponDefinition.DAMAGE_PHYSICAL)).is_equal_approx(1.0, 0.001)
+	assert_str(str(Catalog.enemy(&"runner").get("movement_pattern"))).is_equal("WEAVE")
+	assert_str(str(Catalog.enemy(&"grunt").get("movement_pattern"))).is_equal("DIRECT")
+	var named_like_runner := _make_enemy_data(&"runner_named_fixture", 100.0)
+	named_like_runner.role = EnemyData.ROLE_FRONTLINE
+	var boot := await _boot_battle()
+	var explicit_role_enemy := _spawn_enemy_with_data(boot["battle"] as Battle, named_like_runner, 44)
+	assert_str(String(explicit_role_enemy.role())).is_equal("FRONTLINE")
+
+func test_phase4_invalid_enemy_contract_is_rejected() -> void:
+	var invalid := EnemyData.new()
+	invalid.role = &"NOT_A_ROLE"
+	assert_bool(invalid.role_valid()).is_false()
+	invalid.role = EnemyData.ROLE_FRONTLINE
+	invalid.movement_pattern = EnemyData.MOVEMENT_WEAVE
+	assert_bool(invalid.movement_contract_valid()).is_false()
+	invalid.movement_pattern = EnemyData.MOVEMENT_DIRECT
+	invalid.modifiers = [&"SHIELDED"]
+	assert_bool(invalid.modifiers_valid()).is_false()
+	invalid.modifiers = []
+	invalid.damage_affinity = {&"Physical": 0.0}
+	assert_bool(invalid.affinity_valid()).is_false()
+
+func test_phase4_damage_family_uses_enemy_affinity_without_changing_neutral() -> void:
+	var boot := await _boot_battle()
+	var battle := boot["battle"] as Battle
+	var neutral_data := _make_enemy_data(&"neutral_fixture", 100.0)
+	var neutral := _spawn_enemy_with_data(battle, neutral_data, 11)
+	battle.apply_hit(neutral, 10.0, {"damage_family": WeaponDefinition.DAMAGE_PHYSICAL})
+	assert_float(neutral.hp).is_equal_approx(90.0, 0.001)
+
+	var resistant_data := _make_enemy_data(&"resistant_fixture", 100.0)
+	resistant_data.damage_affinity = {&"Physical": 0.75}
+	var resistant := _spawn_enemy_with_data(battle, resistant_data, 12)
+	battle.apply_hit(resistant, 10.0, {"damage_family": WeaponDefinition.DAMAGE_PHYSICAL})
+	assert_float(resistant.hp).is_equal_approx(92.5, 0.001)
+
+	var vulnerable_data := _make_enemy_data(&"vulnerable_fixture", 100.0)
+	vulnerable_data.damage_affinity = {&"Physical": 1.25}
+	var vulnerable := _spawn_enemy_with_data(battle, vulnerable_data, 13)
+	battle.apply_hit(vulnerable, 10.0, {"damage_family": WeaponDefinition.DAMAGE_PHYSICAL})
+	assert_float(vulnerable.hp).is_equal_approx(87.5, 0.001)
+
+func test_phase4_movement_is_bounded_deterministic_and_forward() -> void:
+	var boot := await _boot_battle()
+	var battle := boot["battle"] as Battle
+	var weave_data := _make_enemy_data(&"weave_fixture", 100.0)
+	weave_data.speed = 1.0
+	weave_data.movement_pattern = EnemyData.MOVEMENT_WEAVE
+	weave_data.movement_amplitude = 0.3
+	weave_data.movement_frequency = 1.2
+	var first := _spawn_enemy_with_data(battle, weave_data, 42)
+	var second := _spawn_enemy_with_data(battle, weave_data, 42)
+	first.position.z = -10.0
+	second.position.z = -10.0
+	var first_start_z := first.position.z
+	for _index in range(60):
+		first._physics_process(1.0 / 60.0)
+		second._physics_process(1.0 / 60.0)
+	assert_float(first.position.z).is_greater(first_start_z)
+	assert_bool(absf(first.position.x) <= 0.301).is_true()
+	assert_float(first.position.x).is_equal_approx(second.position.x, 0.001)
+	var direct_data := _make_enemy_data(&"direct_fixture", 100.0)
+	var direct := _spawn_enemy_with_data(battle, direct_data, 43)
+	direct.position = Vector3(1.1, 0.0, -10.0)
+	direct._physics_process(1.0 / 60.0)
+	assert_float(direct.position.x).is_equal_approx(1.1, 0.001)
+
+func test_phase4_ranged_enemy_keeps_stop_line_and_attack_behavior() -> void:
+	var boot := await _boot_battle()
+	var battle := boot["battle"] as Battle
+	battle.spawn_wave_enemy(&"spitter", 0.0)
+	var enemy := battle.enemies.back() as Enemy
+	enemy.max_hp = 1000.0
+	enemy.hp = enemy.max_hp
+	enemy.position.z = 1.0
+	for _index in range(180):
+		enemy._physics_process(1.0 / 60.0)
+	var stop_z := ArenaLayout.FORTRESS_LINE_Z - enemy.data.stop_range
+	assert_float(enemy.position.z).is_equal_approx(stop_z, 0.02)
+	assert_bool(enemy.is_attacking_barricade()).is_true()
+
 func test_phase3_active_cards_have_explicit_honest_categories() -> void:
 	var expected := {
 		&"build_cannon": &"NEW_TURRET",
@@ -407,6 +505,11 @@ func test_phase3_all_chain_cards_require_a_qualifying_breakthrough_path() -> voi
 			"unlocks": {}, "blocked": [],
 		}
 		assert_bool(Draft.is_eligible(Catalog.card(chain_id), before)).is_false()
+		var acquired_without_branch := {
+			"acquired": {build_id: 1, branch_card_id: 1},
+			"unlocks": {}, "blocked": [],
+		}
+		assert_bool(Draft.is_eligible(Catalog.card(chain_id), acquired_without_branch)).is_false()
 		var after := {
 			"acquired": {build_id: 1, branch_card_id: 1},
 			"unlocks": {}, "blocked": [],
@@ -510,7 +613,7 @@ func test_task6_stage1_is_finite_and_result_shell_is_available() -> void:
 	for wave in stage.waves:
 		for group in wave.groups:
 			enemy_count += group.count
-	assert_int(enemy_count).is_greater_equal(300)
+	assert_int(enemy_count).is_equal(320)
 	var result_scene := load("res://shell/result.tscn") as PackedScene
 	assert_object(result_scene).is_valid()
 	var result := result_scene.instantiate()
@@ -530,7 +633,7 @@ func test_task11_stage1_calibration_has_continuous_multilane_pressure() -> void:
 			enemy_count += group.count
 			authored_lanes[String(group.lane)] = true
 	assert_int(stage.waves.size()).is_equal(6)
-	assert_int(enemy_count).is_greater_equal(300)
+	assert_int(enemy_count).is_equal(320)
 	assert_int(multi_group_waves).is_greater_equal(4)
 	assert_bool(authored_lanes.has("left")).is_true()
 	assert_bool(authored_lanes.has("center")).is_true()
@@ -774,6 +877,23 @@ func _spawn_turret(battle: Battle, turret_id: StringName, pos: Vector3) -> Turre
 	turret.setup(battle, Catalog.turret(turret_id))
 	turret.position = pos
 	return turret
+
+func _spawn_enemy_with_data(battle: Battle, data: EnemyData, spawn_index: int) -> Enemy:
+	var enemy := EnemyScene.instantiate() as Enemy
+	battle.enemies_root.add_child(enemy)
+	enemy.setup(battle, data, spawn_index, 0.0, 1.0, 1.0)
+	battle.enemies.append(enemy)
+	return enemy
+
+func _make_enemy_data(enemy_id: StringName, max_health: float) -> EnemyData:
+	var data := EnemyData.new()
+	data.id = enemy_id
+	data.display_name = String(enemy_id)
+	data.max_hp = max_health
+	data.speed = 1.0
+	data.role = EnemyData.ROLE_FRONTLINE
+	data.movement_pattern = EnemyData.MOVEMENT_DIRECT
+	return data
 
 func _make_test_stage() -> StageData:
 	var stage := StageDataScript.new() as StageData

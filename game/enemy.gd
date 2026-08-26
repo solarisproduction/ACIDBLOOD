@@ -16,6 +16,8 @@ var max_hp := 0.0
 var is_frozen: bool = false
 
 var _speed_scale := 1.0
+var _movement_origin_x := 0.0
+var _movement_time := 0.0
 var _slow_factor := 1.0
 var _slow_time := 0.0
 var _freeze_time := 0.0
@@ -49,6 +51,8 @@ func setup(b: Battle, d: EnemyData, index: int, x: float, hp_scale: float, speed
 	data = d
 	spawn_index = index
 	_speed_scale = speed_scale
+	_movement_origin_x = x
+	_movement_time = 0.0
 	max_hp = d.max_hp * hp_scale
 	hp = max_hp
 	_attack_timer = d.attack_interval if d.attack_interval > 0.0 else CONTACT_ATTACK_INTERVAL
@@ -64,6 +68,12 @@ func gameplay_pos() -> Vector3:
 
 func is_alive() -> bool:
 	return not _dead
+
+func role() -> StringName:
+	return data.role if data != null else &""
+
+func damage_affinity_multiplier(damage_family: StringName) -> float:
+	return data.affinity_multiplier(damage_family) if data != null else 1.0
 
 func is_attacking_barricade() -> bool:
 	return _attacking_barricade and not _dead
@@ -161,7 +171,8 @@ func _physics_process(delta: float) -> void:
 				_telegraph_orb.visible = false
 		return
 	var stop_z := ArenaLayout.FORTRESS_LINE_Z - data.stop_range
-	if position.z < stop_z:
+	if position.z < stop_z - 0.0001:
+		_update_lateral_movement(delta)
 		var step := data.speed * _speed_scale * _slow_factor * delta
 		position.z = minf(position.z + step, stop_z)
 		_attacking_barricade = false
@@ -188,16 +199,26 @@ func _build_model() -> void:
 		model_root.add_child(data.model_scene.instantiate())
 		_build_threat_markers()
 		return
-	if data.attack_interval > 0.0:
-		_build_spitter_placeholder()
-	elif data.threat_profile >= 2:
-		_build_brute_placeholder()
-	elif data.shape == 1:
-		_build_runner_placeholder()
-	else:
-		_build_worker_placeholder()
+	match data.role:
+		EnemyData.ROLE_RANGED:
+			_build_spitter_placeholder()
+		EnemyData.ROLE_SIEGE, EnemyData.ROLE_BOSS:
+			_build_brute_placeholder()
+		EnemyData.ROLE_IMPACT:
+			_build_runner_placeholder()
+		_:
+			_build_worker_placeholder()
 	model_root.scale = data.body_scale
 	_build_threat_markers()
+
+func _update_lateral_movement(delta: float) -> void:
+	if data == null or data.movement_pattern == EnemyData.MOVEMENT_DIRECT:
+		return
+	_movement_time += delta
+	if data.movement_pattern == EnemyData.MOVEMENT_WEAVE:
+		var phase := float(spawn_index) * 0.73
+		var target_x := _movement_origin_x + sin(phase + _movement_time * data.movement_frequency) * data.movement_amplitude
+		position.x = clampf(target_x, -ArenaLayout.HALF_WIDTH, ArenaLayout.HALF_WIDTH)
 
 func _build_worker_placeholder() -> void:
 	var torso := BoxMesh.new()

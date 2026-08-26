@@ -83,7 +83,7 @@ The human review judged the current direction healthy and identified draft /
 buildcraft, projectile readability, and later enemy composition as the next
 value surfaces. No Tesla Coil or Disruption Field gameplay was activated.
 
-### Phase 3 — Draft Architecture — AUTOMATED FOUNDATION COMPLETE; HUMAN REVIEW PENDING
+### Phase 3 — Draft Architecture — COMPLETE + HUMAN-APPROVED
 
 The current implementation makes NEW TURRET, NORMAL, BREAKTHROUGH, CHAIN, and
 COMBO valid data categories. Current cards are honestly classified; existing
@@ -94,18 +94,28 @@ content. Eligibility now includes branch context, path prerequisites, and
 category-contract validation while preserving seeded offers, max stacks,
 prerequisites, excludes, finite budget, and dead-choice protection. Semantic
 card identity is stable and focus is a separate selection treatment.
-Automated Phase 3 remains complete pending the human graphical buildcraft
-review, with this path-gating correction included.
+The human graphical buildcraft review confirmed the build-path direction. A
+follow-up validation tightened path checks so a CHAIN card requires both the
+qualifying BREAKTHROUGH card in run ownership and the selected branch-card
+context.
 
-### Phase 4 — Enemy and Stage Architecture — NEXT AFTER HUMAN PHASE 3 REVIEW
+### Phase 4 — Enemy and Stage Architecture — FOUNDATION IMPLEMENTED; HUMAN REVIEW PENDING
 
-Enemy Role + Affinity + Modifiers, soft counters, Stage Intel, and authored
-Stages 1–5 onboarding.
+The current foundation makes the existing enemy roster's tactical roles,
+neutral-by-default Damage Family affinity boundary, existing ARMORED behavior,
+and controlled movement pattern explicit in `EnemyData`. Grunt is FRONTLINE,
+Runner is IMPACT with a bounded deterministic WEAVE, Spitter is RANGED, Brute
+is SIEGE, and the existing Tyrant is BOSS. Weapon Damage Family now reaches
+the central hit resolver, but no non-neutral Stage 1 affinity is active.
 
-The Phase 4 readiness audit is read-only. Likely sequencing remains 4A Enemy
-Roles, 4B Damage Affinity + Modifiers, 4C Movement Grammar, 4D Stage
-Composition, 4E Stage Intel, and 4F Stage 2–5 Teach → Test → Combine. No Phase
-4 runtime implementation has started.
+The automated scope is limited to 4A Enemy Roles, 4B Affinity / Modifier
+Foundation, 4C Movement Grammar Foundation, and 4D Stage 1 preservation and
+validation. Stage 1 remains six authored waves and 320 enemies. The human
+Phase 4 graphical playtest is the next gate.
+
+The remaining route is 4E Stage Intel and 4F Stage 2–5 Teach → Test → Combine.
+They remain future work and are not authorized by this checkpoint. No Stage
+2–5 redesign or Stage Intel runtime has started.
 
 ### Phase 5 — Meta / Home / Arsenal
 

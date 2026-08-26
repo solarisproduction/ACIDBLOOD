@@ -41,9 +41,12 @@ const TARGET_MOST_ADVANCED := &"most_advanced"
 @export var projectile_visual: StringName = &"orb"
 @export var impact_visual: StringName = &"none"
 
+
 func contract_valid() -> bool:
-	return not id.is_empty() \
-		and not damage_family.is_empty() \
-		and not engagement_profile.is_empty() \
-		and not attack_topology.is_empty() \
+	return (
+		not id.is_empty()
+		and not damage_family.is_empty()
+		and not engagement_profile.is_empty()
+		and not attack_topology.is_empty()
 		and not targeting_policy.is_empty()
+	)

@@ -6,6 +6,10 @@
 script = ExtResource("1")
 id = &"runner"
 display_name = "Tunnel Runner"
+role = &"IMPACT"
+movement_pattern = &"WEAVE"
+movement_amplitude = 0.32
+movement_frequency = 1.1
 max_hp = 6.0
 speed = 3.0
 armor = 0.0

@@ -6,6 +6,9 @@
 script = ExtResource("1")
 id = &"boss_tyrant"
 display_name = "Containment Tyrant"
+role = &"BOSS"
+modifiers = Array[StringName]([&"ARMORED"])
+movement_pattern = &"DIRECT"
 max_hp = 400.0
 speed = 0.7
 armor = 3.0

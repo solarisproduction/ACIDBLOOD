@@ -123,12 +123,12 @@ sits.
 - GdUnit4 v6.2.1 is the pilot behavioral-testing layer. The canonical CLI
   command is the ACIDBLOOD-owned wrapper around GdUnit4's command tool:
   `./tools/run_gdunit.sh --godot_binary "$GODOT" --headless --ignoreHeadlessMode -a res://tests/gdunit/`
-- GdUnit4 behavioral tests complement the 94-check suite; they do not replace
+- GdUnit4 behavioral tests complement the 98-check suite; they do not replace
   it.
 - `res://reports/` is the standard GdUnit4 report destination and is ignored
   in git.
 - `./tools/validate.sh` is the project-wide validation entry point and the
-  final local authority for parse/import checks, the 94-check suite, GdUnit4,
+  final local authority for parse/import checks, the 98-check suite, GdUnit4,
   and the runtime smoke stages.
 - Before considering gameplay work done, validate the change in the live
   editor/runtime path through Godot AI MCP. Use `./tools/validate.sh` as the
@@ -152,7 +152,7 @@ sits.
 
 - Godot AI MCP is the local editor/runtime inspection and gameplay validation
   path.
-- The 94-check suite covers the shared headless project rules and data checks.
+- The 98-check suite covers the shared headless project rules and data checks.
 - GdUnit4 is the behavioral testing layer for stable scene/runtime assertions.
 - `tools/validate.sh` is the canonical local authority and runs the complete
   local validation sequence.

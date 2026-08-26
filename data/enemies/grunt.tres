@@ -6,6 +6,8 @@
 script = ExtResource("1")
 id = &"grunt"
 display_name = "Infected Worker"
+role = &"FRONTLINE"
+movement_pattern = &"DIRECT"
 max_hp = 12.0
 speed = 1.6
 armor = 0.0

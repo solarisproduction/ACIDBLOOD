@@ -394,7 +394,12 @@ func _hit_single(target: Enemy, base_damage: float, opts: Dictionary) -> void:
 		target.apply_slow(slow_factor, opts.get("slow_duration", 0.0))
 	var expose_multiplier: float = opts.get("expose_damage_multiplier", 1.0)
 	var expose_duration: float = opts.get("expose_duration", 0.0)
-	var resolved_damage := Combat.damage_after_armor(base_damage, target.armor()) * target.damage_taken_multiplier()
+	var damage_family: StringName = opts.get("damage_family", &"")
+	var resolved_damage := Combat.damage_after_armor(
+		base_damage,
+		target.armor(),
+		target.damage_affinity_multiplier(damage_family)
+	) * target.damage_taken_multiplier()
 	target.take_damage(
 		resolved_damage,
 		opts.get("heavy_impact", false)
